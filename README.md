@@ -23,3 +23,7 @@ After cloning and migrating, run this command to create your user.
 Don't forget to set an `ENCRYPTION_SALT` in `.env` and never change it as it would ruin your ability to decrypt your tokens.
 
 Obviously the security of your code and database is down to you but as the encryption key is based on the users password, it should be pretty safe most of the time.
+
+## Images
+
+You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP for a Github account belonging to Contoso, you could put upload `public/img/contoso.png` and `public/img/contoso/github.png` and they would appear automatically.
