@@ -1,0 +1,11 @@
+<nav class="breadcrumbs">
+	<a href="/codes">Codes</a>
+
+	{% set path = '/codes' %}
+	{% for crumb in breadcrumbs %}
+		{% if crumb|length > 0 %}
+			{% set path = path ~ '/' ~ crumb %}
+			<a href="{{ path }}">{{ crumb }}</a>
+		{% endif %}
+	{% endfor %}
+</nav>

@@ -1,0 +1,22 @@
+{% extends 'global.twig' %}
+{% block main %}
+
+	<h1>Token</h1>
+
+	<dl>
+		<dt>Path</dt>
+		<dd>{{ token.path }}</dd>
+
+		<dt>Title</dt>
+		<dd>{{ token.title }}</dd>
+	</dl>
+
+	<a class="button blueback" href="/tokens/{{ token.id }}/edit">Edit</a>
+
+	<a class="button greenback" href="/codes{{ token.path }}">Code</a>
+
+	<a class="button" href="/export{{ token.path }}">Export</a>
+
+	<a class="button redback" href="/tokens/{{ token.id }}/delete" onclick="return confirm('Are you sure you want to delete this token?')">Delete</a>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'global.twig' %}
+{% block main %}
+
+	{% set breadcrumbs = path|split('/') %}
+	{% include 'partials/breadcrumbs.twig' %}
+
+	{% if folders|length == 0 %}
+		<p class="text-center">no tokens to see here</p>
+	{% endif %}
+
+	<ul class="folderlist{% if folders | length < 3 %} bigger{% endif %}">
+		{% for folder in folders %}
+			<li>
+				<a href="/codes{{ folder.folder }}">
+					<img src="{% if folder.image %}/{{ folder.image }}{% endif %}" alt="{{ folder.folder|slice(path|length) }}" />
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+
+	<a class="button floating blueback" href="/import">&#43;</a>
+
+{% endblock %}

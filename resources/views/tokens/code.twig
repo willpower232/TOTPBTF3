@@ -1,0 +1,13 @@
+{% extends 'global.twig' %}
+{% block main %}
+
+	{% set breadcrumbs = token.path|split('/') %}
+	{% include 'partials/breadcrumbs.twig' %}
+
+	<h1>{{ token.title }}</h1>
+
+	<p class="text-center a-code">{{ token.getTOTPCode() }}</p>
+
+	<a class="button floating" href="/tokens/{{ token.id }}">&#128065;</a>
+
+{% endblock %}

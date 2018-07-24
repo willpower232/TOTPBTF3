@@ -1,0 +1,50 @@
+{% extends 'global.twig' %}
+{% block main %}
+
+	<h1>{{ (token) ? 'Edit Token' : 'Import New Token' }}</h1>
+
+	<form method="POST" action="/tokens{% if token %}/{{ token.id }}{% endif %}">
+		{{ csrf_field() }}
+
+		<div>
+			<label for="f_path">Path</label>
+
+			<input id="f_path" type="text" class="{{ errors.has('path') ? ' is-invalid' }}" name="path" value="{{ old('path', (token) ? token.path) }}" required autofocus />
+
+			{% if errors.has('path') %}
+				<span class="invalid-feedback">
+					<strong>{{ errors.first('path') }}</strong>
+				</span>
+			{% endif %}
+		</div>
+
+		<div>
+			<label for="f_title">Title</label>
+
+			<input id="f_title" type="text" class="{{ errors.has('title') ? ' is-invalid' }}" name="title" value="{{ old('title', (token) ? token.title) }}" required />
+
+			{% if errors.has('title') %}
+				<span class="invalid-feedback">
+					<strong>{{ errors.first('title') }}</strong>
+				</span>
+			{% endif %}
+		</div>
+
+{% if not token %}
+		<div>
+			<label for="f_secret">Secret</label>
+
+			<input id="f_secret" type="text" class="{{ errors.has('secret') ? ' is-invalid' }}" name="secret" value="{{ old('secret') }}" required />
+
+			{% if errors.has('secret') %}
+				<span class="invalid-feedback">
+					<strong>{{ errors.first('secret') }}</strong>
+				</span>
+			{% endif %}
+		</div>
+{% endif %}
+
+		<button class="greenback" type="submit">Save</button>
+	</form>
+
+{% endblock %}

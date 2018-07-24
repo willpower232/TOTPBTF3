@@ -11,6 +11,20 @@
 |
 */
 
+// no homepage so put to codes
+Route::redirect('/', '/codes', 301);
+
+// include slashes in the path
+Route::get('/codes/{path?}', 'TokensController@getCode')->where('path', '(.*)');
+Route::get('/export/{path?}', 'TokensController@export')->where('path', '(.*)');
+
+Route::get('/import', 'TokensController@create');
+Route::post('/tokens', 'TokensController@store');
+
+Route::get('/tokens/{token}', 'TokensController@show');
+Route::get('/tokens/{token}/edit', 'TokensController@edit');
+Route::post('/tokens/{token}', 'TokensController@update');
+
 Route::get('/login', 'SessionsController@create')->name('login');
 Route::post('/login', 'SessionsController@store');
 Route::get('/logout', 'SessionsController@destroy');

@@ -18,4 +18,9 @@ class User extends Authenticatable
         'password',
         'remember_token',
     );
+
+    public function tokens()
+    {
+        return $this->hasMany(Token::class);
+    }
 }

@@ -21,6 +21,8 @@ class CreateUsersTable extends Migration
             $table->boolean('light_mode')->default(false);
             $table->rememberToken();
             $table->timestamps();
+
+            $table->engine = 'InnoDB'; // not standard but permits relations
         });
     }
 
