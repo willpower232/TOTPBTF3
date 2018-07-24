@@ -13,6 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // if your database type doesn't match https://laravel-news.com/laravel-5-4-key-too-long-error
+        // \Illuminate\Support\Facades\Schema::defaultStringLength(255);
+
         view()->composer('global', function($view) {
             $view->with('light_mode', ($user = auth()->user()) ? $user->light_mode : false);
         });
