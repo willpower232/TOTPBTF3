@@ -42,10 +42,32 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $exception)
     {
+        // https://stackoverflow.com/a/34791686
+        if ($this->isHttpException($exception) && method_exists($exception, 'getStatusCode')) {
+            switch ($exception->getStatusCode()) {
+                // not authorized
+                case '403':
+                    return \Response::view('errors/403', array(), 403);
+                    break;
+
+                // not found
+                case '404':
+                    return \Response::view('errors/404', array(), 404);
+                    break;
+
+                // internal error
+                case '500':
+                    return \Response::view('errors/500', array(), 500);
+                    break;
+            }
+            return $this->renderHttpException($exception);
+        }
+
+
         return parent::render($request, $exception);
     }
 }
