@@ -38,7 +38,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            'web', // include cookie stuff for auth bits
+            // 'throttle:60,1',
             'bindings',
         ],
     ];
