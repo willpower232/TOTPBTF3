@@ -15,6 +15,6 @@ class Authenticate extends Middleware
         }
 
         // blend in with original handle function from middleware
-        return call_user_func_array(array($this, 'parent::handle'), func_get_args());
+        return call_user_func_array('parent::handle', func_get_args());
     }
 }
