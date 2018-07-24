@@ -1,0 +1,24 @@
+{% extends 'global.twig' %}
+{% block main %}
+
+	<h1>Profile</h1>
+
+	<dl>
+		<dt>Full Name</dt>
+		<dd>{{ user.name }}</dd>
+
+		<dt>Email</dt>
+		<dd>{{ user.email }}</dd>
+
+		<dt>Light Mode</dt>
+		<dd>
+			<label class="toggle">
+				<input type="checkbox" name="light_mode" {% if user.light_mode %}checked {% endif %}/>
+				<span class="helper"></span>
+			</label>
+		</dd>
+	</dl>
+
+	<a class="button blueback" href="/profile/edit">Edit</a>
+
+{% endblock %}
