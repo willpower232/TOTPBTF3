@@ -15,7 +15,7 @@ class CreateUser extends Command
     protected $signature = 'user:create';
 
     /**
-     * Execute the console command.
+     * Prompt user for details to create user.
      *
      * @return mixed
      */

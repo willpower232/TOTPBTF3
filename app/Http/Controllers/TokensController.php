@@ -12,6 +12,13 @@ class TokensController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * Abstracted query to return either the folder details or a token to show.
+     *
+     * @param string $path the folder of a token, expected to be formatted by the function from the Token model
+     *
+     * @return array|Token an array of folders or a single instance of Token, whichever is appropriate
+     */
     private function getFoldersOrTokensFromPath($path = '/')
     {
         $folders = Token::selectRaw('SUBSTRING_INDEX(path, "/", ' . (substr_count($path, '/') + 1) . ') AS folder')
