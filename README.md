@@ -26,4 +26,4 @@ Obviously the security of your code and database is down to you but as the encry
 
 ## Images
 
-You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP for a Github account belonging to Contoso, you could put upload `public/img/contoso.png` and `public/img/contoso/github.png` and they would appear automatically.
+You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP token for a Github account belonging to Contoso, you could upload `public/img/contoso.png` and `public/img/contoso/github.png` and they would appear automatically in the list.
