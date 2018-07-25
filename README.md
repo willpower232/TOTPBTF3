@@ -14,6 +14,16 @@ My entire knowledge of Laravel is based on https://laracasts.com/series/laravel-
 
 - committing compiled assets as node is a continual disappointment in my life
 
+## Dependencies
+
+This has only been tested on PHP 7.1 so far and relies on your system having access to the `openssl_*` functions as well as the database server of your choice, thanks to Laravel.
+
+I've included [nunomaduro/larastan](https://github.com/nunomaduro/larastan) for some code analysis. Unit tests coming one day soon.
+
+The views are written in Twig using [rcrowe/twigbridge](https://github.com/rcrowe/twigbridge) and all the two factor auth generation is handled by [robthree/twofactorauth](https://github.com/robthree/twofactorauth).
+
+Exporting the secrets via QR code uses [bacon/baconqrcode](https://github.com/bacon/baconqrcode) but obviously this is optional and shouldn't be difficult to remove.
+
 ## How to use
 
 After cloning and migrating, run this command to create your user.
@@ -27,3 +37,5 @@ Obviously the security of your code and database is down to you but as the encry
 ## Images
 
 You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP token for a Github account belonging to Contoso, you could upload `public/img/contoso.png` and `public/img/contoso/github.png` and they would appear automatically in the list.
+
+Finding the right icons can be tricky but I've found most icons I've needed for this can be found at [edent/SuperTinyIcons](https://github.com/edent/SuperTinyIcons) and they come in small SVG files for optimum performance.
