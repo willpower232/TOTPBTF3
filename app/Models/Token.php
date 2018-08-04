@@ -31,14 +31,15 @@ class Token extends Model
      */
     public static function formatPath($input)
     {
-        if (strlen($input) > 0) {
-            if ($input[0] != '/') {
-                $input = '/' . $input;
-            }
-    
-            if (substr($input, -1) != '/') {
-                $input .= '/';
-            }
+        // cope with an empty string here
+        if (substr($input, -1) != '/') {
+            $input .= '/';
+        }
+
+        // this can't cope with an empty string
+        // because of the explicit 0
+        if ($input[0] != '/') {
+            $input = '/' . $input;
         }
 
         return $input;
