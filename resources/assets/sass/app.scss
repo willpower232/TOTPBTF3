@@ -12,7 +12,10 @@ html {
 	background:$bigbackground;
 
 	&.inverted {
-		filter:hue-rotate(180deg) invert(100%);
+		// double invert the images to restore them
+		&,& img {
+			filter:hue-rotate(180deg) invert(100%);
+		}
 	}
 }
 
