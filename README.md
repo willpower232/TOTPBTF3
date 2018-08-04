@@ -1,5 +1,7 @@
 # TOTPBTF3
 
+[![Build Status](https://travis-ci.com/willpower232/TOTPBTF3.svg?branch=master)](https://travis-ci.com/willpower232/TOTPBTF3)
+
 This is me learning Laravel with an app I've wanted to make for a while.
 
 I like TOTP 2 factor but what I don't like is not having folders in Google Authenticator and I'm getting bored of scrolling.
