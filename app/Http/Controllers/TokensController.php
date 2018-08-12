@@ -110,7 +110,7 @@ class TokensController extends Controller
             'user_id' => auth()->user()->id,
             'path' => Token::formatPath(request('path')),
             'title' => request('title'),
-            'secret' => Encryption::encrypt(request('secret')),
+            'secret' => Encryption::encrypt(trim(str_replace(' ', '', request('secret')))),
         ));
 
         return redirect('/codes' . $token->path);
