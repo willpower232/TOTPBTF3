@@ -106,6 +106,12 @@ class TokensController extends Controller
     // add new token
     public function store()
     {
+        $this->validate(request(), array(
+            'path' => 'required',
+            'title' => 'required',
+            'secret' => 'required',
+        ));
+
         $token = Token::create(array(
             'user_id' => auth()->user()->id,
             'path' => Token::formatPath(request('path')),
@@ -134,6 +140,11 @@ class TokensController extends Controller
     // update token
     public function update(Token $token)
     {
+        $this->validate(request(), array(
+            'path' => 'required',
+            'title' => 'required',
+        ));
+
         $token->update(request(array('path', 'title')));
 
         return redirect('/codes' . $token->path);
