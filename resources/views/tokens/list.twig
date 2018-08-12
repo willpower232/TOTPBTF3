@@ -10,9 +10,14 @@
 
 	<ul class="folderlist{% if folders | length < 3 %} bigger{% endif %}">
 		{% for folder in folders %}
+			{% set alt = folder.folder|slice(path|length) %}
 			<li>
 				<a href="/codes{{ folder.folder }}">
-					<img src="{% if folder.image %}/{{ folder.image }}{% endif %}" alt="{{ folder.folder|slice(path|length) }}" />
+					{% if folder.image %}
+						<img src="/{{ folder.image }}" alt="{{ alt }}" />
+					{% else %}
+						<span class="replaced-image">{{ alt }}</span>
+					{% endif %}
 				</a>
 			</li>
 		{% endfor %}
