@@ -41,3 +41,7 @@ Obviously the security of your code and database is down to you but as the encry
 You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP token for a Github account belonging to Contoso, you could upload `public/img/contoso.png` and `public/img/contoso/github.png` and they would appear automatically in the list.
 
 Finding the right icons can be tricky but I've found most icons I've needed for this can be found at [edent/SuperTinyIcons](https://github.com/edent/SuperTinyIcons) and they come in small SVG files for optimum performance.
+
+## Service Worker
+
+Using [Google Workbox](https://developers.google.com/web/tools/workbox/modules/workbox-cli) there is a small service worker which is the missing step required to make this site installable on Android using Chromes "Add To Home screen" feature. Unfortunately this app cannot work offline but at least it can integrate with your Android mobile device.

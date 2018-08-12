@@ -49,4 +49,10 @@
 			xhr.send(data);
 		});
 	}
+
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', function() {
+			navigator.serviceWorker.register('js/service-worker.js');
+		});
+	}
 })();
