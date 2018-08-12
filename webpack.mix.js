@@ -14,7 +14,7 @@ let mix = require('laravel-mix');
 // using scripts instead of js to avoid webpack bloating plain js - must specify full path to output file
 mix.scripts('resources/assets/js/app.js', 'public/js/app.js');
 
-mix.scripts('resources/assets/js/service-worker.js', 'public/js/service-worker.js'); 
+mix.scripts('resources/assets/js/service-worker.js', 'public/service-worker.js'); 
 
 // standard scss compile
 mix.sass('resources/assets/sass/app.scss', 'public/css').options({
