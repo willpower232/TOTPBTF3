@@ -31,7 +31,7 @@ header {
 	background:$header;border-width:0 0 4px;display:flex;justify-content:space-around;padding:1em;
 
 	& + main {
-		min-height:calc(100vh - 4em - 4px - 2em - 2px);padding:1em;
+		min-height:calc(100vh - 4em - 4px - 2em - 2px);padding:1em 1em 5em;
 	}
 
 	a {
