@@ -1,6 +1,9 @@
 (function() {
 	if (typeof window.refreshat !== 'undefined') {
 		var loop = setInterval(function() {
+			if ((timer = document.querySelector('.a-timer'))) {
+				timer.style.setProperty('--progress', Math.floor(((30 - (window.refreshat - (Date.now() / 1000))) / 30) * 100));
+			}
 			if (window.refreshat < (Date.now() / 1000)) {
 				// now is the time, stop ticking
 				clearInterval(loop);

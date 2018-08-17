@@ -152,6 +152,27 @@ dt {
 	}
 }
 
+.a-timer {
+	--progress: 0;
+
+	bottom:1em;height:50px;left:1em;position:absolute;width:35px;
+	&:before,&:after {
+		content:'';left:5%;position:absolute;right:5%;z-index:1;
+	}
+
+	&:before {
+		background:$text;bottom:50%;height:calc((100 - var(--progress)) * 0.5%);
+	}
+
+	&:after {
+		background:$bigbackground;bottom:0;height:calc(var(--progress) * 0.5%);
+	}
+
+	.hourglass {
+		background:url('/hollow_hourglass.svg');height:100%;position:absolute;width:100%;z-index:2;
+	}
+}
+
 .export {
 	margin-top:2em;
 
