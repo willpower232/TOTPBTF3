@@ -24,14 +24,14 @@ body {
 }
 
 header,footer {
-	border:solid $border;line-height:2em;
+	border:solid $border;line-height:2rem;
 }
 
 header {
-	background:$header;border-width:0 0 4px;display:flex;justify-content:space-around;padding:1em;
+	background:$header;border-width:0 0 4px;display:flex;justify-content:space-around;padding:1rem;
 
 	& + main {
-		min-height:calc(100vh - 4em - 4px - 2em - 2px);padding:1em 1em 5em;
+		min-height:calc(100vh - 4rem - 4px - 2rem - 2px);padding:1rem 1rem 5rem;
 	}
 
 	a {
@@ -43,7 +43,7 @@ main {
 	box-sizing:border-box;min-height:100vh;position:relative;
 
 	* + * {
-		margin-top:1em;
+		margin-top:1rem;
 	}
 }
 
@@ -54,7 +54,7 @@ main {
 		margin:0;text-decoration:none;
 
 		&:before {
-			content:'/';float:left;margin:0 0.7em;text-decoration:none;
+			content:'/';float:left;margin:0 0.7rem;text-decoration:none;
 		}
 
 		&:first-child:before {
@@ -94,7 +94,7 @@ h1 {
 }
 
 input:not([type='checkbox']) {
-	background:none;border:1px solid $border;box-sizing:border-box;height:3em;padding:0 1em;width:100%;
+	background:none;border:1px solid $border;box-sizing:border-box;height:3rem;padding:0 1rem;width:100%;
 
 	&.is-invalid {
 		border-color:$redtext;
@@ -122,22 +122,22 @@ input:not([type='checkbox']) {
 }
 
 button,.button {
-	background:$header;border:1px solid $border;cursor:pointer;height:3em;margin-top:2em;text-align:center;width:100%;
+	background:$header;border:1px solid $border;cursor:pointer;height:3rem;margin-top:2rem;text-align:center;width:100%;
 
 	&.floating {
-		margin-left:calc(99% - 5em);margin-top:0;position:fixed;top:calc(100vh - 4px - 6em);width:3em;
+		margin-left:calc(99% - 5rem);margin-top:0;position:fixed;top:calc(100vh - 2px - 6rem);
 		@media (min-width:600px) {
-			margin-left:calc(568px - 3em - 2px);
+			margin-left:calc(568px - 3rem);
 		}
 	}
 }
 
 a.button {
-	display:block;line-height:3em;text-decoration:none;
+	display:block;line-height:3rem;text-decoration:none;
 }
 
 dt {
-	font-weight:bold;margin-top:2em;
+	font-weight:bold;margin-top:2rem;
 }
 
 .text-center {
@@ -145,17 +145,18 @@ dt {
 }
 
 .a-code {
-	font-size:16vw;letter-spacing:0.3em;margin-top:2em;text-indent:0.3em;
+	// leave spacing and indenting as ems
+	font-size:16vw;letter-spacing:0.3em;margin-top:2rem;text-indent:0.3em;
 
 	@media (min-width:500px) {
-		font-size:5em;
+		font-size:5rem;
 	}
 }
 
 .a-timer {
 	--progress: 0;
 
-	bottom:1em;height:50px;left:1em;position:absolute;width:35px;
+	bottom:1rem;height:3rem;left:1rem;position:absolute;width:35px;
 	&:before,&:after {
 		content:'';left:5%;position:absolute;right:5%;z-index:1;
 	}
@@ -174,7 +175,7 @@ dt {
 }
 
 .export {
-	margin-top:2em;
+	margin-top:2rem;
 
 	svg {
 		display:block;max-width:100%;margin:0 auto;
