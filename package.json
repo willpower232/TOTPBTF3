@@ -20,6 +20,7 @@
         "vue": "^2.5.7"
     },
     "devDependencies": {
+        "cross-env": "^5.1",
         "workbox-cli": "3.4.1",
         "laravel-mix": "^2.0"
     }
