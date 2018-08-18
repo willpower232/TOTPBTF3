@@ -1,19 +1,24 @@
 (function() {
 	if (typeof window.refreshat !== 'undefined') {
-		var loop = setInterval(function() {
-			if ((timer = document.querySelector('.a-timer'))) {
-				timer.style.setProperty('--progress', Math.floor(((30 - (window.refreshat - (Date.now() / 1000))) / 30) * 100));
-			}
-			if (window.refreshat < (Date.now() / 1000)) {
-				// now is the time, stop ticking
-				clearInterval(loop);
+		var timer = document.querySelector('.a-timer'),
+			loop = setInterval(function() {
+				var progress = Math.floor(((30 - (window.refreshat - (Date.now() / 1000))) / 30) * 100);
 
-				// bump the refresh into the future to avoid double refresh
-				setTimeout(function() {
-					window.location.reload();
-				}, 500);
-			}
-		}, 1000);
+				if (progress >= 100) {
+					timer.style.opacity = 0;
+
+					// now is the time, stop ticking
+					clearInterval(loop);
+
+					// bump the refresh into the future to avoid double refresh
+					setTimeout(function() {
+						window.location.reload();
+					}, 100);
+				} else if (timer) {
+					timer.style.setProperty('--progress', progress);
+					timer.style.opacity = 1;
+				}
+			}, 1000);
 	}
 
 	if ((toggle = document.querySelector('input[name="light_mode"]'))) {

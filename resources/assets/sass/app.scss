@@ -156,7 +156,7 @@ dt {
 .a-timer {
 	--progress: 0;
 
-	bottom:1rem;height:3rem;left:1rem;position:absolute;width:35px;
+	bottom:1rem;height:3rem;left:1rem;opacity:0;padding-right:calc(0.6667 * 3rem);position:absolute;transition:opacity 0.4s;width:0;
 	&:before,&:after {
 		content:'';left:5%;position:absolute;right:5%;z-index:1;
 	}
