@@ -58,6 +58,25 @@
 		});
 	}
 
+	if ('clipboard' in navigator && (copybutton = document.querySelector('.js-copy'))) {
+		copybutton.classList.add('enabled');
+
+		copybutton.addEventListener('click', function(ev) {
+			var text = document.querySelector(ev.target.dataset.copies).innerText;
+
+			navigator.clipboard.writeText(text).then(function() {
+				copybutton.classList.add('success');
+			}).catch(function(err) {
+				copybutton.classList.add('failure');
+				console.log(err);
+			}).finally(function() {
+				setTimeout(function() {
+					copybutton.classList.remove('success', 'failure');
+				}, 800);
+			});
+		});
+	}
+
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('/service-worker.js');
 	}

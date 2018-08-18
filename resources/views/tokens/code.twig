@@ -8,6 +8,8 @@
 
 	<p class="text-center a-code">{{ token.getTOTPCode() }}</p>
 
+	<button class="center js-copy" data-copies=".a-code">&#128203;</button>
+
 	<div class="a-timer"><div class="hourglass"></div></div>
 
 	<a class="button floating" href="/tokens/{{ token.id }}">&#128065;</a>

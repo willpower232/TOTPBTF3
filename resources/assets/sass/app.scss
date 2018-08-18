@@ -122,13 +122,21 @@ input:not([type='checkbox']) {
 }
 
 button,.button {
-	background:$header;border:1px solid $border;cursor:pointer;height:3rem;margin-top:2rem;text-align:center;width:100%;
+	background:$header;border:1px solid $border;box-sizing:border-box;cursor:pointer;height:3rem;margin-top:2rem;text-align:center;width:100%;
+
+	&.floating,&.center {
+		width:3rem;
+	}
 
 	&.floating {
 		margin-left:calc(99% - 5rem);margin-top:0;position:fixed;top:calc(100vh - 2px - 6rem);
 		@media (min-width:600px) {
 			margin-left:calc(568px - 3rem);
 		}
+	}
+
+	&.center {
+		bottom:1rem;left:calc(50% - 1.5rem);position:absolute;
 	}
 }
 
@@ -171,6 +179,22 @@ dt {
 
 	.hourglass {
 		background:url('/hollow_hourglass.svg');height:100%;position:absolute;width:100%;z-index:2;
+	}
+}
+
+.js-copy {
+	opacity:0;transition:all 0.4s;
+
+	&.enabled {
+		opacity:1;
+	}
+
+	&.success {
+		background-color:$greenback;
+	}
+
+	&.failure {
+		background-color:$redback;
 	}
 }
 
