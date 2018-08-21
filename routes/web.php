@@ -21,6 +21,11 @@ Route::get('/export/{path?}', 'TokensController@export')->where('path', '(.*)');
 Route::get('/import', 'TokensController@create');
 Route::post('/tokens', 'TokensController@store');
 
+Route::bind('token', function($tokenid) {
+	return App\Models\Token::where('user_id', auth()->user()->id)
+		->findOrFail($tokenid);
+});
+
 Route::get('/tokens/{token}', 'TokensController@show');
 Route::get('/tokens/{token}/edit', 'TokensController@edit');
 Route::post('/tokens/{token}', 'TokensController@update');
