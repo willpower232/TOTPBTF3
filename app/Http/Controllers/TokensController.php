@@ -13,6 +13,28 @@ class TokensController extends Controller
     }
 
     /**
+     * Abstracted function to find the icon for a given path.
+     *
+     * @param string $path the path from the uri or the token
+     *
+     * @return string|boolean the path to the image or false for no image
+     */
+    private function getImageForFolderOrToken($path = '')
+    {
+        // paths might have a trailing slash which wouldn't work well with an extension
+        $path = rtrim($path, '/');
+
+        foreach (array('png', 'svg') as $ext) {
+            $image = 'img' . strtolower($path) . '.' . $ext;
+            if (file_exists(public_path($image))) {
+                return $image;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Abstracted query to return either the folder details or a token to show.
      *
      * @param string $path the folder of a token, expected to be formatted by the function from the Token model
@@ -37,12 +59,7 @@ class TokensController extends Controller
         }
 
         $folders = array_map(function($folder) {
-            foreach (array('png', 'svg') as $ext) {
-                $image = 'img' . strtolower($folder['folder']) . '.' . $ext;
-                if (file_exists(public_path($image))) {
-                    $folder['image'] = $image;
-                }
-            }
+            $folder['image'] = $this->getImageForFolderOrToken($folder['folder']);
 
             return $folder;
         }, $folders);
