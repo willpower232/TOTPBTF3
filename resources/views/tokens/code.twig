@@ -4,7 +4,13 @@
 	{% set breadcrumbs = token.path|split('/') %}
 	{% include 'partials/breadcrumbs.twig' %}
 
-	<h1>{{ token.title }}</h1>
+	<hgroup class="a-code-header">
+		{% if image %}
+			<img class="a-code-img" src="/{{ image }}" />
+		{% endif %}
+
+		<h1>{{ token.title }}</h1>
+	</hgroup>
 
 	<p class="text-center a-code">{{ token.getTOTPCode() }}</p>
 

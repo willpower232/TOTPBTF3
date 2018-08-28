@@ -148,6 +148,26 @@ dt {
 	font-weight:bold;margin-top:2rem;
 }
 
+.a-code-header {
+	align-items:center;display:flex;flex-direction:row-reverse;justify-content:space-between;
+
+	> * {
+		margin:0;
+	}
+
+	img {
+		max-height:60px;max-width:30%;
+	}
+
+	h1 {
+		line-height:60px;
+
+		&:only-child {
+			flex-grow:1; // fill the space to cancel out the reversed row
+		}
+	}
+}
+
 .text-center {
 	text-align:center;
 }
