@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -57,6 +58,11 @@ class Handler extends ExceptionHandler
                 // not found
                 case '404':
                     return \Response::view('errors/404', array(), 404);
+                    break;
+
+                // method not allowed
+                case '405': // $exception instanceof MethodNotAllowedHttpException
+                    return \Response::view('errors/405', array(), 405);
                     break;
 
                 // internal error
