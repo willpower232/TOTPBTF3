@@ -167,4 +167,23 @@ class TokensController extends Controller
 
         return redirect('/codes' . $token->path);
     }
+
+    // GET /tokens/{token}/delete
+    // delete token form
+    public function delete(Token $token)
+    {
+        return view('tokens/delete')->with(array(
+            'image' => $this->getImageForFolderOrToken($token->path),
+            'token' => $token,
+        ));
+    }
+
+    // DELETE /tokens/{token}/delete
+    // remove token from database
+    public function destroy(Token $token)
+    {
+        $token->delete();
+
+        return redirect('/codes');
+    }
 }

@@ -28,6 +28,8 @@ Route::bind('token', function($tokenid) {
 
 Route::get('/tokens/{token}', 'TokensController@show');
 Route::get('/tokens/{token}/edit', 'TokensController@edit');
+Route::get('/tokens/{token}/delete', 'TokensController@delete');
+Route::delete('/tokens/{token}/delete', 'TokensController@destroy');
 Route::post('/tokens/{token}', 'TokensController@update');
 
 Route::get('/login', 'SessionsController@create')->name('login');
