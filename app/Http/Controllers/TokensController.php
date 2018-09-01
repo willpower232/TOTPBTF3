@@ -165,12 +165,23 @@ class TokensController extends Controller
             }
         }
 
-        $token = Token::create(array(
+        $token = new Token(array(
             'user_id' => auth()->user()->id,
             'path' => Token::formatPath(request('path')),
             'title' => request('title'),
             'secret' => Encryption::encrypt($secret),
         ));
+
+        try {
+            $test = $token->getTOTPCode();
+        }
+        catch (\Exception $e) {
+            return back()->withErrors(array(
+                'secret' => 'Invalid secret was entered',
+            ));
+        }
+
+        $token->save();
 
         return redirect('/codes' . $token->path);
     }
