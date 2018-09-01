@@ -154,11 +154,22 @@ class TokensController extends Controller
             'secret' => 'required',
         ));
 
+        $secret = strtoupper(trim(str_replace(' ', '', request('secret'))));
+
+        // if the secret starts with the expected TOTP URL scheme and has a query string,
+        // we'll try to extract the actual secret
+        if (strpos($secret, 'OPTAUTH://') === 0 && $querystring = parse_url($secret, PHP_URL_QUERY)) {
+            parse_str($querystring, $explodedquerystring);
+            if (array_key_exists('SECRET', $explodedquerystring)) {
+                $secret = $explodedquerystring['SECRET'];
+            }
+        }
+
         $token = Token::create(array(
             'user_id' => auth()->user()->id,
             'path' => Token::formatPath(request('path')),
             'title' => request('title'),
-            'secret' => Encryption::encrypt(strtoupper(trim(str_replace(' ', '', request('secret'))))),
+            'secret' => Encryption::encrypt($secret),
         ));
 
         return redirect('/codes' . $token->path);

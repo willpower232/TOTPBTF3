@@ -32,7 +32,7 @@
 
 {% if not token %}
 		<div>
-			<label for="f_secret">Secret (spaces will be filtered out on save)</label>
+			<label for="f_secret">Secret</label>
 
 			<input id="f_secret" type="text" class="{{ errors.has('secret') ? ' is-invalid' }}" name="secret" value="{{ old('secret') }}" required />
 
@@ -41,6 +41,12 @@
 					<strong>{{ errors.first('secret') }}</strong>
 				</span>
 			{% endif %}
+
+			<p>You can obtain a secret in a couple of ways. All spaces will be removed.</p>
+			<ul>
+				<li>Asking your provider for the code "to enter manually"</li>
+				<li>Copying and pasting the "otpauth://" URL from a barcode reader into this form. The secret will be extracted and other values discarded.</li>
+			</ul>
 		</div>
 {% endif %}
 
