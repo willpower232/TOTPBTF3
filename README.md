@@ -46,6 +46,10 @@ I've added a command to export your MySQL database to SQLite which means you can
 
 I've changed `app/config/database.php` so it will detect your sqlite file and use it instead of the mysql connection. You can also enable read only mode to guarantee you don't inadvertently add a code or make a change to the wrong instance of this app.
 
+## Barcodes
+
+I came up with too many negatives whilst planning out how to handle importing from QR codes so at the minute I'm recommending using a separate app of your choice (I use [Barcode Scanner](https://play.google.com/store/apps/details?id=com.google.zxing.client.android)) and either manually entering the secret or copying and pasting the whole `otpauth://` URL into the app.
+
 ## Images
 
 You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP token for a Github account belonging to Contoso, you could upload `public/img/contoso.png` and `public/img/contoso/github.png` and they would appear automatically in the list.
