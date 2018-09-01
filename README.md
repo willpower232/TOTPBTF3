@@ -36,6 +36,16 @@ Don't forget to set an `ENCRYPTION_SALT` in `.env` and never change it as it wou
 
 Obviously the security of your code and database is down to you but as the encryption key is based on the users password, it should be pretty safe most of the time.
 
+### A note on redundancy
+
+With your two factor authentication kept on your server or cloud, this creates a single point of failure which can cut you off from your codes and most likely your ability to fix the failure that keeps you from your codes.
+
+I've added a command to export your MySQL database to SQLite which means you can host this app on a redundant server or local computer so you're not completely cut off from your codes.
+
+`php artisan makesqlitebackup`
+
+I've changed `app/config/database.php` so it will detect your sqlite file and use it instead of the mysql connection. You can also enable read only mode to guarantee you don't inadvertently add a code or make a change to the wrong instance of this app.
+
 ## Images
 
 You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP token for a Github account belonging to Contoso, you could upload `public/img/contoso.png` and `public/img/contoso/github.png` and they would appear automatically in the list.
