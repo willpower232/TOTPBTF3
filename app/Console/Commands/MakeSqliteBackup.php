@@ -23,9 +23,12 @@ class MakeSqliteBackup extends Command
      */
     public function handle()
     {
-        unlink(database_path(env('DB_SQLITE_DATABASE', 'database.sqlite')));
+        $databasefile = database_path(env('DB_SQLITE_DATABASE', 'database.sqlite'));
+        if (file_exists($databasefile)) {
+            unlink($databasefile);
+        }
 
-        $process = new Process(sprintf('sh mysql2sqlite.sh -h %s -u %s -p%s %s | sqlite3 %s', env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'), database_path(env('DB_SQLITE_DATABASE', 'database.sqlite'))));
+        $process = new Process(sprintf('sh mysql2sqlite.sh -h %s -u %s -p%s %s | sqlite3 %s', env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'), $databasefile));
 
         // $process->start();
 
