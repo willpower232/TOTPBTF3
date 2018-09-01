@@ -61,12 +61,20 @@ class SessionsController extends Controller
     // GET /profile/edit
     public function edit()
     {
+        if (env('READ_ONLY')) {
+            abort(404);
+        }
+
         return view('sessions/form')->with('user', auth()->user());
     }
 
     // POST /profile
     public function update()
     {
+        if (env('READ_ONLY')) {
+            abort(404);
+        }
+
         $this->validate(request(), array(
             'currentpassword' => 'required|string',
             'name' => 'required|string',

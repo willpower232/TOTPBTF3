@@ -19,6 +19,8 @@
 		</dd>
 	</dl>
 
-	<a class="button blueback" href="/profile/edit">Edit</a>
+	{% if not read_only %}
+		<a class="button blueback" href="/profile/edit">Edit</a>
+	{% endif %}
 
 {% endblock %}

@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('global', function($view) {
             $view->with('light_mode', ($user = auth()->user()) ? $user->light_mode : false);
+            $view->with('read_only', (env('READ_ONLY', false)));
         });
 
         view()->composer('partials/header', function($view) {

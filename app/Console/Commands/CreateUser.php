@@ -21,6 +21,10 @@ class CreateUser extends Command
      */
     public function handle()
     {
+        if (env('READ_ONLY')) {
+            throw new \RuntimeException('This system is in read only mode and cannot be altered.');
+        }
+
         $name = $this->ask('Users full name?');
 
         $email = $this->ask('Users email address?');

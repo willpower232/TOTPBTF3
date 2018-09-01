@@ -133,6 +133,10 @@ class TokensController extends Controller
     // show import form
     public function create()
     {
+        if (env('READ_ONLY')) {
+            abort(404);
+        }
+
         return view('tokens/form');
     }
 
@@ -140,6 +144,10 @@ class TokensController extends Controller
     // add new token
     public function store()
     {
+        if (env('READ_ONLY')) {
+            abort(404);
+        }
+
         $this->validate(request(), array(
             'path' => 'required',
             'title' => 'required',
@@ -167,6 +175,10 @@ class TokensController extends Controller
     // show token edit form
     public function edit(Token $token)
     {
+        if (env('READ_ONLY')) {
+            abort(404);
+        }
+
         return view('tokens/form')->with(compact('token'));
     }
 
@@ -174,6 +186,10 @@ class TokensController extends Controller
     // update token
     public function update(Token $token)
     {
+        if (env('READ_ONLY')) {
+            abort(404);
+        }
+
         $this->validate(request(), array(
             'path' => 'required',
             'title' => 'required',
@@ -188,6 +204,10 @@ class TokensController extends Controller
     // delete token form
     public function delete(Token $token)
     {
+        if (env('READ_ONLY')) {
+            abort(404);
+        }
+
         return view('tokens/delete')->with(array(
             'image' => $this->getImageForFolderOrToken($token->path),
             'token' => $token,
@@ -198,6 +218,10 @@ class TokensController extends Controller
     // remove token from database
     public function destroy(Token $token)
     {
+        if (env('READ_ONLY')) {
+            abort(404);
+        }
+
         $token->delete();
 
         return redirect('/codes');

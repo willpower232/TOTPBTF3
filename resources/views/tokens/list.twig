@@ -23,6 +23,8 @@
 		{% endfor %}
 	</ul>
 
-	<a class="button floating blueback" href="/import">&#43;</a>
+	{% if not read_only %}
+		<a class="button floating blueback" href="/import">&#43;</a>
+	{% endif %}
 
 {% endblock %}
