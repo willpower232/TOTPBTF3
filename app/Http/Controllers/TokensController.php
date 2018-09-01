@@ -43,12 +43,28 @@ class TokensController extends Controller
      */
     private function getFoldersOrTokensFromPath($path = '/')
     {
-        $folders = Token::selectRaw('SUBSTRING_INDEX(path, "/", ' . (substr_count($path, '/') + 1) . ') AS folder')
+        $index = substr_count($path, '/') + 1;
+        $sql = (config('database.default') == 'sqlite') ? 'path AS folder' : 'SUBSTRING_INDEX(path, "/", ' . $index . ') AS folder';
+
+        $folders = Token::selectRaw($sql)
             ->distinct()
             ->where('user_id', auth()->user()->id)
             ->where('path', 'LIKE', $path . '%')
             ->orderBy('folder', 'ASC')
             ->get()->toArray();
+
+        // sqlite has no equivalent of SUBSTRING_INDEX so we have to do this bit manually
+        if (config('database.default') == 'sqlite') {
+            // shorten all the folders to the desired sections
+            $folders = array_map(function($folder) use($index) {
+                $folder['folder'] = implode('/', array_slice(explode('/', $folder['folder']), 0, $index));
+
+                return $folder;
+            }, $folders);
+
+            // filter out duplicate folders
+            $folders = array_intersect_key($folders, array_unique(array_map('serialize', $folders)));
+        }
 
         // if there is only one folder, make sure it matches the path
         // so this doesn't break it if theres only one token in the app
