@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => (file_exists(database_path(env('DB_SQLITE_DATABASE', 'database.sqlite')))) ? 'sqlite' : 'mysql',
 
     /*
     |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => database_path(env('DB_SQLITE_DATABASE', 'database.sqlite')),
             'prefix' => '',
         ],
 
