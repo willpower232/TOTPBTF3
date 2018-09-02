@@ -158,7 +158,7 @@ class TokensController extends Controller
 
         // if the secret starts with the expected TOTP URL scheme and has a query string,
         // we'll try to extract the actual secret
-        if (strpos($secret, 'OPTAUTH://') === 0 && $querystring = parse_url($secret, PHP_URL_QUERY)) {
+        if (strpos($secret, 'OTPAUTH://') === 0 && $querystring = parse_url($secret, PHP_URL_QUERY)) {
             parse_str($querystring, $explodedquerystring);
             if (array_key_exists('SECRET', $explodedquerystring)) {
                 $secret = $explodedquerystring['SECRET'];
