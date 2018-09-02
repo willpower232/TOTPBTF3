@@ -176,7 +176,7 @@ class TokensController extends Controller
             $test = $token->getTOTPCode();
         }
         catch (\Exception $e) {
-            return back()->withErrors(array(
+            return back()->withInput(request()->all)->withErrors(array(
                 'secret' => 'Invalid secret was entered',
             ));
         }

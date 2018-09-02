@@ -35,7 +35,7 @@ class SessionsController extends Controller
         ));
 
         if (! auth()->attempt(request(array('email', 'password')))) {
-            return back()->with('message', 'Unable to match credentials');
+            return back()->withInput(request(array('email')))->with('message', 'Unable to match credentials');
         }
 
         session()->put('encryptionkey', Encryption::makeKey(request('password')));
