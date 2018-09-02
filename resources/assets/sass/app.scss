@@ -51,13 +51,22 @@ main {
 }
 
 .breadcrumbs {
-	display:flex;
+	// relative positioning helps calculate responsiveness
+	display:flex;position:relative;
+
+	&.overflowed {
+		justify-content:flex-end;overflow:hidden;
+
+		&:after {
+			background:linear-gradient(to right, $mainbackground 0%, transparent 100%);bottom:0;content:'';left:0;position:absolute;top:0;width:5%;
+		}
+	}
 
 	a {
 		margin:0;text-decoration:none;
 
 		&:before {
-			content:'/';float:left;margin:0 0.7rem;text-decoration:none;
+			content:'/';margin:0 0.7rem;text-decoration:none;
 		}
 
 		&:first-child:before {

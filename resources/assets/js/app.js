@@ -77,6 +77,24 @@
 		});
 	}
 
+	if ((breadcrumbs = document.querySelector('.breadcrumbs'))) {
+		window.addEventListener('resize', function overflower() {
+			var first = breadcrumbs.firstElementChild,
+				last = breadcrumbs.lastElementChild,
+				width = breadcrumbs.offsetWidth;
+
+			if (last.offsetLeft + last.offsetWidth > width) {
+				breadcrumbs.classList.add('overflowed');
+			} else if (first.offsetLeft > 0) {
+				breadcrumbs.classList.remove('overflowed');
+			}
+
+			// return function so we can complete the event listener
+			// and run the function as we add it to the event
+			return overflower;
+		}());
+	}
+
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('/service-worker.js');
 	}
