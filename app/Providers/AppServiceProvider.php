@@ -33,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // https://stackoverflow.com/a/30198781
+        $this->app->bind('path.public', function() {
+            return base_path('public_html');
+        });
     }
 }

@@ -16,6 +16,8 @@ My entire knowledge of Laravel is based on https://laracasts.com/series/laravel-
 
 - committing compiled assets as node is a continual disappointment in my life
 
+- changed public directory to public_html because I prefer that directory even if mix hates me forever
+
 ## Dependencies
 
 This has only been tested on PHP 7.1 so far and relies on your system having access to the `openssl_*` functions as well as the database server of your choice, thanks to Laravel.
