@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Encryption;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class SessionsController extends Controller
 {
@@ -111,6 +112,9 @@ class SessionsController extends Controller
                 $token->secret = Encryption::encrypt(Encryption::decrypt($token->secret), $newencryptionkey);
                 $token->save();
             }
+
+            // just in case there were sessions from before you had this extra security enabled
+            Auth::logoutOtherDevices(request('newpassword'));
 
             session()->flush(); // remove encryption key
             auth()->logout();
