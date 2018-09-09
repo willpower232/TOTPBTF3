@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# downloaded from https://gist.github.com/esperlu/943776#file-mysql2sqlite-sh on 2018-09-01
+# downloaded from https://gist.github.com/esperlu/943776#file-mysql2sqlite-sh on 2018-09-01 and later customised
 
 # Converts a mysqldump file into a Sqlite 3 compatible file. It also extracts the MySQL `KEY xxxxx` from the
 # CREATE block and create them in separate commands _after_ all the INSERTs.
@@ -64,6 +64,13 @@ inTrigger != 0 { print; next }
 
 # Get rid of field lengths in KEY lines
 / KEY/ { gsub(/\([0-9]+\)/, "") }
+
+# just for TOTPBTF3 as our schema is predictable (i.e. YMMV with other database schemas)
+# mark ids as nullable and type integer for auto increment effect
+/^  "id"/ {
+	gsub(/NOT NULL/, "")
+	gsub(/int\(10\)/, "INTEGER")
+}
 
 # Print all fields definition lines except the `KEY` lines.
 /^  / && !/^(  KEY|\);)/ {
