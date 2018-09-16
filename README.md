@@ -28,6 +28,8 @@ The views are written in Twig using [rcrowe/twigbridge](https://github.com/rcrow
 
 Exporting the secrets via QR code uses [bacon/baconqrcode](https://github.com/bacon/baconqrcode) but obviously this is optional and shouldn't be difficult to remove.
 
+I've used the `fetch()` api as the browsers this ends up being used with should have it by now but if you have problems with toggling Light Mode then you should add the [GitHub Fetch Polyfill](https://github.com/github/fetch).
+
 ## How to use
 
 After cloning and migrating, run this command to create your user.

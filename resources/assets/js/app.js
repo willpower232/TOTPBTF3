@@ -21,41 +21,46 @@
 			}, 1000);
 	}
 
-	if ((toggle = document.querySelector('input[name="light_mode"]'))) {
+	if ((toggle = document.querySelector('input[name="light_mode"]')) && 'fetch' in window) {
 		toggle.removeAttribute('disabled');
 		toggle.addEventListener('change', function(ev) {
-			var xhr = new XMLHttpRequest(),
-				data = new FormData();
+			var data = new FormData();
 
 			data.append('light_mode', toggle.checked);
 
-			xhr.open('POST', '/api/profile/setLightMode');
-			xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-			xhr.setRequestHeader('Accept', 'application/json');
-
-			xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-
-			xhr.onload = function() {
-				var output = this.responseText;
-
-				if (this.status == 200) {
-					try {
-						output = JSON.parse(output);
-
-						if (output.current_state === true) {
-							document.body.parentNode.classList.add('inverted');
-						} else if (output.current_state === false) {
-							document.body.parentNode.classList.remove('inverted');
-						}
-					} catch (ex) {
-						alert('Not received JSON');
-					}
+			fetch('/api/profile/setLightMode', {
+				method: "POST",
+				body: data,
+				headers: {
+					'X-Requested-With': 'XMLHttpRequest',
+					'Accept': 'application/json',
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+				},
+				credentials: "same-origin"
+			}).then(function(response) {
+				if (response.ok) {
+					return response.json();
 				} else {
-					alert('Received: ' + this.status);
-				}
-			};
+					// alert non 2xx HTTP
+					alert('System error: received ' + response.status + ' ' + response.statusText);
 
-			xhr.send(data);
+					// revert toggle change for consistency
+					toggle.checked = !toggle.checked;
+				}
+			}).catch(function(error) {
+				// handle exception e.g. JSON syntax error
+				alert('System error: ' + error);
+
+				// revert toggle change for consistency
+				toggle.checked = !toggle.checked;
+			}).then(function(output) {
+				// if we've received JSON in HTTP 200 response, update the page
+				if (output.current_state === true) {
+					document.body.parentNode.classList.add('inverted');
+				} else if (output.current_state === false) {
+					document.body.parentNode.classList.remove('inverted');
+				}
+			});
 		});
 	}
 
