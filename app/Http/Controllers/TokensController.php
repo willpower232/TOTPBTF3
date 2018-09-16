@@ -44,12 +44,15 @@ class TokensController extends Controller
     private function getFoldersOrTokensFromPath($path = '/')
     {
         $index = substr_count($path, '/') + 1;
-        $sql = (config('database.default') == 'sqlite') ? 'path AS folder' : 'SUBSTRING_INDEX(path, "/", ' . $index . ') AS folder';
 
-        $folders = Token::selectRaw($sql)
+        $folders = (config('database.default') == 'sqlite') ? Token::select('path AS folder') : Token::selectRaw('SUBSTRING_INDEX(path, "/", ?) AS folder', array($index));
+
+        $concat = (config('database.default') == 'sqlite') ? '? || "%"' : 'CONCAT(? ,"%")';
+
+        $folders = $folders
             ->distinct()
             ->where('user_id', auth()->user()->id)
-            ->where('path', 'LIKE', $path . '%')
+            ->whereRaw('path LIKE ' . $concat, array($path))
             ->orderBy('folder', 'ASC')
             ->get()->toArray();
 
