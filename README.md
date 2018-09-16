@@ -62,4 +62,6 @@ Finding the right icons can be tricky but I've found most icons I've needed for 
 
 Using [Google Workbox](https://developers.google.com/web/tools/workbox/modules/workbox-cli) there is a small service worker which is the missing step required to make this site installable on Android using Chromes "Add To Home screen" feature. Unfortunately this app cannot work offline but at least it can integrate with your Android mobile device.
 
-For efficiency, you may wish the service worker to cache any additional images you have uploaded so you will need to run the following command: `node node_modules/workbox-cli/build/bin.js generateSW workbox-config.js`
+For efficiency, you may wish the service worker to cache any additional images you have uploaded so you will need to run the following command: `npm run workbox`.
+
+Fox maximum efficiency, the service worker will need to know there have been changes to the public files so the workflow would be `npm run prod && npm run workbox && npm run prod` to ensure both mix and workbox are aware of the changes. I have aliased this to `npm run prodworkbox` for brevity.
