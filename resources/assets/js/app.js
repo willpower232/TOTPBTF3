@@ -22,6 +22,7 @@
 	}
 
 	if ((toggle = document.querySelector('input[name="light_mode"]'))) {
+		toggle.removeAttribute('disabled');
 		toggle.addEventListener('change', function(ev) {
 			var xhr = new XMLHttpRequest(),
 				data = new FormData();
