@@ -45,9 +45,9 @@ class TokensController extends Controller
     {
         $index = substr_count($path, '/') + 1;
 
-        $folders = (config('database.default') == 'sqlite') ? Token::select('path AS folder') : Token::selectRaw('SUBSTRING_INDEX(path, "/", ?) AS folder', array($index));
+        $folders = (usingsqlite()) ? Token::select('path AS folder') : Token::selectRaw('SUBSTRING_INDEX(path, "/", ?) AS folder', array($index));
 
-        $concat = (config('database.default') == 'sqlite') ? '? || "%"' : 'CONCAT(? ,"%")';
+        $concat = (usingsqlite()) ? '? || "%"' : 'CONCAT(? ,"%")';
 
         $folders = $folders
             ->distinct()
@@ -57,7 +57,7 @@ class TokensController extends Controller
             ->get()->toArray();
 
         // sqlite has no equivalent of SUBSTRING_INDEX so we have to do this bit manually
-        if (config('database.default') == 'sqlite') {
+        if (usingsqlite()) {
             // shorten all the folders to the desired sections
             $folders = array_map(function($folder) use($index) {
                 $folder['folder'] = implode('/', array_slice(explode('/', $folder['folder']), 0, $index));
