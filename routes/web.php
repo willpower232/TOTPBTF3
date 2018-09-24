@@ -12,7 +12,7 @@
 */
 
 // no homepage so put to codes
-Route::redirect('/', '/codes', 301);
+Route::permanentRedirect('/', '/codes');
 
 // include slashes in the path
 Route::get('/codes/{path?}', 'TokensController@getCode')->where('path', '(.*)');
