@@ -6,10 +6,10 @@
 	<form method="POST" action="/login">
 		{{ csrf_field() }}
 
-		<div>
-			<label for="f_email">Email Address</label>
+		<div class="fieldwrapper">
+			<input id="f_email" type="email" class="{{ errors.has('email') ? ' is-invalid' }}" name="email" value="{{ old('email') }}" required autofocus placeholder />
 
-			<input id="f_email" type="email" class="{{ errors.has('email') ? ' is-invalid' }}" name="email" value="{{ old('email') }}" required autofocus />
+			<label for="f_email">Email Address</label>
 
 			{% if errors.has('email') %}
 				<span class="invalid-feedback">
@@ -18,10 +18,10 @@
 			{% endif %}
 		</div>
 
-		<div>
-			<label for="f_password">Password</label>
+		<div class="fieldwrapper">
+			<input id="f_password" type="password" class="{{ errors.has('password') ? ' is-invalid' }}" name="password" required placeholder />
 
-			<input id="f_password" type="password" class="{{ errors.has('password') ? ' is-invalid' }}" name="password" required />
+			<label for="f_password">Password</label>
 
 			{% if errors.has('password') %}
 				<span class="invalid-feedback">

@@ -6,10 +6,10 @@
 	<form method="POST" action="/tokens{% if token %}/{{ token.id }}{% endif %}">
 		{{ csrf_field() }}
 
-		<div>
-			<label for="f_path">Path</label>
+		<div class="fieldwrapper">
+			<input id="f_path" type="text" class="{{ errors.has('path') ? ' is-invalid' }}" name="path" value="{{ old('path', (token) ? token.path) }}" required autofocus placeholder />
 
-			<input id="f_path" type="text" class="{{ errors.has('path') ? ' is-invalid' }}" name="path" value="{{ old('path', (token) ? token.path) }}" required autofocus />
+			<label for="f_path">Path</label>
 
 			{% if errors.has('path') %}
 				<span class="invalid-feedback">
@@ -18,10 +18,10 @@
 			{% endif %}
 		</div>
 
-		<div>
-			<label for="f_title">Title</label>
+		<div class="fieldwrapper">
+			<input id="f_title" type="text" class="{{ errors.has('title') ? ' is-invalid' }}" name="title" value="{{ old('title', (token) ? token.title) }}" required placeholder />
 
-			<input id="f_title" type="text" class="{{ errors.has('title') ? ' is-invalid' }}" name="title" value="{{ old('title', (token) ? token.title) }}" required />
+			<label for="f_title">Title</label>
 
 			{% if errors.has('title') %}
 				<span class="invalid-feedback">
@@ -31,10 +31,10 @@
 		</div>
 
 {% if not token %}
-		<div>
-			<label for="f_secret">Secret</label>
+		<div class="fieldwrapper">
+			<input id="f_secret" type="text" class="{{ errors.has('secret') ? ' is-invalid' }}" name="secret" value="{{ old('secret') }}" required placeholder />
 
-			<input id="f_secret" type="text" class="{{ errors.has('secret') ? ' is-invalid' }}" name="secret" value="{{ old('secret') }}" required />
+			<label for="f_secret">Secret</label>
 
 			{% if errors.has('secret') %}
 				<span class="invalid-feedback">

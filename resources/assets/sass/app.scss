@@ -114,7 +114,7 @@ h1 {
 }
 
 label {
-	font-weight:bold;
+	display:block;font-weight:bold;line-height:1em;
 }
 
 input:not([type='checkbox']) {
@@ -122,6 +122,25 @@ input:not([type='checkbox']) {
 
 	&.is-invalid {
 		border-color:$redtext;
+	}
+}
+
+.fieldwrapper {
+	position:relative;
+
+	input:first-child {
+		margin-top:2em;
+	}
+
+	input + label {
+		margin:0;position:absolute;top:0.5em;transition:all 0.3s;
+	}
+
+	// don't need to test support because invalid selector is skipped right
+	// also relies on placeholder attribute on input even if empty
+	// see also https://callmenick.com/dev/floated-labels-with-placeholder-shown/
+	input:placeholder-shown + label {
+		left:1rem;top:3em;
 	}
 }
 
