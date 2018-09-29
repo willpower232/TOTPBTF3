@@ -2,6 +2,12 @@
 
 return [
 
+    /* Custom config values for TOTPBTF3 */
+
+    'readonly' => env('READ_ONLY', false),
+
+    'encryptionsalt' => env('ENCRYPTION_SALT', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

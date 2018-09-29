@@ -21,7 +21,7 @@ class CreateUser extends Command
      */
     public function handle()
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             throw new \RuntimeException('This system is in read only mode and cannot be altered.');
         }
 

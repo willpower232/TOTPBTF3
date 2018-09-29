@@ -62,7 +62,7 @@ class SessionsController extends Controller
     // GET /profile/edit
     public function edit()
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             abort(404);
         }
 
@@ -72,7 +72,7 @@ class SessionsController extends Controller
     // POST /profile
     public function update()
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             abort(404);
         }
 

@@ -6,6 +6,7 @@ use App\Helpers\Encryption;
 
 class EncryptionTest extends TestCase
 {
+    private static $encryptionsalt = 'lsngmym1nd';
     private static $encryptionkey;
 
     /**
@@ -13,11 +14,24 @@ class EncryptionTest extends TestCase
      *
      * @return void
      */
-    public static function setUpBeforeClass()
-    { 
-        putenv('ENCRYPTION_SALT=lsngmym1nd');
+    public function setUp()
+    {
+        // alter env before running setup
+        putenv('ENCRYPTION_SALT=' . self::$encryptionsalt);
+
+        parent::setUp();
 
         self::$encryptionkey = Encryption::makeKey('wish somebody would');
+    }
+
+    /**
+     * Paranoically verify that the salt made it into the config.
+     *
+     * @return void
+     */
+    public function testConfirmSetup()
+    {
+        $this->assertEquals(config('app.encryptionsalt'), self::$encryptionsalt);
     }
 
     /**

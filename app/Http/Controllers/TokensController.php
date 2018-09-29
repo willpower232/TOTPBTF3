@@ -136,7 +136,7 @@ class TokensController extends Controller
     // show import form
     public function create()
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             abort(404);
         }
 
@@ -147,7 +147,7 @@ class TokensController extends Controller
     // add new token
     public function store()
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             abort(404);
         }
 
@@ -200,7 +200,7 @@ class TokensController extends Controller
     // show token edit form
     public function edit(Token $token)
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             abort(404);
         }
 
@@ -211,7 +211,7 @@ class TokensController extends Controller
     // update token
     public function update(Token $token)
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             abort(404);
         }
 
@@ -229,7 +229,7 @@ class TokensController extends Controller
     // delete token form
     public function delete(Token $token)
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             abort(404);
         }
 
@@ -243,7 +243,7 @@ class TokensController extends Controller
     // remove token from database
     public function destroy(Token $token)
     {
-        if (env('READ_ONLY')) {
+        if (config('app.readonly')) {
             abort(404);
         }
 

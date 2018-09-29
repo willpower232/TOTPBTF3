@@ -65,6 +65,6 @@ class Encryption
      */
     public static function makeKey($input)
     {
-        return hash('sha256', $input . env('ENCRYPTION_SALT', ''));
+        return hash('sha256', $input . config('app.encryptionsalt'));
     }
 }
