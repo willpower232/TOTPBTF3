@@ -39,3 +39,5 @@ Route::get('/logout', 'SessionsController@destroy');
 Route::get('/profile', 'SessionsController@show');
 Route::get('/profile/edit', 'SessionsController@edit');
 Route::post('/profile', 'SessionsController@update');
+
+Route::post('/api/profile/setLightMode', 'Api\SessionsController@setLightMode');

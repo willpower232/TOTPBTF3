@@ -18,6 +18,8 @@ My entire knowledge of Laravel is based on https://laracasts.com/series/laravel-
 
 - changed public directory to public_html because I prefer that directory even if mix hates me forever
 
+- integrated the api routes into the main web routes since the api is internal only and session authenticated
+
 ## Dependencies
 
 This has only been tested on PHP 7.1 so far and relies on your system having access to the `openssl_*` functions as well as the database server of your choice, thanks to Laravel.
