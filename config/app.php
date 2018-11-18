@@ -8,6 +8,8 @@ return [
 
     'encryptionsalt' => env('ENCRYPTION_SALT', ''),
 
+    'hashidssalt' => env('HASHIDS_SALT', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

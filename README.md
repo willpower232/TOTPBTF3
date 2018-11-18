@@ -32,6 +32,8 @@ Exporting the secrets via QR code uses [bacon/baconqrcode](https://github.com/ba
 
 I've used the `fetch()` api as the browsers this ends up being used with should have it by now but if you have problems with toggling Light Mode then you should add the [GitHub Fetch Polyfill](https://github.com/github/fetch).
 
+[ivanakimov/hashids.php](https://github.com/ivanakimov/hashids.php) is used to mask the database id of tokens for the administrative functions to prevent enumeration. You can also specify a salt for it if you wish which is recommended but not required.
+
 ## How to use
 
 After cloning and migrating, run this command to create your user.

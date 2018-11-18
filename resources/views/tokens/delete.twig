@@ -15,15 +15,15 @@
 	<p>Are you absolutely sure you wish to delete this token?</p>
 	<p>You will not be able to get it back and may lose access to the system it is for.</p>
 
-	<form method="post" action="/tokens/{{ token.id }}/delete">
+	<form method="post" action="/tokens/{{ token.id_hash }}/delete">
 		{{ csrf_field() }}
 		{{ method_field('delete') }}
 
 		<button type="submit" class="redback">Yes, delete this token</button>
 
-		<a class="button greenback" href="/tokens/{{ token.id }}">No, do not delete this token</a>
+		<a class="button greenback" href="/tokens/{{ token.id_hash }}">No, do not delete this token</a>
 	</form>
 
-	<a class="button floating" href="/tokens/{{ token.id }}">&#128065;</a>
+	<a class="button floating" href="/tokens/{{ token.id_hash }}">&#128065;</a>
 
 {% endblock %}

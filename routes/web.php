@@ -11,6 +11,9 @@
 |
 */
 
+use App\Models\Token;
+use App\Helpers\Hashids;
+
 // no homepage so put to codes
 Route::permanentRedirect('/', '/codes');
 
@@ -21,9 +24,9 @@ Route::get('/export/{path?}', 'TokensController@export')->where('path', '(.*)');
 Route::get('/import', 'TokensController@create');
 Route::post('/tokens', 'TokensController@store');
 
-Route::bind('token', function($tokenid) {
-	return App\Models\Token::where('user_id', auth()->user()->id)
-		->findOrFail($tokenid);
+Route::bind('token', function($tokenidhash) {
+	return Token::where('user_id', auth()->user()->id)
+		->findOrFail(Hashids::decode($tokenidhash));
 });
 
 Route::get('/tokens/{token}', 'TokensController@show');

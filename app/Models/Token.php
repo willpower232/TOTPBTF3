@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\Encryption;
+use App\Helpers\Hashids;
 use RobThree\Auth\TwoFactorAuth;
 
 use BaconQrCode\Writer;
@@ -15,6 +16,10 @@ use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 
 class Token extends Model
 {
+    protected $appends = array(
+        'id_hash',
+    );
+
     protected $fillable = array(
         'user_id',
         'path',
@@ -54,6 +59,16 @@ class Token extends Model
     public function getDecryptedSecret()
     {
         return Encryption::decrypt($this->secret);
+    }
+
+    /**
+     * Eloquent Accessor for Hashids encoded attribute
+     *
+     * @return string|null if the current object has an id, it will be returned hashed
+     */
+    public function getIdHashAttribute()
+    {
+        return ($this->id != '') ? Hashids::encode($this->id) : null;
     }
 
     /**
