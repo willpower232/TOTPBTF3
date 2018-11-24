@@ -14,10 +14,21 @@
 					// now is the time, stop ticking
 					clearInterval(loop);
 
-					// bump the refresh into the future to avoid double refresh
-					setTimeout(function() {
-						w.location.reload();
-					}, 100);
+					if (navigator.onLine) {
+						// bump the refresh into the future to avoid double refresh
+						setTimeout(function() {
+							w.location.reload();
+						}, 100);
+					} else {
+						if ((code = $('.a-code'))) {
+							code.innerText = 'offline please wait';
+							code.style.letterSpacing = ".1em";
+						}
+
+						w.addEventListener('online', function() {
+							w.location.reload();
+						});
+					}
 				} else if (timer) {
 					timer.style.setProperty('--progress', progress);
 					timer.style.opacity = 1;
