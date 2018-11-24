@@ -1,8 +1,12 @@
-(function() {
-	if (typeof window.refreshat !== 'undefined') {
-		var timer = document.querySelector('.a-timer'),
+(function(w, n, d) {
+	var $ = function(selector, context) {
+		return (context || d).querySelector(selector) || null;
+	};
+
+	if (typeof w.refreshat !== 'undefined') {
+		var timer = $('.a-timer'),
 			loop = setInterval(function() {
-				var progress = Math.floor(((30 - (window.refreshat - (Date.now() / 1000))) / 30) * 100);
+				var progress = Math.floor(((30 - (w.refreshat - (Date.now() / 1000))) / 30) * 100);
 
 				if (progress >= 100) {
 					timer.style.opacity = 0;
@@ -12,7 +16,7 @@
 
 					// bump the refresh into the future to avoid double refresh
 					setTimeout(function() {
-						window.location.reload();
+						w.location.reload();
 					}, 100);
 				} else if (timer) {
 					timer.style.setProperty('--progress', progress);
@@ -21,12 +25,12 @@
 			}, 1000);
 	}
 
-	if ((toggle = document.querySelector('input[name="light_mode"]')) && 'fetch' in window) {
-		toggle.removeAttribute('disabled');
-		toggle.addEventListener('change', function(ev) {
+	if ((tgl = $('input[name="light_mode"]')) && 'fetch' in w) {
+		tgl.removeAttribute('disabled');
+		tgl.addEventListener('change', function(ev) {
 			var data = new FormData();
 
-			data.append('light_mode', toggle.checked);
+			data.append('light_mode', tgl.checked);
 
 			fetch('/api/profile/setLightMode', {
 				method: "POST",
@@ -34,65 +38,65 @@
 				headers: {
 					'X-Requested-With': 'XMLHttpRequest',
 					'Accept': 'application/json',
-					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').getAttribute('content'),
 				},
 				credentials: "same-origin"
 			}).then(function(response) {
 				if (response.ok) {
 					return response.json();
-				} else {
-					// alert non 2xx HTTP
-					alert('System error: received ' + response.status + ' ' + response.statusText);
-
-					// revert toggle change for consistency
-					toggle.checked = !toggle.checked;
 				}
+
+				// alert non 2xx HTTP
+				alert('System error: received ' + response.status + ' ' + response.statusText);
+
+				// revert toggle change for consistency
+				tgl.checked = !tgl.checked;
 			}).catch(function(error) {
 				// handle exception e.g. JSON syntax error
 				alert('System error: ' + error);
 
 				// revert toggle change for consistency
-				toggle.checked = !toggle.checked;
+				tgl.checked = !tgl.checked;
 			}).then(function(output) {
 				// if we've received JSON in HTTP 200 response, update the page
 				if (output.current_state === true) {
-					document.body.parentNode.classList.add('inverted');
+					d.body.parentNode.classList.add('inverted');
 				} else if (output.current_state === false) {
-					document.body.parentNode.classList.remove('inverted');
+					d.body.parentNode.classList.remove('inverted');
 				}
 			});
 		});
 	}
 
-	if ('clipboard' in navigator && (copybutton = document.querySelector('.js-copy'))) {
-		copybutton.classList.add('enabled');
+	if ('clipboard' in n && (cpb = $('.js-copy'))) {
+		cpb.classList.add('enabled');
 
-		copybutton.addEventListener('click', function(ev) {
-			var text = document.querySelector(ev.target.dataset.copies).innerText;
+		cpb.addEventListener('click', function(ev) {
+			var text = $(ev.target.dataset.copies).innerText;
 
-			navigator.clipboard.writeText(text).then(function() {
-				copybutton.classList.add('success');
+			n.clipboard.writeText(text).then(function() {
+				cpb.classList.add('success');
 			}).catch(function(err) {
-				copybutton.classList.add('failure');
+				cpb.classList.add('failure');
 				console.log(err);
 			}).finally(function() {
 				setTimeout(function() {
-					copybutton.classList.remove('success', 'failure');
+					cpb.classList.remove('success', 'failure');
 				}, 800);
 			});
 		});
 	}
 
-	if ((breadcrumbs = document.querySelector('.breadcrumbs'))) {
-		window.addEventListener('resize', function overflower() {
-			var first = breadcrumbs.firstElementChild,
-				last = breadcrumbs.lastElementChild,
-				width = breadcrumbs.offsetWidth;
+	if ((bc = $('.breadcrumbs'))) {
+		w.addEventListener('resize', function overflower() {
+			var first = bc.firstElementChild,
+				last = bc.lastElementChild,
+				width = bc.offsetWidth;
 
 			if (last.offsetLeft + last.offsetWidth > width) {
-				breadcrumbs.classList.add('overflowed');
+				bc.classList.add('overflowed');
 			} else if (first.offsetLeft > 0) {
-				breadcrumbs.classList.remove('overflowed');
+				bc.classList.remove('overflowed');
 			}
 
 			// return function so we can complete the event listener
@@ -101,7 +105,7 @@
 		}());
 	}
 
-	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.register('/service-worker.js');
+	if ('serviceWorker' in n) {
+		n.serviceWorker.register('/service-worker.js');
 	}
-})();
+})(window, navigator, document);
