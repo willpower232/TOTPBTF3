@@ -66,8 +66,8 @@ Finding the right icons can be tricky but I've found most icons I've needed for 
 
 ## Service Worker
 
-Using [Google Workbox](https://developers.google.com/web/tools/workbox/modules/workbox-cli) there is a small service worker which is the missing step required to make this site installable on Android using Chromes "Add To Home screen" feature. Unfortunately this app cannot work offline but at least it can integrate with your Android mobile device.
+I have replaced [Google Workbox](https://developers.google.com/web/tools/workbox/modules/workbox-cli) in this project with a dynamic service worker to reduce the effort required to build this project as you no longer need to run `npm run prod` twice.
 
-For efficiency, you may wish the service worker to cache any additional images you have uploaded so you will need to run the following command: `npm run workbox`.
+This service worker is the missing step required to make this site installable on Android using Chromes "Add To Home screen" feature. Unfortunately this app cannot work offline but at least it can integrate with your Android mobile device.
 
-Fox maximum efficiency, the service worker will need to know there have been changes to the public files so the workflow would be `npm run prod && npm run workbox && npm run prod` to ensure both mix and workbox are aware of the changes. I have aliased this to `npm run prodworkbox` for brevity.
+I have included lots of comments in the source of the service worker to allow debugging if it doesn't work right. If I have made any errors or am missing potential improvements in using the service worker, please let me know.

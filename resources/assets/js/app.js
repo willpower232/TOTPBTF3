@@ -104,8 +104,4 @@
 			return overflower;
 		}());
 	}
-
-	if ('serviceWorker' in n) {
-		n.serviceWorker.register('/service-worker.js');
-	}
 })(window, navigator, document);

@@ -7,9 +7,7 @@
         "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "prodworkbox" : "npm run prod && npm run workbox && npm run prod",
-        "workbox" : "node node_modules/workbox-cli/build/bin.js generateSW workbox-config.js"
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "originalDevDependencies": {
         "axios": "^0.18",
@@ -23,7 +21,6 @@
     },
     "devDependencies": {
         "cross-env": "^5.1",
-        "workbox-cli": "3.4.1",
         "laravel-mix": "^2.0"
     }
 }
