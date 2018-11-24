@@ -11,14 +11,19 @@
     if (! self.document) {
         // we are currently in a service worker
 
-        const sitecachename = 'totpbtf3-v2';
+        const sitecachename = 'totpbtf3-shared-v1';
+
+        var sitecachewhitelist = [
+            sitecachename,
+            'totpbtf3-criticalcss-v1'
+        ];
 
         self.addEventListener('activate', function(ev) {
             ev.waitUntil(
                 self.caches.keys().then(function(cachenames) {
                     return Promise.all(
                         cachenames.map(function(cachename) {
-                            if (cachename != sitecachename) {
+                            if (sitecachewhitelist.indexOf(cachename) < 0) {
                                 return caches.delete(cachename);
                             }
                         })

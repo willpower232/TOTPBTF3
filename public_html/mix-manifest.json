@@ -1,6 +1,7 @@
 {
-    "/css/app.css": "/css/app.css?id=d54656ac8b8fc08337b2",
+    "/css/critical.css": "/css/critical.css?id=12433a5fb0fdba3a4a9b",
+    "/css/app.css": "/css/app.css?id=32388ea0f7feed9e4329",
     "/js/app.js": "/js/app.js?id=235da173c83106c89fbd",
     "/js/intersectionobserver.min.js": "/js/intersectionobserver.min.js?id=b9ab021cbe6868db3978",
-    "/sw.js": "/sw.js?id=911086fd276aa7c102c3"
+    "/sw.js": "/sw.js?id=bd25101f8edd26501053"
 }

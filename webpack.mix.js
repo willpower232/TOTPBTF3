@@ -22,6 +22,9 @@ mix.scripts('resources/assets/js/sw.js', 'public_html/sw.js');
 mix.setPublicPath('./public_html/');
 
 // standard scss compile
+mix.sass('resources/assets/sass/critical.scss', 'css').options({
+	autoprefixer: false
+});
 mix.sass('resources/assets/sass/app.scss', 'css').options({
 	autoprefixer: false
 });
