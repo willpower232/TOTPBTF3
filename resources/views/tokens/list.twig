@@ -14,7 +14,7 @@
 			<li>
 				<a href="/codes{{ folder.folder }}">
 					{% if folder.image %}
-						<img src="/{{ folder.image }}" alt="{{ alt }}" />
+						<img data-src="/{{ folder.image }}" alt="{{ alt }}" />
 					{% else %}
 						<span class="replaced-image">{{ alt }}</span>
 					{% endif %}

@@ -1,5 +1,6 @@
 {
     "/css/app.css": "/css/app.css?id=d54656ac8b8fc08337b2",
-    "/js/app.js": "/js/app.js?id=51935b716e437c825871",
+    "/js/app.js": "/js/app.js?id=d5bb67f5f4a6ec45ae22",
+    "/js/intersectionobserver.min.js": "/js/intersectionobserver.min.js?id=b9ab021cbe6868db3978",
     "/sw.js": "/sw.js?id=911086fd276aa7c102c3"
 }
