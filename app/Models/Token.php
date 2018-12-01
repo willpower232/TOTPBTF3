@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use App\Helpers\Encryption;
 use App\Helpers\Hashids;
 use RobThree\Auth\TwoFactorAuth;
@@ -26,6 +27,11 @@ class Token extends Model
         'title',
         'secret',
     );
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * Guarantee that an input begins and ends with a /.
