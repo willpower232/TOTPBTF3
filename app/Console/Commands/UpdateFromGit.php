@@ -22,7 +22,9 @@ class UpdateFromGit extends Command
     protected $description = 'Pulls from git and does the appropriate updates and cleanup';
 
     /**
-     * Execute the console command.
+     * Execute the console command. Too disruptive to test.
+     *
+     * @codeCoverageIgnore
      *
      * @return mixed
      */

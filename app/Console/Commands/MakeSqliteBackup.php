@@ -15,9 +15,11 @@ class MakeSqliteBackup extends Command
     protected $signature = 'makesqlitebackup';
 
     /**
-     * Create SQLite backup of MySQL database.
+     * Create SQLite backup of MySQL database. Too difficult to trigger the exception to include in code coverage
      *
      * This requires the mysqldump command from the mysql-client package and the sqlite3 package.
+     *
+     * @codeCoverageIgnore
      *
      * @return mixed
      */
