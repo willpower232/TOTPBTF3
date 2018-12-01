@@ -1,8 +1,20 @@
+dist: xenial
+
 language: php
 
 php:
   - 7.1
   - 7.2
+
+services:
+  - mysql
+
+before_install:
+  - mysql -e "set global innodb_large_prefix=1;"
+  - mysql -e "set global innodb_file_format='Barracuda';"
+  - mysql -e "set global innodb_file_per_table=true;"
+  - mysql -e "set global innodb_default_row_format='dynamic';"
+  - mysql -e 'CREATE DATABASE totp_test;'
 
 before_script:
   - composer install
