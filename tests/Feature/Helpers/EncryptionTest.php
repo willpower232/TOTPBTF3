@@ -7,7 +7,6 @@ use App\Helpers\Encryption;
 class EncryptionTest extends TestCase
 {
     private static $encryptionsalt = 'lsngmym1nd';
-    private static $encryptionkey;
 
     /**
      * Prepare for using encryption helper with known salt and key input.
@@ -21,7 +20,7 @@ class EncryptionTest extends TestCase
 
         parent::setUp();
 
-        self::$encryptionkey = Encryption::makeKey('wish somebody would');
+        session()->put('encryptionkey', Encryption::makeKey('wish somebody would'));
     }
 
     /**
@@ -41,7 +40,7 @@ class EncryptionTest extends TestCase
      */
     public function testKey()
     {
-        $this->assertEquals('d8f12b1737e7ede3daca0dfd311edcde2b702f2bd4c5deabfdcd0f0ac6f28d30', self::$encryptionkey);
+        $this->assertEquals('d8f12b1737e7ede3daca0dfd311edcde2b702f2bd4c5deabfdcd0f0ac6f28d30', session('encryptionkey'));
     }
 
     /**
@@ -52,6 +51,6 @@ class EncryptionTest extends TestCase
     public function testDecryptEncrypt()
     {
         $string = 'tell me I am fine';
-        $this->assertEquals($string, Encryption::decrypt(Encryption::encrypt($string, self::$encryptionkey), self::$encryptionkey));
+        $this->assertEquals($string, Encryption::decrypt(Encryption::encrypt($string)));
     }
 }
