@@ -1,0 +1,108 @@
+version: 2
+
+
+defaults: &defaults
+  docker:
+    - image: circleci/php:7.1-cli
+    - image: circleci/mysql:5.7
+  working_directory: ~/app
+
+references:
+  save_workspace: &save_workspace
+    persist_to_workspace:
+      root: ~/app
+      paths:
+        - ./
+
+  load_workspace: &load_workspace
+    attach_workspace:
+      at: ~/app
+
+  install_exts: &install_exts
+    run:
+      name: Install PHP extensions
+      command: |
+        sudo -E docker-php-ext-install bcmath
+        sudo -E docker-php-ext-install pdo_mysql
+
+jobs:
+  setup:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - checkout
+      - restore_cache:
+          key: composer-deps-{{ checksum "composer.json" }}
+      - *install_exts
+      - run: composer install --no-interaction --no-ansi
+      - save_cache:
+          key: composer-deps-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+      - *save_workspace
+
+  lint:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - *load_workspace
+      - run: vendor/bin/parallel-lint --no-colors app
+
+  test_mysql:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - *load_workspace
+      - *install_exts
+      - run:
+          name: Set Up MySQL Database
+          command: |
+            sudo apt install -y mysql-client;
+            mysql  -h 127.0.0.1 -u root -e "CREATE DATABASE totp_test;";
+            php artisan --env=testing migrate;
+      - run:
+          name: PHPUnit
+          command: vendor/bin/phpunit
+      - store_test_results:
+          path: build/logs
+      - store_artifacts:
+          path: build/coverage
+          destination: coverage
+
+  test_sqlite:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - *load_workspace
+      - *install_exts
+      - run:
+          name: Set Up SQLite Database
+          command: |
+            sudo apt install -y libsqlite3-dev;
+            touch database/testing.sqlite;
+            php artisan --env=testing migrate;
+      - run:
+          name: PHPUnit
+          command: vendor/bin/phpunit
+      - store_test_results:
+          path: build/logs
+      - store_artifacts:
+          path: build/coverage
+          destination: coverage
+
+workflows:
+  version: 2
+  build-lint-test:
+    jobs:
+      - setup
+      - lint:
+          requires:
+            - setup
+      - test_mysql:
+          requires:
+            - setup
+            - lint
+      - test_sqlite:
+          requires:
+            - setup
+            - lint
