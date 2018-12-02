@@ -6,19 +6,17 @@
 	if (w.refreshat !== undefined) {
 		var timer = $('.a-timer'),
 			loop = setInterval(function() {
-				var progress = Math.floor(((30 - (w.refreshat - (Date.now() / 1000))) / 30) * 100);
-
-				if (progress >= 100) {
+				// must use these Math.floor's and `> 100` (not `>=`) to avoid double refresh
+				// double refresh occurs because page loads before the final second of this code has fully passed
+				var progress = Math.floor(((30 - (w.refreshat - Math.floor(Date.now() / 1000))) / 30) * 100);
+				if (progress > 100) {
 					timer.style.opacity = 0;
 
 					// now is the time, stop ticking
 					clearInterval(loop);
 
 					if (n.onLine) {
-						// bump the refresh into the future to avoid double refresh
-						setTimeout(function() {
-							w.location.reload();
-						}, 100);
+						w.location.reload();
 					} else {
 						var code;
 						if ((code = $('.a-code'))) {
