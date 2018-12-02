@@ -25,6 +25,11 @@ references:
         sudo -E docker-php-ext-install bcmath
         sudo -E docker-php-ext-install pdo_mysql
 
+  send_to_codecov: &send_to_codecov
+    run:
+      name: Send to Codecov
+      command: bash <(curl -s https://codecov.io/bash) -f build/coverage-clover.xml
+
 jobs:
   setup:
     <<: *defaults
@@ -68,6 +73,7 @@ jobs:
       - store_artifacts:
           path: build/coverage
           destination: coverage
+      - *send_to_codecov
 
   test_sqlite:
     <<: *defaults
@@ -89,6 +95,7 @@ jobs:
       - store_artifacts:
           path: build/coverage
           destination: coverage
+      - *send_to_codecov
 
 workflows:
   version: 2
