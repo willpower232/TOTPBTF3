@@ -3,7 +3,7 @@
 		return (context || d).querySelector(selector) || null;
 	};
 
-	if (typeof w.refreshat !== 'undefined') {
+	if (w.refreshat !== undefined) {
 		var timer = $('.a-timer'),
 			loop = setInterval(function() {
 				var progress = Math.floor(((30 - (w.refreshat - (Date.now() / 1000))) / 30) * 100);
@@ -14,12 +14,13 @@
 					// now is the time, stop ticking
 					clearInterval(loop);
 
-					if (navigator.onLine) {
+					if (n.onLine) {
 						// bump the refresh into the future to avoid double refresh
 						setTimeout(function() {
 							w.location.reload();
 						}, 100);
 					} else {
+						var code;
 						if ((code = $('.a-code'))) {
 							code.innerText = 'offline please wait';
 							code.style.letterSpacing = ".1em";
@@ -36,12 +37,13 @@
 			}, 1000);
 	}
 
-	if ((tgl = $('input[name="light_mode"]')) && 'fetch' in w) {
-		tgl.removeAttribute('disabled');
-		tgl.addEventListener('change', function(ev) {
+	var toggle;
+	if ((toggle = $('input[name="light_mode"]')) && 'fetch' in w) {
+		toggle.removeAttribute('disabled');
+		toggle.addEventListener('change', function(ev) {
 			var data = new FormData();
 
-			data.append('light_mode', tgl.checked);
+			data.append('light_mode', toggle.checked);
 
 			fetch('/api/profile/setLightMode', {
 				method: "POST",
@@ -61,13 +63,13 @@
 				alert('System error: received ' + response.status + ' ' + response.statusText);
 
 				// revert toggle change for consistency
-				tgl.checked = !tgl.checked;
+				toggle.checked = !toggle.checked;
 			}).catch(function(error) {
 				// handle exception e.g. JSON syntax error
 				alert('System error: ' + error);
 
 				// revert toggle change for consistency
-				tgl.checked = !tgl.checked;
+				toggle.checked = !toggle.checked;
 			}).then(function(output) {
 				// if we've received JSON in HTTP 200 response, update the page
 				if (output.current_state === true) {
@@ -79,35 +81,37 @@
 		});
 	}
 
-	if ('clipboard' in n && (cpb = $('.js-copy'))) {
-		cpb.classList.add('enabled');
+	var clipboard;
+	if ('clipboard' in n && (clipboard = $('.js-copy'))) {
+		clipboard.classList.add('enabled');
 
-		cpb.addEventListener('click', function(ev) {
+		clipboard.addEventListener('click', function(ev) {
 			var text = $(ev.target.dataset.copies).innerText;
 
 			n.clipboard.writeText(text).then(function() {
-				cpb.classList.add('success');
+				clipboard.classList.add('success');
 			}).catch(function(err) {
-				cpb.classList.add('failure');
+				clipboard.classList.add('failure');
 				console.log(err);
 			}).finally(function() {
 				setTimeout(function() {
-					cpb.classList.remove('success', 'failure');
+					clipboard.classList.remove('success', 'failure');
 				}, 800);
 			});
 		});
 	}
 
-	if ((bc = $('.breadcrumbs'))) {
+	var breadcrumbs;
+	if ((breadcrumbs = $('.breadcrumbs'))) {
 		w.addEventListener('resize', function overflower() {
-			var first = bc.firstElementChild,
-				last = bc.lastElementChild,
-				width = bc.offsetWidth;
+			var first = breadcrumbs.firstElementChild,
+				last = breadcrumbs.lastElementChild,
+				width = breadcrumbs.offsetWidth;
 
 			if (last.offsetLeft + last.offsetWidth > width) {
-				bc.classList.add('overflowed');
+				breadcrumbs.classList.add('overflowed');
 			} else if (first.offsetLeft > 0) {
-				bc.classList.remove('overflowed');
+				breadcrumbs.classList.remove('overflowed');
 			}
 
 			// return function so we can complete the event listener
