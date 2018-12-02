@@ -1,6 +1,8 @@
 # TOTPBTF3
 
-[![Build Status](https://travis-ci.com/willpower232/TOTPBTF3.svg?branch=master)](https://travis-ci.com/willpower232/TOTPBTF3)
+[![Build Status](https://travis-ci.com/willpower232/TOTPBTF3.svg?branch=master)]
+(https://travis-ci.com/willpower232/TOTPBTF3)
+[![CircleCI](https://circleci.com/gh/willpower232/TOTPBTF3.svg?style=svg)](https://circleci.com/gh/willpower232/TOTPBTF3)
 
 This is me learning Laravel with an app I've wanted to make for a while.
 
