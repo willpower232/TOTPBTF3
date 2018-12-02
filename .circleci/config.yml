@@ -22,6 +22,7 @@ references:
     run:
       name: Install PHP extensions
       command: |
+        sudo -E docker-php-ext-install bcmath
         sudo -E docker-php-ext-install pdo_mysql
 
 jobs:
