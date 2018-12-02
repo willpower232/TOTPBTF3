@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.com/willpower232/TOTPBTF3.svg?branch=master)](https://travis-ci.com/willpower232/TOTPBTF3)
 [![CircleCI](https://circleci.com/gh/willpower232/TOTPBTF3.svg?style=svg)](https://circleci.com/gh/willpower232/TOTPBTF3)
 [![codecov](https://codecov.io/gh/willpower232/TOTPBTF3/branch/master/graph/badge.svg)](https://codecov.io/gh/willpower232/TOTPBTF3)
+[![Known Vulnerabilities](https://snyk.io/test/github/willpower232/TOTPBTF3/badge.svg?targetFile=package.json)](https://snyk.io/test/github/willpower232/TOTPBTF3?targetFile=package.json)
 
 This is me learning Laravel with an app I've wanted to make for a while.
 
