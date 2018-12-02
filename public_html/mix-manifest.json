@@ -1,7 +1,8 @@
 {
     "/css/critical.css": "/css/critical.css?id=12433a5fb0fdba3a4a9b",
     "/css/app.css": "/css/app.css?id=32388ea0f7feed9e4329",
-    "/js/app.js": "/js/app.js?id=d866b57ed6e49c39c93a",
+    "/js/app.js": "/js/app.js?id=99af939b7995d9d945e6",
+    "/js/lazyload.js": "/js/lazyload.js?id=338fc49b894ac92cb37f",
     "/js/intersectionobserver.min.js": "/js/intersectionobserver.min.js?id=b9ab021cbe6868db3978",
     "/sw.js": "/sw.js?id=bd25101f8edd26501053"
 }

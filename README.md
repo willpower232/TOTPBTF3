@@ -64,6 +64,8 @@ You can also replace the text on the folder names with SVG or PNG images (SVG pr
 
 Finding the right icons can be tricky but I've found most icons I've needed for this can be found at [edent/SuperTinyIcons](https://github.com/edent/SuperTinyIcons) and they come in small SVG files for optimum performance.
 
+I've included a lazyloading setting in `.env` if you're finding that you have many images on one page and its slowing down your experience.
+
 ## Service Worker
 
 I have replaced [Google Workbox](https://developers.google.com/web/tools/workbox/modules/workbox-cli) in this project with a dynamic service worker to reduce the effort required to build this project as you no longer need to run `npm run prod` twice.

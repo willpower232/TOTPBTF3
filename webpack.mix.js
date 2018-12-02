@@ -14,6 +14,8 @@ let mix = require('laravel-mix');
 // using scripts instead of js to avoid webpack bloating plain js - must specify full path to output file
 mix.scripts('resources/assets/js/app.js', 'public_html/js/app.js');
 
+mix.scripts('resources/assets/js/lazyload.js', 'public_html/js/lazyload.js');
+
 mix.copy('resources/assets/js/intersectionobserver.min.js', 'public_html/js/intersectionobserver.min.js');
 
 mix.scripts('resources/assets/js/sw.js', 'public_html/sw.js');

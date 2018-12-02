@@ -4,6 +4,8 @@ return [
 
     /* Custom config values for TOTPBTF3 */
 
+    'lazyloading' => env('LAZY_LOADING', false),
+
     'readonly' => env('READ_ONLY', false),
 
     'encryptionsalt' => env('ENCRYPTION_SALT', ''),

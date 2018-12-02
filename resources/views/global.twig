@@ -63,4 +63,5 @@
 
 	<script src="{{ mix('js/app.js') }}" defer></script>
 	<script src="{{ mix('sw.js') }}" defer></script>
+	{% if config('app.lazyloading') %}<script src="{{ mix('js/lazyload.js') }}" defer></script>{% endif %}
 </body></html>

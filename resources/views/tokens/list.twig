@@ -14,7 +14,7 @@
 			<li>
 				<a href="/codes{{ folder.folder }}">
 					{% if folder.image %}
-						<img data-src="/{{ folder.image }}" alt="{{ alt }}" />
+						<img {% if config('app.lazyloading') %}data-{% endif %}src="/{{ folder.image }}" alt="{{ alt }}" />
 					{% else %}
 						<span class="replaced-image">{{ alt }}</span>
 					{% endif %}
