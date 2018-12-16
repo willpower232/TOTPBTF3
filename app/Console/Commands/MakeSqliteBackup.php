@@ -30,7 +30,14 @@ class MakeSqliteBackup extends Command
             unlink($databasefile);
         }
 
-        $process = new Process(sprintf('sh mysql2sqlite.sh -h %s -u %s -p%s %s | sqlite3 %s', config('database.connections.mysql.host'), config('database.connections.mysql.username'), config('database.connections.mysql.password'), config('database.connections.mysql.database'), $databasefile));
+        $process = new Process(sprintf(
+            'sh mysql2sqlite.sh -h %s -u %s -p%s %s | sqlite3 %s',
+            config('database.connections.mysql.host'),
+            config('database.connections.mysql.username'),
+            config('database.connections.mysql.password'),
+            config('database.connections.mysql.database'),
+            $databasefile
+        ));
 
         // $process->start();
 

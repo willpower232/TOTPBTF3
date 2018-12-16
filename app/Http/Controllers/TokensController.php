@@ -45,7 +45,9 @@ class TokensController extends Controller
     {
         $index = substr_count($path, '/') + 1;
 
-        $folders = (usingsqlite()) ? Token::select('path AS folder') : Token::selectRaw('SUBSTRING_INDEX(path, "/", ?) AS folder', array($index));
+        $folders = (usingsqlite()) ?
+            Token::select('path AS folder') :
+            Token::selectRaw('SUBSTRING_INDEX(path, "/", ?) AS folder', array($index));
 
         $concat = (usingsqlite()) ? '? || "%"' : 'CONCAT(? ,"%")';
 
@@ -59,7 +61,7 @@ class TokensController extends Controller
         // sqlite has no equivalent of SUBSTRING_INDEX so we have to do this bit manually
         if (usingsqlite()) {
             // shorten all the folders to the desired sections
-            $folders = array_map(function($folder) use($index) {
+            $folders = array_map(function ($folder) use ($index) {
                 $folder['folder'] = implode('/', array_slice(explode('/', $folder['folder']), 0, $index));
 
                 return $folder;
@@ -77,7 +79,7 @@ class TokensController extends Controller
                 ->first();
         }
 
-        $folders = array_map(function($folder) {
+        $folders = array_map(function ($folder) {
             $folder['image'] = $this->getImageForFolderOrToken($folder['folder']);
 
             return $folder;
@@ -177,8 +179,7 @@ class TokensController extends Controller
 
         try {
             $test = $token->getTOTPCode();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput(request()->all)->withErrors(array(
                 'secret' => 'Invalid secret was entered',
             ));

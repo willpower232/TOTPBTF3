@@ -98,7 +98,7 @@ class Token extends Model
     public function getQRCode()
     {
         // anonymous function to simplify hexadecimal colour input
-        $hexToRGB = function($input) {
+        $hexToRGB = function ($input) {
             return array_map('hexdec', str_split(trim($input, '#'), 2));
         };
 
@@ -125,7 +125,11 @@ class Token extends Model
         ));
 
         // the explode removes the XML definition so it can be inlined
-        $svg = explode("\n", $writer->writeString('otpauth://totp/LABEL:' . $this->title . '?secret=' . $this->getDecryptedSecret() . '&issuer=' . trim($this->path, '/')));
+        $svg = explode("\n", $writer->writeString(
+            'otpauth://totp/LABEL:' . $this->title .
+            '?secret=' . $this->getDecryptedSecret() .
+            '&issuer=' . trim($this->path, '/')
+        ));
 
         return $svg[1];
     }

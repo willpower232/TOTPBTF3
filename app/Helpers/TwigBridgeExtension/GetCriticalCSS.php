@@ -14,7 +14,8 @@ class GetCriticalCSS extends Twig_Extension
              * Based on https://www.filamentgroup.com/lab/inlining-cache.html
              * - Output the critical CSS to the page on first load in session to attempt to cache it
              * - Second load gets link tag but hopefully no network hit due to service worker
-             * - Note that a separate cache name is used but must not be deleted by service worker cleanup in activate event listener
+             * - Note that a separate cache name is used but must not be deleted
+             *      by service worker cleanup in activate event listener
              */
             new Twig_SimpleFunction('getCriticalCSS', function () {
                 if (! session('hascriticalcss')) {
@@ -29,7 +30,12 @@ class GetCriticalCSS extends Twig_Extension
                             if ("caches" in window) {
                                 var css = document.getElementById("criticalcss").innerHTML.trim();
                                 caches.open("totpbtf3-criticalcss-v1").then(function(cache) {
-                                    cache.put("' . mix('css/critical.css') . '", new Response(css, {headers: {"Content-Length": css.length,"Content-Type": "text/css"}}));
+                                    cache.put("' . mix('css/critical.css') . '", new Response(css, {
+                                        headers: {
+                                            "Content-Length": css.length,
+                                            "Content-Type": "text/css"
+                                        }
+                                    }));
                                 });
                             }
                         </script>

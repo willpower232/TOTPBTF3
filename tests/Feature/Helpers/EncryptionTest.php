@@ -40,7 +40,10 @@ class EncryptionTest extends TestCase
      */
     public function testKey()
     {
-        $this->assertEquals('d8f12b1737e7ede3daca0dfd311edcde2b702f2bd4c5deabfdcd0f0ac6f28d30', session('encryptionkey'));
+        $this->assertEquals(
+            'd8f12b1737e7ede3daca0dfd311edcde2b702f2bd4c5deabfdcd0f0ac6f28d30',
+            session('encryptionkey')
+        );
     }
 
     /**

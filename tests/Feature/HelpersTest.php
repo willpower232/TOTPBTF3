@@ -3,7 +3,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class helpersTest extends TestCase
+class HelpersTest extends TestCase
 {
     /**
      * verify that the function is a shortcut for identifying whether the main database is sqlite or not
