@@ -44,3 +44,9 @@ Route::get('/profile/edit', 'SessionsController@edit');
 Route::post('/profile', 'SessionsController@update');
 
 Route::post('/api/profile/setLightMode', 'Api\SessionsController@setLightMode');
+
+Route::get('/offline', function () {
+	return view('error', array(
+		'errormessage' => 'offline'
+	));
+});

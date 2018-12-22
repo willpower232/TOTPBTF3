@@ -11,12 +11,26 @@
     if (! self.document) {
         // we are currently in a service worker
 
-        const sitecachename = 'totpbtf3-shared-v1';
+        const offlineurl = '/offline',
+            offlinecachename = 'totpbtf3-offline-v1',
+            sitecachename = 'totpbtf3-shared-v1';
 
         var sitecachewhitelist = [
+            offlinecachename,
             sitecachename,
             'totpbtf3-criticalcss-v1'
         ];
+
+        self.addEventListener('install', function(ev) {
+            ev.waitUntil(
+                fetch(new Request(new URL(offlineurl, self.location.href)))
+                    .then(function(response) {
+                        return caches.open(offlinecachename).then(function(cache) {
+                            return cache.put(offlineurl, response);
+                        });
+                    })
+            );
+        });
 
         self.addEventListener('activate', function(ev) {
             ev.waitUntil(
@@ -77,11 +91,11 @@
                             // console.table(out);
 
                             return response;
+                        }).catch(function(error) {
+                            console.log('Fetch failed; returning offline page instead.', error);
+                            return caches.match(offlineurl);
                         });
                     })
-                    /*.catch(function(error) {
-                        console.log('offline');
-                    })*/
             );
         });
 
