@@ -51,7 +51,12 @@ jobs:
     parallelism: 1
     steps:
       - *load_workspace
-      - run: vendor/bin/parallel-lint --no-colors app
+      - run:
+          name: lint PHP
+          command: vendor/bin/parallel-lint --no-colors app
+      - run:
+          name: lint Twig
+          command: php artisan --env=testing twig:lint
 
   test_mysql:
     <<: *defaults
