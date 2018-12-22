@@ -52,27 +52,27 @@ class Handler extends ExceptionHandler
             switch ($exception->getStatusCode()) {
                 // not authorized
                 case '403':
-                    return \Response::view('errors/403', array(), 403);
+                    return response()->view('error', array('errormessage' => 403), 403);
                     break;
 
                 // not found
                 case '404':
-                    return \Response::view('errors/404', array(), 404);
+                    return response()->view('error', array('errormessage' => 404), 404);
                     break;
 
                 // method not allowed
                 case '405': // $exception instanceof MethodNotAllowedHttpException
-                    return \Response::view('errors/405', array(), 405);
+                    return response()->view('error', array('errormessage' => 405), 405);
                     break;
 
                 // internal error
                 case '500':
-                    return \Response::view('errors/500', array(), 500);
+                    return response()->view('error', array('errormessage' => 500), 500);
                     break;
             }
+
             return $this->renderHttpException($exception);
         }
-
 
         return parent::render($request, $exception);
     }

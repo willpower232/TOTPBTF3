@@ -5,13 +5,17 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<meta name="csrf-token" content="{{ csrf_token() }}">
+	{% if not errormessage %}
+		<meta name="csrf-token" content="{{ csrf_token() }}" />
+	{% endif %}
 
 	<title>{{ config('app.name', 'TOTPBTF3') }}</title>
 	<meta name="robots" content="noindex, nofollow" />
 
 	{{ getCriticalCSS() }}
-	<link rel="stylesheet" href="{{ mix('css/app.css') }}" />
+	{% if not errormessage %}
+		<link rel="stylesheet" href="{{ mix('css/app.css') }}" />
+	{% endif %}
 
 	<link rel="icon" href="/favicon-32.png" sizes="32x32" />
 	<link rel="icon" href="/favicon-48.png" sizes="48x48" />
@@ -24,16 +28,19 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	<meta name="theme-color" content="#515151" />
 
-	<noscript>
-		<style>
-			body {
-				padding-top:3em;
-			}
-			body:before {
-				content: 'This website requires javascript for optimum use, please enable.';
-			}
-		</style>
-	</noscript>
+	{% if not errormessage %}
+		<noscript>
+			<style>
+				body {
+					padding-top:3em;
+				}
+				body:before {
+					content: 'This website requires javascript for optimum use, please enable.';
+				}
+			</style>
+		</noscript>
+	{% endif %}
+
 </head>
 <body>
 
@@ -49,19 +56,24 @@
 
 	{% endblock %}
 
-	<script>
-		{% if session('message') and not message %}
-			{% set message = session('message') %}
-		{% endif %}
-		{% if message %}
-			alert("{{ message }}");
-		{% endif %}
-		{% if refreshat %}
-			var refreshat = {{ refreshat }};
-		{% endif %}
-	</script>
+	{% if not errormessage %}
+		<script>
+			{% if session('message') and not message %}
+				{% set message = session('message') %}
+			{% endif %}
+			{% if message %}
+				alert("{{ message }}");
+			{% endif %}
+			{% if refreshat %}
+				var refreshat = {{ refreshat }};
+			{% endif %}
+		</script>
 
-	<script src="{{ mix('js/app.js') }}" defer></script>
-	<script src="{{ mix('sw.js') }}" defer></script>
-	{% if config('app.lazyloading') %}<script src="{{ mix('js/lazyload.js') }}" defer></script>{% endif %}
+		<script src="{{ mix('js/app.js') }}" defer></script>
+		<script src="{{ mix('sw.js') }}" defer></script>
+		{% if config('app.lazyloading') %}
+			<script src="{{ mix('js/lazyload.js') }}" defer></script>
+		{% endif %}
+	{% endif %}
+
 </body></html>
