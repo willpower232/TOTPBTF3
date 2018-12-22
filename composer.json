@@ -9,8 +9,8 @@
         "jakub-onderka/php-parallel-lint": "^1.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "rcrowe/twigbridge": "^0.9.6",
-        "robthree/twofactorauth": "^1.6"
+        "robthree/twofactorauth": "^1.6",
+        "synergitech/twigbridge": "^0.1.1"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
