@@ -7,7 +7,7 @@
 		{{ csrf_field() }}
 
 		<div class="fieldwrapper">
-			<input id="f_path" type="text" class="{{ errors.has('path') ? ' is-invalid' }}" name="path" value="{{ old('path', (token) ? token.path) }}" required autofocus placeholder=" " />
+			<input id="f_path" type="text" class="{{ errors.has('path') ? ' is-invalid' }}" name="path" value="{{ old('path', (token) ? token.path) }}" required autocomplete="false" autofocus placeholder=" " />
 
 			<label for="f_path">Path</label>
 
@@ -19,7 +19,7 @@
 		</div>
 
 		<div class="fieldwrapper">
-			<input id="f_title" type="text" class="{{ errors.has('title') ? ' is-invalid' }}" name="title" value="{{ old('title', (token) ? token.title) }}" required placeholder=" " />
+			<input id="f_title" type="text" class="{{ errors.has('title') ? ' is-invalid' }}" name="title" value="{{ old('title', (token) ? token.title) }}" required autocomplete="false" placeholder=" " />
 
 			<label for="f_title">Title</label>
 
@@ -32,7 +32,7 @@
 
 {% if not token %}
 		<div class="fieldwrapper">
-			<input id="f_secret" type="text" class="{{ errors.has('secret') ? ' is-invalid' }}" name="secret" value="{{ old('secret') }}" required placeholder=" " />
+			<input id="f_secret" type="text" class="{{ errors.has('secret') ? ' is-invalid' }}" name="secret" value="{{ old('secret') }}" required autocomplete="false" placeholder=" " />
 
 			<label for="f_secret">Secret</label>
 
