@@ -53,10 +53,13 @@ jobs:
       - *load_workspace
       - run:
           name: lint PHP
-          command: vendor/bin/parallel-lint --no-colors app
+          command: vendor/bin/parallel-lint --no-colors app tests database
       - run:
           name: lint Twig
           command: php artisan --env=testing twig:lint
+      - run:
+          name: code sniff PHP
+          command: vendor/bin/phpcs --standard=PSR2 app tests
 
   test_mysql:
     <<: *defaults
