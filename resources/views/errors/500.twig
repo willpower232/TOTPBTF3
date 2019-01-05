@@ -1,0 +1,5 @@
+{% extends 'error.twig' %}
+{% block wholepage %}
+	{% set errormessage = '500' %}
+	{{ parent() }}
+{% endblock %}
