@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Encryption;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use \Illuminate\Validation\ValidationException;
 
 class SessionsController extends Controller
 {
@@ -30,13 +31,25 @@ class SessionsController extends Controller
     // POST /login
     public function store()
     {
-        $this->validate(request(), array(
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ));
+        try {
+            $this->validateRequest(array(
+                'email' => 'required|string|email',
+                'password' => 'required|string',
+            ));
+        } catch (ValidationException $ex) {
+            return back()
+                ->withInput(request(array( // don't return the plaintext password to the view
+                    'email',
+                )))
+                ->with('message', 'Please complete all fields');
+        }
 
         if (! auth()->attempt(request(array('email', 'password')))) {
-            return back()->withInput(request(array('email')))->with('message', 'Unable to match credentials');
+            return back()
+                ->withInput(request(array( // don't return the plaintext password to the view
+                    'email',
+                )))
+                ->with('message', 'Unable to match credentials');
         }
 
         session()->put('encryptionkey', Encryption::makeKey(request('password')));
@@ -76,20 +89,34 @@ class SessionsController extends Controller
             abort(404);
         }
 
-        $this->validate(request(), array(
-            'currentpassword' => 'required|string',
-            'name' => 'required|string',
-            'email' => 'required|string|email',
-            'newpassword' => 'confirmed',
-        ));
+        try {
+            $this->validateRequest(array(
+                'currentpassword' => 'required|string',
+                'name' => 'required|string',
+                'email' => 'required|string|email',
+                'newpassword' => 'confirmed',
+            ));
+        } catch (ValidationException $ex) {
+            return back()
+                ->withInput(request(array( // don't return the plaintext passwords to the view
+                    'name',
+                    'email',
+                )))
+                ->with('message', 'Please check your input');
+        }
 
         if (! auth()->validate(array(
             'email' => auth()->user()->email,
             'password' => request('currentpassword'),
         ))) {
-            return back()->withErrors(array(
-                'currentpassword' => 'You did not enter your current password correctly',
-            ));
+            return back()
+                ->withInput(request(array( // don't return the plaintext passwords to the view
+                    'name',
+                    'email',
+                )))
+                ->withErrors(array(
+                    'currentpassword' => 'You did not enter your current password correctly',
+                ));
         }
 
         $user = auth()->user();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Token;
 use App\Helpers\Encryption;
+use \Illuminate\Validation\ValidationException;
 
 class TokensController extends Controller
 {
@@ -153,11 +154,16 @@ class TokensController extends Controller
             abort(404);
         }
 
-        $this->validate(request(), array(
-            'path' => 'required',
-            'title' => 'required',
-            'secret' => 'required',
-        ));
+        try {
+            $this->validateRequest(array(
+                'path' => 'required',
+                'title' => 'required',
+                'secret' => 'required',
+            ));
+        } catch (ValidationException $ex) {
+            session()->put('message', 'Check your input and try again');
+            throw $ex; //carry out a redirect from laravel now that we have set a message
+        }
 
         $secret = strtoupper(trim(str_replace(' ', '', request('secret'))));
 
@@ -216,10 +222,15 @@ class TokensController extends Controller
             abort(404);
         }
 
-        $this->validate(request(), array(
-            'path' => 'required',
-            'title' => 'required',
-        ));
+        try {
+            $this->validateRequest(array(
+                'path' => 'required',
+                'title' => 'required',
+            ));
+        } catch (ValidationException $ex) {
+            session()->put('message', 'Check your input and try again');
+            throw $ex; //carry out a redirect from laravel now that we have set a message
+        }
 
         $token->update(request(array('path', 'title')));
 
