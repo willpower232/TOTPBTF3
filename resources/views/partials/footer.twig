@@ -1,6 +1,6 @@
 <footer>
 	{% if auth_check() %}
-		<a href="/profile">Profile</a>
+		<a href="{{ route('session.show') }}">Profile</a>
 	{% else %}
 		&nbsp;
 	{% endif %}

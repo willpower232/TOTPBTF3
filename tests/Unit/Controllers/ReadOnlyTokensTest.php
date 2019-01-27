@@ -44,7 +44,7 @@ class ReadOnlyTokensTest extends TestCase
     public function testCreateToken()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/import');
+            ->get(route('tokens.create'));
 
         $response->assertStatus(404);
     }
@@ -57,7 +57,7 @@ class ReadOnlyTokensTest extends TestCase
     public function testTokenEditPage()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/tokens/' . $this->token->getIdHashAttribute() . '/edit');
+            ->get(route('tokens.edit', [$this->token->id_hash]));
 
         $response->assertStatus(404);
     }
@@ -70,7 +70,7 @@ class ReadOnlyTokensTest extends TestCase
     public function testTokenDeletePage()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/tokens/' . $this->token->getIdHashAttribute() . '/delete');
+            ->get(route('tokens.delete', [$this->token->id_hash]));
 
         $response->assertStatus(404);
     }

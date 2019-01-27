@@ -20,8 +20,8 @@ class AuthenticateTest extends TestCase
         $user->save();
 
         $response = $this->actingAs($user)
-            ->get('/codes');
+            ->get(route('tokens.code'));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('session.create'));
     }
 }

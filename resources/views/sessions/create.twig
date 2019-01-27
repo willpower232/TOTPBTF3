@@ -3,7 +3,7 @@
 
 	<h1>Login</h1>
 
-	<form method="POST" action="/login">
+	<form method="POST" action="{{ route('session.store') }}">
 		{{ csrf_field() }}
 
 		<div class="fieldwrapper">

@@ -18,6 +18,6 @@
 
 	<div class="a-timer"><div class="hourglass"></div></div>
 
-	<a class="button floating" href="/tokens/{{ token.id_hash }}">&#128065;</a>
+	<a class="button floating" href="{{ route('tokens.show', [token.id_hash]) }}">&#128065;</a>
 
 {% endblock %}

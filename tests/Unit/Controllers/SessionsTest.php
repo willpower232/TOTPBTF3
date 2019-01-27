@@ -32,7 +32,7 @@ class SessionsTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertRedirect('/codes');
+        $response->assertRedirect(route('tokens.code'));
     }
 
     /**
@@ -42,9 +42,9 @@ class SessionsTest extends TestCase
      */
     public function testNoAuth()
     {
-        $response = $this->get('/codes');
+        $response = $this->get(route('tokens.code'));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('session.create'));
     }
 
     /**
@@ -54,7 +54,7 @@ class SessionsTest extends TestCase
      */
     public function testLoginForm()
     {
-        $response = $this->get('/login');
+        $response = $this->get(route('session.create'));
 
         $response->assertStatus(200);
         $response->assertViewIs('sessions.create');
@@ -70,13 +70,13 @@ class SessionsTest extends TestCase
         $user = factory(User::class)->make();
         $user->save();
 
-        $response = $this->post('/login', array(
+        $response = $this->post(route('session.store'), array(
             '_token' => csrf_token(),
             'email' => $user->email,
             'password' => 'secret',
         ));
 
-        $response->assertRedirect('/codes');
+        $response->assertRedirect(route('tokens.code'));
     }
 
     /**
@@ -89,7 +89,7 @@ class SessionsTest extends TestCase
         $user = factory(User::class)->make();
         $user->save();
 
-        $response = $this->post('/login', array(
+        $response = $this->post(route('session.store'), array(
             '_token' => csrf_token(),
             'email' => $user->email,
             'password' => 'not secret', // an empty string would trigger the validator
@@ -112,9 +112,9 @@ class SessionsTest extends TestCase
             ->withSession(array(
                 'encryptionkey' => 'somethingunused'
             ))
-            ->get('/logout');
+            ->get(route('session.destroy'));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('session.create'));
     }
 
     /**
@@ -131,7 +131,7 @@ class SessionsTest extends TestCase
             ->withSession(array(
                 'encryptionkey' => 'somethingunused'
             ))
-            ->get('/profile');
+            ->get(route('session.show'));
 
         $response->assertStatus(200);
         $response->assertViewIs('sessions.show');
@@ -151,7 +151,7 @@ class SessionsTest extends TestCase
             ->withSession(array(
                 'encryptionkey' => 'somethingunused'
             ))
-            ->get('/profile/edit');
+            ->get(route('session.edit'));
 
         $response->assertStatus(200);
         $response->assertViewIs('sessions.form');

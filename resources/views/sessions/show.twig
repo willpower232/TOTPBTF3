@@ -20,9 +20,9 @@
 	</dl>
 
 	{% if not read_only %}
-		<a class="button blueback" href="/profile/edit">Edit</a>
+		<a class="button blueback" href="{{ route('session.edit') }}">Edit</a>
 	{% endif %}
 
-	<a class="button redback" href="/logout">Logout</a>
+	<a class="button redback" href="{{ route('session.destroy') }}">Logout</a>
 
 {% endblock %}

@@ -18,30 +18,36 @@ use App\Helpers\Hashids;
 Route::permanentRedirect('/', '/codes');
 
 // include slashes in the path
-Route::get('/codes/{path?}', 'TokensController@getCode')->where('path', '(.*)');
-Route::get('/export/{path?}', 'TokensController@export')->where('path', '(.*)');
+Route::get('/codes{path?}', 'TokensController@getCode')->where('path', '(.*)')->name('tokens.code');
+Route::get('/export{path?}', 'TokensController@export')->where('path', '(.*)')->name('tokens.export');
 
-Route::get('/import', 'TokensController@create');
-Route::post('/tokens', 'TokensController@store');
+Route::get('/import', 'TokensController@create')->name('tokens.create');
 
 Route::bind('token', function($tokenidhash) {
 	return Token::where('user_id', auth()->user()->id)
 		->findOrFail(Hashids::decode($tokenidhash));
 });
 
-Route::get('/tokens/{token}', 'TokensController@show');
-Route::get('/tokens/{token}/edit', 'TokensController@edit');
-Route::get('/tokens/{token}/delete', 'TokensController@delete');
-Route::delete('/tokens/{token}/delete', 'TokensController@destroy');
-Route::post('/tokens/{token}', 'TokensController@update');
+Route::prefix('tokens')->name('tokens')->group(function() {
+	Route::post('/', 'TokensController@store')->name('.store');
+	Route::get('{token}', 'TokensController@show')->name('.show');
+	Route::get('{token}/edit', 'TokensController@edit')->name('.edit');
+	Route::get('{token}/delete', 'TokensController@delete')->name('.delete');
+	Route::delete('{token}/delete', 'TokensController@destroy')->name('.destroy');
+	Route::post('{token}', 'TokensController@update')->name('.update');
+});
 
-Route::get('/login', 'SessionsController@create')->name('login');
-Route::post('/login', 'SessionsController@store');
-Route::get('/logout', 'SessionsController@destroy');
+Route::prefix('login')->name('session')->group(function() {
+	Route::get('/', 'SessionsController@create')->name('.create');
+	Route::post('/', 'SessionsController@store')->name('.store');
+});
+Route::get('/logout', 'SessionsController@destroy')->name('session.destroy');
 
-Route::get('/profile', 'SessionsController@show');
-Route::get('/profile/edit', 'SessionsController@edit');
-Route::post('/profile', 'SessionsController@update');
+Route::prefix('profile')->name('session')->group(function() {
+	Route::get('/', 'SessionsController@show')->name('.show');
+	Route::get('/edit', 'SessionsController@edit')->name('.edit');
+	Route::post('/', 'SessionsController@update')->name('.update');
+});
 
 Route::post('/api/profile/setLightMode', 'Api\SessionsController@setLightMode');
 

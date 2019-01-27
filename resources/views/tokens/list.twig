@@ -12,7 +12,7 @@
 		{% for folder in folders %}
 			{% set alt = folder.folder|slice(path|length) %}
 			<li>
-				<a href="/codes{{ folder.folder }}">
+				<a href="{{ route('tokens.code', [folder.folder]) }}">
 					{% if folder.image %}
 						<img {% if config('app.lazyloading') %}data-{% endif %}src="/{{ folder.image }}" alt="{{ alt }}" />
 					{% else %}
@@ -24,7 +24,7 @@
 	</ul>
 
 	{% if not read_only %}
-		<a class="button floating blueback" href="/import">&#43;</a>
+		<a class="button floating blueback" href="{{ route('tokens.create') }}">&#43;</a>
 	{% endif %}
 
 {% endblock %}

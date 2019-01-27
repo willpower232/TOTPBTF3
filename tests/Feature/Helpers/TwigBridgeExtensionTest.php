@@ -15,7 +15,7 @@ class TwigBridgeExtensionTest extends TestCase
     public function testCriticalCSS()
     {
         for ($x = 1; $x <= 2; $x++) {
-            $response = $this->get('/login');
+            $response = $this->get(route('session.create'));
             $response->assertOk();
             $response->assertStatus(200);
             $response->assertViewIs('sessions.create');

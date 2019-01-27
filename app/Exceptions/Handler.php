@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use \Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler
 {
@@ -25,4 +26,18 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
+
+    /**
+     * @inheritDoc
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if (! $request->expectsJson() && ! $exception->redirectTo()) {
+            // the framework expects us to have a login route but I've changed things
+            // so lets bypass the one time that route is expected
+            return redirect()->guest(route('session.create'));
+        }
+
+        return parent::unauthenticated($request, $exception);
+    }
 }

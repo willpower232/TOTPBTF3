@@ -42,7 +42,7 @@ class TokensTest extends TestCase
     public function testListTokens()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/codes');
+            ->get(route('tokens.code'));
 
         $response->assertStatus(200);
         $response->assertViewIs('tokens.list');
@@ -56,7 +56,7 @@ class TokensTest extends TestCase
     public function testViewToken()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/codes' . $this->token->path);
+            ->get(route('tokens.code', [$this->token->path]));
 
         $response->assertStatus(200);
         $response->assertViewIs('tokens.code');
@@ -70,7 +70,7 @@ class TokensTest extends TestCase
     public function testViewNotAToken()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/codes/notatoken');
+            ->get(route('tokens.code', ['notatoken']));
 
         $response->assertStatus(404);
     }
@@ -83,7 +83,7 @@ class TokensTest extends TestCase
     public function testExportToken()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/export' . $this->token->path);
+            ->get(route('tokens.export', [$this->token->path]));
 
         $response->assertStatus(200);
         $response->assertViewIs('tokens.export');
@@ -97,7 +97,7 @@ class TokensTest extends TestCase
     public function testCreateToken()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/import');
+            ->get(route('tokens.create'));
 
         $response->assertStatus(200);
         $response->assertViewIs('tokens.form');
@@ -111,7 +111,7 @@ class TokensTest extends TestCase
     public function testTokenViewPage()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/tokens/' . $this->token->getIdHashAttribute());
+            ->get(route('tokens.show', [$this->token->id_hash]));
 
         $response->assertStatus(200);
         $response->assertViewIs('tokens.show');
@@ -125,7 +125,7 @@ class TokensTest extends TestCase
     public function testTokenEditPage()
     {
         $response = $this->actingAs($this->token->user)
-            ->get('/tokens/' . $this->token->getIdHashAttribute() . '/edit');
+            ->get(route('tokens.edit', [$this->token->id_hash]));
 
         $response->assertStatus(200);
         $response->assertViewIs('tokens.form');

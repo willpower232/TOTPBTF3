@@ -50,7 +50,7 @@ class SessionsController extends Controller
         session()->flush(); // remove encryption key
         auth()->logout();
 
-        return redirect('/login');
+        return redirect(route('session.create'));
     }
 
     // GET /profile
@@ -119,9 +119,9 @@ class SessionsController extends Controller
             session()->flush(); // remove encryption key
             auth()->logout();
 
-            return redirect('/login');
+            return redirect(route('session.create'));
         }
 
-        return redirect('/profile');
+        return redirect(route('session.show'));
     }
 }

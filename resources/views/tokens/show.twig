@@ -12,15 +12,15 @@
 	</dl>
 
 	{% if not read_only %}
-		<a class="button blueback" href="/tokens/{{ token.id_hash }}/edit">Edit</a>
+		<a class="button blueback" href="{{ route('tokens.show', [token.id_hash]) }}">Edit</a>
 	{% endif %}
 
-	<a class="button greenback" href="/codes{{ token.path }}">Code</a>
+	<a class="button greenback" href="{{ route('tokens.code', [token.path]) }}">Code</a>
 
-	<a class="button" href="/export{{ token.path }}">Export</a>
+	<a class="button" href="{{ route('tokens.export', [token.path]) }}">Export</a>
 
 	{% if not read_only %}
-		<a class="button redback" href="/tokens/{{ token.id_hash }}/delete" onclick="return confirm('Are you sure you want to delete this token?')">Delete</a>
+		<a class="button redback" href="{{ route('tokens.delete', [token.id_hash]) }}" onclick="return confirm('Are you sure you want to delete this token?')">Delete</a>
 	{% endif %}
 
 {% endblock %}

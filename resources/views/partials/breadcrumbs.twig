@@ -1,7 +1,7 @@
 <nav class="breadcrumbs">
-	<a href="/codes">Codes</a>
+	<a href="{{ route('tokens.code') }}">Codes</a>
 
-	{% set path = '/codes' %}
+	{% set path = route('tokens.code') %}
 	{% for crumb in breadcrumbs %}
 		{% if crumb|length > 0 %}
 			{% set path = path ~ '/' ~ crumb %}
