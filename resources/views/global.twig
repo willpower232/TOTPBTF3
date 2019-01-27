@@ -59,7 +59,7 @@
 	{% if not errormessage %}
 		<script>
 			{% if session('message') and not message %}
-				{% set message = session('message') %}
+				{% set message = session_pull('message') %}
 			{% endif %}
 			{% if message %}
 				alert("{{ message }}");
