@@ -37,7 +37,7 @@ class SessionsController extends Controller
                 'password' => 'required|string',
             ));
         } catch (ValidationException $ex) {
-            return back()
+            return redirect(route('session.create'))
                 ->withInput(request(array( // don't return the plaintext password to the view
                     'email',
                 )))
@@ -45,7 +45,7 @@ class SessionsController extends Controller
         }
 
         if (! auth()->attempt(request(array('email', 'password')))) {
-            return back()
+            return redirect(route('session.create'))
                 ->withInput(request(array( // don't return the plaintext password to the view
                     'email',
                 )))
@@ -97,7 +97,7 @@ class SessionsController extends Controller
                 'newpassword' => 'confirmed',
             ));
         } catch (ValidationException $ex) {
-            return back()
+            return redirect(route('session.edit'))
                 ->withInput(request(array( // don't return the plaintext passwords to the view
                     'name',
                     'email',
@@ -109,7 +109,7 @@ class SessionsController extends Controller
             'email' => auth()->user()->email,
             'password' => request('currentpassword'),
         ))) {
-            return back()
+            return redirect(route('session.edit'))
                 ->withInput(request(array( // don't return the plaintext passwords to the view
                     'name',
                     'email',
