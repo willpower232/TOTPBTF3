@@ -12,6 +12,8 @@ I like TOTP 2 factor but what I don't like is not having folders in Google Authe
 
 My entire knowledge of Laravel is based on https://laracasts.com/series/laravel-from-scratch-2017 and random problem solving.
 
+The best way of using this app is to host your own copy on a server you control and can guarantee the security of. You have the option of using SQLite as a database (so you don't need to run a full database server) and the PWA functionality requires your hosted version has an SSL certificate.
+
 ### Probably non-standard changes to default Laravel
 
 - Models in own folder
@@ -40,9 +42,11 @@ I've used the `fetch()` api as the browsers this ends up being used with should 
 
 ## How to use
 
-After cloning and migrating, run this command to create your user.
+I would recommend that you copy this repository into your own private repository to allow you to add icons and manage an SQLite backup database (see below). You can also choose to commit your `.env` with the necessary salts and secrets.
 
-`php artisan user:create`
+As mentioned above, I have already committed the compiled assets as I haven't quite gotten my head around node enough to do this as part of my build process. This means the only extra installation requirement on you is to run `composer install --no-dev` or alternatively, if you're cloning directly to your server, you can run `php artisan updatefromgit` to complete the installation for you.
+
+After migrating with `php artisan migrate`, run `php artisan user:create` to create your user(s).
 
 Don't forget to set an `ENCRYPTION_SALT` in `.env` and never change it as it would ruin your ability to decrypt your tokens.
 
@@ -74,6 +78,12 @@ I've included a lazyloading setting in `.env` if you're finding that you have ma
 
 I have replaced [Google Workbox](https://developers.google.com/web/tools/workbox/modules/workbox-cli) in this project with a dynamic service worker to reduce the effort required to build this project as you no longer need to run `npm run prod` twice.
 
-This service worker is the missing step required to make this site installable on Android using Chromes "Add To Home screen" feature. Unfortunately this app cannot work offline but at least it can integrate with your Android mobile device.
+This service worker is the missing step required to make this site installable on your Android or Apple device.
+
+Using Chrome on Androids "Add To Home screen" feature that appears when you navigate to your hosted version of this repository, you can access your TOTP codes as if they were in an app on your device. Unfortunately this app cannot work offline but at least it can integrate with your mobile device.
+
+For iOS (as of iOS 11.3 and above), you should be able to open your hosted version in Safari, click on the Share button, and choose "Add to Home Screen".
+
+There is some desktop capability for PWAs so it may also be possible for you to easily access your codes on a desktop computer (obviously you can also access the website) but this isn't a good idea for your personal security.
 
 I have included lots of comments in the source of the service worker to allow debugging if it doesn't work right. If I have made any errors or am missing potential improvements in using the service worker, please let me know.
