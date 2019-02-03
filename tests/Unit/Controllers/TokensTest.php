@@ -17,6 +17,8 @@ class TokensTest extends TestCase
 
     /**
      * Prepare to test token pages
+     *
+     * @return void
      */
     public function setUp()
     {
@@ -26,12 +28,11 @@ class TokensTest extends TestCase
 
         parent::setUp();
 
-        // this session put applies to all acting as calls below
-        session()->put('encryptionkey', Encryption::makeKey('wish somebody would'));
-
         $this->token = factory(Token::class)->make();
         $this->token->secret = Encryption::encrypt(self::$totpsecret);
         $this->token->save(); // for hashed id test
+
+        $this->testinguser = $this->token->user;
     }
 
     /**
@@ -41,7 +42,8 @@ class TokensTest extends TestCase
      */
     public function testListTokens()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.code'));
 
         $response->assertStatus(200);
@@ -55,7 +57,8 @@ class TokensTest extends TestCase
      */
     public function testViewToken()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.code', [$this->token->path]));
 
         $response->assertStatus(200);
@@ -69,7 +72,8 @@ class TokensTest extends TestCase
      */
     public function testViewNotAToken()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.code', ['notatoken']));
 
         $response->assertStatus(404);
@@ -82,7 +86,8 @@ class TokensTest extends TestCase
      */
     public function testExportToken()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.export', [$this->token->path]));
 
         $response->assertStatus(200);
@@ -96,7 +101,8 @@ class TokensTest extends TestCase
      */
     public function testCreateToken()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.create'));
 
         $response->assertStatus(200);
@@ -110,7 +116,8 @@ class TokensTest extends TestCase
      */
     public function testTokenViewPage()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.show', [$this->token->id_hash]));
 
         $response->assertStatus(200);
@@ -124,7 +131,8 @@ class TokensTest extends TestCase
      */
     public function testTokenEditPage()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.edit', [$this->token->id_hash]));
 
         $response->assertStatus(200);

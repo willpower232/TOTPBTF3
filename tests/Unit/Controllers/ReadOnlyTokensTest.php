@@ -28,12 +28,11 @@ class ReadOnlyTokensTest extends TestCase
 
         parent::setUp();
 
-        // this session put applies to all acting as calls below
-        session()->put('encryptionkey', Encryption::makeKey('wish somebody would'));
-
         $this->token = factory(Token::class)->make();
         $this->token->secret = Encryption::encrypt(self::$totpsecret);
         $this->token->save(); // for hashed id test
+
+        $this->testinguser = $this->token->user;
     }
 
     /**
@@ -43,7 +42,8 @@ class ReadOnlyTokensTest extends TestCase
      */
     public function testCreateToken()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.create'));
 
         $response->assertStatus(404);
@@ -56,7 +56,8 @@ class ReadOnlyTokensTest extends TestCase
      */
     public function testTokenEditPage()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.edit', [$this->token->id_hash]));
 
         $response->assertStatus(404);
@@ -69,7 +70,8 @@ class ReadOnlyTokensTest extends TestCase
      */
     public function testTokenDeletePage()
     {
-        $response = $this->actingAs($this->token->user)
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('tokens.delete', [$this->token->id_hash]));
 
         $response->assertStatus(404);

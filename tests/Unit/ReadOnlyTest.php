@@ -18,9 +18,42 @@ class ReadOnlyTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * Ensure the artisan command for creating users will not run whilst app in read only mode
+     *
+     * @return void
+     */
     public function testCreateUserFailure()
     {
         $this->expectException(\Exception::class);
         $this->artisan('user:create');
+    }
+
+    /**
+     * Ensure the user edit form will not open whilst app in read only mode
+     *
+     * @return void
+     */
+    public function testEditUserFailure()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->get(route('session.edit'));
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Ensure user cannot be edited whilst app in read only mode
+     *
+     * @return void
+     */
+    public function testUpdateUserFailure()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('session.update'));
+
+        $response->assertStatus(404);
     }
 }

@@ -3,7 +3,6 @@ namespace Tests\Unit\Controllers;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
 
 class SessionsTest extends TestCase
 {
@@ -67,12 +66,8 @@ class SessionsTest extends TestCase
      */
     public function testSuccessfulLogin()
     {
-        $user = factory(User::class)->make();
-        $user->save();
-
-        $response = $this->post(route('session.store'), array(
-            '_token' => csrf_token(),
-            'email' => $user->email,
+        $response = $this->postWithCsrf(route('session.store'), array(
+            'email' => $this->getTestingUser()->email,
             'password' => 'secret',
         ));
 
@@ -86,16 +81,26 @@ class SessionsTest extends TestCase
      */
     public function testFailedLogin()
     {
-        $user = factory(User::class)->make();
-        $user->save();
-
-        $response = $this->post(route('session.store'), array(
-            '_token' => csrf_token(),
-            'email' => $user->email,
+        $response = $this->postWithCsrf(route('session.store'), array(
+            'email' => $this->getTestingUser()->email,
             'password' => 'not secret', // an empty string would trigger the validator
         ));
 
-        $response->assertRedirect('/');
+        $response->assertRedirect(route('session.create'));
+    }
+
+    /**
+     * Ensure missing input on login handled safely
+     *
+     * @return void
+     */
+    public function testMissingInputLogin()
+    {
+        $response = $this->postWithCsrf(route('session.store'), array(
+            // omitting expected fields
+        ));
+
+        $response->assertRedirect(route('session.create'));
     }
 
     /**
@@ -105,13 +110,8 @@ class SessionsTest extends TestCase
      */
     public function testLogout()
     {
-        $user = factory(User::class)->make();
-        $user->save();
-
-        $response = $this->actingAs($user)
-            ->withSession(array(
-                'encryptionkey' => 'somethingunused'
-            ))
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('session.destroy'));
 
         $response->assertRedirect(route('session.create'));
@@ -124,13 +124,8 @@ class SessionsTest extends TestCase
      */
     public function testProfilePage()
     {
-        $user = factory(User::class)->make();
-        $user->save();
-
-        $response = $this->actingAs($user)
-            ->withSession(array(
-                'encryptionkey' => 'somethingunused'
-            ))
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('session.show'));
 
         $response->assertStatus(200);
@@ -144,16 +139,123 @@ class SessionsTest extends TestCase
      */
     public function testProfileEditPage()
     {
-        $user = factory(User::class)->make();
-        $user->save();
-
-        $response = $this->actingAs($user)
-            ->withSession(array(
-                'encryptionkey' => 'somethingunused'
-            ))
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
             ->get(route('session.edit'));
 
         $response->assertStatus(200);
         $response->assertViewIs('sessions.form');
+    }
+
+    /**
+     * Ensure a user update requires fields
+     *
+     * @return void
+     */
+    public function testProfileUpdateMissingInput()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('session.update'), array(
+                // omitting expected fields
+            ));
+
+        $response->assertRedirect(route('session.edit'));
+    }
+
+    /**
+     * Ensure a user update requires the users current password
+     *
+     * @return void
+     */
+    public function testProfileUpdateBadPassword()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('session.update'), array(
+                'currentpassword' => 'not secret', // an empty string would trigger the validator
+                'name' => $this->getTestingUser()->name,
+                'email' => $this->getTestingUser()->email,
+            ));
+
+        $response->assertRedirect(route('session.edit'));
+    }
+
+    /**
+     * Ensure a users new password has been confirmed
+     *
+     * @return void
+     */
+    public function testUpdateUserMismatchedPassword()
+    {
+        $newpassword = "something that isn't secret";
+
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('session.update'), array(
+                'currentpassword' => 'secret',
+                'newpassword' => $newpassword,
+                'newpassword_confirmation' => $newpassword . ' problem',
+            ));
+
+        $response->assertRedirect(route('session.edit'));
+    }
+
+    /**
+     * Ensure we can update user name and email address
+     *
+     * @return void
+     */
+    public function testProfileUpdateDetails()
+    {
+        $oldname = $this->getTestingUser()->name;
+        $newname = $oldname . ' III';
+
+        $oldemail = $this->getTestingUser()->email;
+        $newemail = $oldemail . '.uk';
+
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('session.update'), array(
+                'currentpassword' => 'secret',
+                'name' => $newname,
+                'email' => $newemail,
+            ));
+
+        $response->assertRedirect(route('session.show'));
+
+        $this->refreshTestingUser();
+
+        $this->assertEquals($this->getTestingUser()->name, $newname);
+        $this->assertEquals($this->getTestingUser()->email, $newemail);
+    }
+
+    /**
+     * Ensure a users password change was successful
+     *
+     * @return void
+     */
+    public function testUpdateUserPassword()
+    {
+        $newpassword = "something that isn't secret";
+
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('session.update'), array(
+                'currentpassword' => 'secret',
+                'name' => $this->getTestingUser()->name,
+                'email' => $this->getTestingUser()->email,
+                'newpassword' => $newpassword,
+                'newpassword_confirmation' => $newpassword,
+            ));
+
+        $response->assertRedirect(route('session.create'));
+
+        $success = auth()->validate(array(
+            'email' => $this->getTestingUser()->email,
+            'password' => $newpassword,
+        ));
+
+        $this->assertTrue($success);
     }
 }

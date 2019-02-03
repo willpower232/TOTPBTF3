@@ -16,10 +16,7 @@ class AuthenticateTest extends TestCase
      */
     public function testMissingEncryptionkey()
     {
-        $user = factory(User::class)->make();
-        $user->save();
-
-        $response = $this->actingAs($user)
+        $response = $this->actingAsTestingUser()
             ->get(route('tokens.code'));
 
         $response->assertRedirect(route('session.create'));
