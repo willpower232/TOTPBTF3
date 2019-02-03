@@ -3,7 +3,7 @@
 
 	<h1>{{ (token) ? 'Edit Token' : 'Import New Token' }}</h1>
 
-	<form method="POST" action="{{ (token) ? route('tokens.update', [token.id_hash]) : 'tokens.store' }}">
+	<form method="POST" action="{{ (token) ? route('tokens.update', [token.id_hash]) : route('tokens.store') }}">
 		{{ csrf_field() }}
 
 		<div class="fieldwrapper">
