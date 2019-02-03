@@ -5,4 +5,12 @@
 		<h1 class="wholepage">{{ errormessage }}</h1>
 	</main>
 
+	{% if errormessage == "offline" %}
+		<script>
+			window.addEventListener('online', function() {
+				location.reload();
+			}, false);
+		</script>
+	{% endif %}
+
 {% endblock %}
