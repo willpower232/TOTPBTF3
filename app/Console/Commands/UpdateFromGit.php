@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 
 class UpdateFromGit extends Command
 {
@@ -48,7 +47,7 @@ class UpdateFromGit extends Command
 
         exec('composer dump-autoload'); // to pick up the helpers file if not already
 
-        Artisan::call('config:cache'); // clear any existing cache and re-cache
+        $this->call('config:cache'); // clear any existing cache and re-cache
 
         $this->info('Tidyup complete');
     }
