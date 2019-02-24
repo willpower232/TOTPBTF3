@@ -27,7 +27,7 @@ before_install:
 before_script:
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE totp_test;'; fi"
   - sh -c "if [ '$DB' = 'sqlite' ]; then touch database/testing.sqlite; fi"
-  - composer install
+  - composer install --no-interaction --no-ansi --prefer-dist
 
 script:
   - vendor/bin/phpunit
