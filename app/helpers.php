@@ -18,11 +18,7 @@ if (! function_exists('see_db_queries')) {
      *     $test = $query->get();
      * });
      */
-    function see_db_queries($callable) {
-        if (! is_callable($callable)) {
-            throw new \Exception('Unable to see db queries: bad callable');
-        }
-
+    function see_db_queries(callable $callable) {
         \DB::enableQueryLog();
         $callable();
 
