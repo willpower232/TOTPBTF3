@@ -35,10 +35,7 @@ class TokensTest extends TestCase
 
     private function makeFakeToken()
     {
-        $token = factory(Token::class)->make();
-        $token->save(); // for queryable path
-
-        return $token;
+        return factory(Token::class)->create();
     }
 
     /**
@@ -108,17 +105,15 @@ class TokensTest extends TestCase
      */
     public function testExportTokenRedirect()
     {
-        $secondtoken = $this->makeFakeToken();
-        $thirdtoken = $this->makeFakeToken();
-
         // set a specific path to avoid random url encoding problem
         $path = Token::formatPath('testexporttokenredirect');
 
-        $secondtoken->path = $path . '/Alpha';
-        $thirdtoken->path = $path . '/Beta';
-
-        $secondtoken->save();
-        $thirdtoken->save();
+        $secondtoken = factory(Token::class)->create(array(
+            'path' => $path . '/Alpha',
+        ));
+        $thirdtoken = factory(Token::class)->create(array(
+            'path' => $path . '/Beta'
+        ));
 
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()

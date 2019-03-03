@@ -28,6 +28,7 @@ class TokenTest extends TestCase
 
         session()->put('encryptionkey', Encryption::makeKey('wish somebody would'));
 
+        // don't save unless we really want to
         $this->token = factory(Token::class)->make();
     }
 
@@ -50,7 +51,7 @@ class TokenTest extends TestCase
      */
     public function testHashedId()
     {
-        $this->token->save();
+        $this->token->save(); // need an id
         $this->assertNotNull($this->token->id_hash);
 
         $unsavedtoken = new Token();

@@ -33,8 +33,7 @@ abstract class TestCase extends BaseTestCase
     public function getTestingUser()
     {
         if (! is_object($this->testinguser)) {
-            $this->testinguser = factory(User::class)->make();
-            $this->testinguser->save();
+            $this->testinguser = factory(User::class)->create();
         }
 
         return $this->testinguser;

@@ -71,6 +71,8 @@ class SessionsTest extends TestCase
             'password' => 'secret',
         ));
 
+        $this->assertAuthenticated();
+
         $response->assertRedirect(route('tokens.code'));
     }
 

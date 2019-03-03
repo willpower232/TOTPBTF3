@@ -10,8 +10,7 @@ $factory->define(Token::class, function (Faker $faker) {
     $user = User::inRandomOrder()->first();
 
     if (! is_object($user)) {
-        $user = factory(User::class)->make();
-        $user->save(); // for id
+        $user = factory(User::class)->create();
     }
 
     return [

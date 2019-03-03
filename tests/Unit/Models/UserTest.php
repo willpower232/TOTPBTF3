@@ -22,8 +22,7 @@ class UserTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->make();
-        $this->user->save();
+        $this->user = factory(User::class)->create();
     }
 
     /**

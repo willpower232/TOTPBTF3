@@ -27,8 +27,7 @@ class ReadOnlyTokensTest extends TestCase
 
         parent::setUp();
 
-        $this->token = factory(Token::class)->make();
-        $this->token->save(); // for hashed id
+        $this->token = factory(Token::class)->create();
 
         $this->testinguser = $this->token->user;
     }

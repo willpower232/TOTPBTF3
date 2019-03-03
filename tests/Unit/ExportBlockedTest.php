@@ -34,10 +34,7 @@ class TokensTest extends TestCase
 
     private function makeFakeToken()
     {
-        $token = factory(Token::class)->make();
-        $token->save(); // for valid path
-
-        return $token;
+        return factory(Token::class)->create();
     }
 
     /**
