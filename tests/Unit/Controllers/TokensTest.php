@@ -25,6 +25,7 @@ class TokensTest extends TestCase
         // alter env before running setup
         putenv('ENCRYPTION_SALT=' . self::$encryptionsalt);
         putenv('READ_ONLY=false'); //avoid conflict
+        putenv('ALLOW_EXPORT=true');
 
         parent::setUp();
 

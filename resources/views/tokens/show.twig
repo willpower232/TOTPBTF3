@@ -17,7 +17,9 @@
 
 	<a class="button greenback" href="{{ route('tokens.code', [token.path]) }}">Code</a>
 
-	<a class="button" href="{{ route('tokens.export', [token.path]) }}">Export</a>
+	{% if allow_export %}
+		<a class="button" href="{{ route('tokens.export', [token.path]) }}">Export</a>
+	{% endif %}
 
 	{% if not read_only %}
 		<a class="button redback" href="{{ route('tokens.delete', [token.id_hash]) }}" onclick="return confirm('Are you sure you want to delete this token?')">Delete</a>

@@ -121,6 +121,9 @@ class TokensController extends Controller
     // redirect to codes folders or show qr code
     public function export($path = '/')
     {
+        if (config('app.allowexport') !== true) {
+            abort(404);
+        }
 
         $result = $this->getFoldersOrTokensFromPath($path);
 

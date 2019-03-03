@@ -4,6 +4,8 @@ return [
 
     /* Custom config values for TOTPBTF3 */
 
+    'allowexport' => env('ALLOW_EXPORT', false),
+
     'lazyloading' => env('LAZY_LOADING', false),
 
     'readonly' => env('READ_ONLY', false),
