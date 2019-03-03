@@ -18,7 +18,8 @@ if (! function_exists('see_db_queries')) {
      *     $test = $query->get();
      * });
      */
-    function see_db_queries(callable $callable) {
+    function see_db_queries(callable $callable)
+    {
         \DB::enableQueryLog();
         $callable();
 
