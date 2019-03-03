@@ -51,7 +51,11 @@ class MakeSqliteBackup extends Command
         $erroroutput = $process->getErrorOutput();
 
         if (strlen($erroroutput) > 0) {
-            unlink($newdatabasefile);
+            // if the command succeeded enough to write a new database file
+            // we should remove it before continuing to avoid further confusion
+            if (file_exists($newdatabasefile)) {
+                unlink($newdatabasefile);
+            }
             $this->error(trim($erroroutput));
             return 1;
         }
