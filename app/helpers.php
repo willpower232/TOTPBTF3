@@ -17,6 +17,9 @@ if (! function_exists('see_db_queries')) {
      *     $object->save();
      *     $test = $query->get();
      * });
+     *
+     * // it dd's so can't really test it right?
+     * @codeCoverageIgnore
      */
     function see_db_queries(callable $callable)
     {

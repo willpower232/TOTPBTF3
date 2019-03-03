@@ -38,6 +38,9 @@ class Handler extends ExceptionHandler
             return redirect()->guest(route('session.create'));
         }
 
+        // no idea how to test this bit sorry
+        // @codeCoverageIgnoreStart
         return parent::unauthenticated($request, $exception);
+        // @codeCoverageIgnoreEnd
     }
 }
