@@ -1,9 +1,6 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	{% set breadcrumbs = path|split('/') %}
-	{% include 'partials/breadcrumbs.twig' %}
-
 	{% if folders|length == 0 %}
 		<p class="text-center">no tokens to see here</p>
 	{% endif %}

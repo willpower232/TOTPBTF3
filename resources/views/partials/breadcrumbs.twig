@@ -1,11 +1,11 @@
-<nav class="breadcrumbs">
-	<a href="{{ route('tokens.code') }}">Codes</a>
-
-	{% set path = route('tokens.code') %}
-	{% for crumb in breadcrumbs %}
-		{% if crumb|length > 0 %}
-			{% set path = path ~ '/' ~ crumb %}
-			<a href="{{ path }}">{{ crumb }}</a>
-		{% endif %}
-	{% endfor %}
-</nav>
+{% if breadcrumbs|length %}
+	<nav class="breadcrumbs">
+		{% for breadcrumb in breadcrumbs|raw %}
+			{% if breadcrumb.url and loop.last == false %}
+				<a href="{{ breadcrumb.url }}">{{ breadcrumb.title }}</a>
+			{% else %}
+				<a>{{ breadcrumb.title }}</a>
+			{% endif %}
+		{% endfor %}
+	</nav>
+{% endif %}

@@ -1,9 +1,6 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	{% set breadcrumbs = token.path|split('/') %}
-	{% include 'partials/breadcrumbs.twig' %}
-
 	<hgroup class="a-code-header">
 		{% if image %}
 			<img class="a-code-img" src="/{{ image }}" />

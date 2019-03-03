@@ -1,9 +1,6 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	{% set breadcrumbs = token.path|split('/') %}
-	{% include 'partials/breadcrumbs.twig' %}
-
 	<h1>{{ token.title }}</h1>
 
 	<div class="export">
