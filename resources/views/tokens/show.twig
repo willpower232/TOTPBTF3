@@ -12,7 +12,7 @@
 	</dl>
 
 	{% if not read_only %}
-		<a class="button blueback" href="{{ route('tokens.show', [token.id_hash]) }}">Edit</a>
+		<a class="button blueback" href="{{ route('tokens.edit', [token.id_hash]) }}">Edit</a>
 	{% endif %}
 
 	<a class="button greenback" href="{{ route('tokens.code', [token.path]) }}">Code</a>
