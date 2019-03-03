@@ -18,7 +18,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/codes'); // no home so change to codes
+            return redirect(route('tokens.code')); // no home so change to codes
         }
 
         return $next($request);

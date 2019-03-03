@@ -54,7 +54,7 @@ class SessionsController extends Controller
 
         session()->put('encryptionkey', Encryption::makeKey(request('password')));
 
-        return redirect('/codes');
+        return redirect(route('tokens.code'));
     }
 
     // GET /logout

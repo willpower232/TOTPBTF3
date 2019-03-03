@@ -195,7 +195,7 @@ class TokensController extends Controller
 
         $token->save();
 
-        return redirect('/codes' . $token->path);
+        return redirect(route('tokens.code', [$token->path]));
     }
 
     // GET /tokens/{token}
@@ -236,7 +236,7 @@ class TokensController extends Controller
 
         $token->update(request(array('path', 'title')));
 
-        return redirect('/codes' . $token->path);
+        return redirect(route('tokens.code', [$token->path]));
     }
 
     // GET /tokens/{token}/delete
@@ -263,6 +263,6 @@ class TokensController extends Controller
 
         $token->delete();
 
-        return redirect('/codes');
+        return redirect(route('tokens.code'));
     }
 }
