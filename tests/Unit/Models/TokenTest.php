@@ -105,4 +105,24 @@ class TokenTest extends TestCase
     {
         $this->assertSame('/Contoso/GitHub/', Token::formatPath('/Contoso/GitHub'));
     }
+
+    /**
+     * Verify that back slashes are switched to forward slashes
+     *
+     * @return void
+     */
+    public function testWrongSlashesInPath()
+    {
+        $this->assertSame('/Contoso/GitHub/', Token::formatPath('\\Contoso\\GitHub\\'));
+    }
+
+    /**
+     * Verify that multiple slashes are reduced down to one
+     *
+     * @return void
+     */
+    public function testMultipleSlashesInPath()
+    {
+        $this->assertSame('/Contoso/GitHub/', Token::formatPath('///Contoso//GitHub/'));
+    }
 }

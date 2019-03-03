@@ -44,6 +44,9 @@ class TokensController extends Controller
      */
     private function getFoldersOrTokensFromPath($path = '/')
     {
+        // guarantee input into the function
+        $path = Token::formatPath($path);
+
         $index = substr_count($path, '/') + 1;
 
         $folders = (usingsqlite()) ?
@@ -93,9 +96,6 @@ class TokensController extends Controller
     // display folders or 6-digit code
     public function getCode($path = '/')
     {
-        // format the path here so the path that goes to the view looks good too
-        $path = Token::formatPath($path);
-
         $result = $this->getFoldersOrTokensFromPath($path);
 
         if (is_array($result)) {
@@ -121,13 +121,11 @@ class TokensController extends Controller
     // redirect to codes folders or show qr code
     public function export($path = '/')
     {
-        // format the path here because of early formatting in getCode
-        $path = Token::formatPath($path);
 
         $result = $this->getFoldersOrTokensFromPath($path);
 
         if (is_array($result)) {
-            return redirect('/codes' . $path);
+            // if we got here the path has to start with a slash right?
         }
 
         return view('tokens/export')->with(array(
@@ -178,7 +176,7 @@ class TokensController extends Controller
 
         $token = new Token(array(
             'user_id' => auth()->user()->id,
-            'path' => Token::formatPath(request('path')),
+            'path' => request('path'),
             'title' => request('title'),
             'secret' => Encryption::encrypt($secret),
         ));

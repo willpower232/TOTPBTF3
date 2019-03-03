@@ -14,7 +14,7 @@ $factory->define(Token::class, function (Faker $faker) {
 
     return [
         'user_id' => $user->id,
-        'path' => Token::formatPath($faker->company),
+        'path' => $faker->company,
         'title' => $faker->company,
     ];
 });

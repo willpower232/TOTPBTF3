@@ -28,6 +28,15 @@ class Token extends Model
         'secret',
     );
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::saving(function ($token) {
+            $token->path = self::formatPath($token->path);
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -42,6 +51,9 @@ class Token extends Model
      */
     public static function formatPath($input)
     {
+        // make sure we're using the correct slash
+        $input = str_replace('\\', '/', $input);
+
         // cope with an empty string here
         if (substr($input, -1) != '/') {
             $input .= '/';
@@ -51,6 +63,11 @@ class Token extends Model
         // because of the explicit 0
         if ($input[0] != '/') {
             $input = '/' . $input;
+        }
+
+        // filter out any double slashes
+        while (strpos($input, '//') !== false) {
+            $input = str_replace('//', '/', $input);
         }
 
         return $input;
