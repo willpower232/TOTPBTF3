@@ -126,6 +126,7 @@ class TokensController extends Controller
 
         if (is_array($result)) {
             // if we got here the path has to start with a slash right?
+            return redirect(route('tokens.code', [$path]));
         }
 
         return view('tokens/export')->with(array(

@@ -28,11 +28,18 @@ class TokensTest extends TestCase
 
         parent::setUp();
 
-        $this->token = factory(Token::class)->make();
-        $this->token->secret = Encryption::encrypt(self::$totpsecret);
-        $this->token->save(); // for hashed id test
+        $this->token = $this->makeFakeToken();
 
         $this->testinguser = $this->token->user;
+    }
+
+    private function makeFakeToken()
+    {
+        $token = factory(Token::class)->make();
+        $token->secret = Encryption::encrypt(self::$totpsecret);
+        $token->save(); // for hashed id test
+
+        return $token;
     }
 
     /**
@@ -92,6 +99,33 @@ class TokensTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('tokens.export');
+    }
+
+    /**
+     * Make sure a user is redirected to the codes list
+     * if they try and export a folder
+     *
+     * @return void
+     */
+    public function testExportTokenRedirect()
+    {
+        $secondtoken = $this->makeFakeToken();
+        $thirdtoken = $this->makeFakeToken();
+
+        // set a specific path to avoid random url encoding problem
+        $path = Token::formatPath('testexporttokenredirect');
+
+        $secondtoken->path = $path . '/Alpha';
+        $thirdtoken->path = $path . '/Beta';
+
+        $secondtoken->save();
+        $thirdtoken->save();
+
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->get(route('tokens.export', [$path]));
+
+        $response->assertRedirect(route('tokens.code', [$path]));
     }
 
     /**
