@@ -3,6 +3,8 @@
 use Faker\Generator as Faker;
 use App\Models\Token;
 use App\Models\User;
+use App\Helpers\Encryption;
+use RobThree\Auth\TwoFactorAuth;
 
 $factory->define(Token::class, function (Faker $faker) {
     $user = User::inRandomOrder()->first();
@@ -16,5 +18,6 @@ $factory->define(Token::class, function (Faker $faker) {
         'user_id' => $user->id,
         'path' => $faker->company,
         'title' => $faker->company,
+        'secret' => Encryption::encrypt((new TwoFactorAuth(config('app.name')))->createSecret()),
     ];
 });

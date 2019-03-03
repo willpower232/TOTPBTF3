@@ -101,9 +101,7 @@ class Token extends Model
      */
     public function getTOTPCode()
     {
-        $tfa = new TwoFactorAuth('WPInc Test');
-
-        return $tfa->getCode($this->getDecryptedSecret());
+        return (new TwoFactorAuth(config('app.name')))->getCode($this->getDecryptedSecret());
     }
 
     /**
