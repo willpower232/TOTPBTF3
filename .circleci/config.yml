@@ -62,7 +62,7 @@ jobs:
           command: vendor/bin/phpcs --standard=PSR2 app tests
       - run:
           name: analyse APP PHP
-          command: php artisan code:analyse
+          command: php artisan --env=testing code:analyse
 
   test_mysql:
     <<: *defaults
