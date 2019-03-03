@@ -31,7 +31,7 @@ class MakeSqliteBackup extends Command
         // so create a new file first
         $newdatabasefile = substr_replace($databasefile, '_new.sqlite', '-7');
 
-        $process = new Process(sprintf(
+        $process = Process::fromShellCommandline(sprintf(
             'sh mysql2sqlite.sh -h %s -u %s -p%s %s | sqlite3 %s',
             config('database.connections.mysql.host'),
             config('database.connections.mysql.username'),

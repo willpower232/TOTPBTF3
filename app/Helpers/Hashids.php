@@ -27,7 +27,7 @@ class Hashids
     /**
      * Encode a value or values using our apps salt
      *
-     * @param mixed $args values to encode
+     * @param mixed ...$args values to encode
      *
      * @return string encoded value or values
      */
@@ -45,7 +45,7 @@ class Hashids
     /**
      * Return an instance of Hashids prepared with our apps salt
      *
-     * @return Hashids an instance of Hashids
+     * @return \Hashids\Hashids an instance of Hashids
      */
     private static function getHasher()
     {
