@@ -3,6 +3,8 @@ namespace Tests\Unit\Controllers;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Token;
+use App\Helpers\Encryption;
 
 class SessionsTest extends TestCase
 {
@@ -259,5 +261,44 @@ class SessionsTest extends TestCase
         ));
 
         $this->assertTrue($success);
+    }
+
+    /**
+     * Verify that a users tokens are re-encrypted with the new details
+     */
+    public function testUserUpdatedTokens()
+    {
+        // store initial encryption key to help encryption?
+        session()->put('encryptionkey', $this->encryptionkey);
+        $token = factory(Token::class)->create();
+
+        $this->testinguser = $token->user;
+
+        $initialencryptedsecret = $token->secret;
+        $initialdecryptedsecret = $token->getDecryptedSecret();
+
+        $newpassword = "something that isn't secret";
+
+        // update user password, re encrypting token secret with new password
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('session.update'), array(
+                'currentpassword' => 'secret',
+                'name' => $this->getTestingUser()->name,
+                'email' => $this->getTestingUser()->email,
+                'newpassword' => $newpassword,
+                'newpassword_confirmation' => $newpassword,
+            ));
+
+        // store new encryptionkey in session to successfully decrypt
+        session()->put('encryptionkey', Encryption::makeKey($newpassword));
+
+        $token->refresh();
+
+        $updatedencryptedsecret = $token->secret;
+        $updateddecryptedsecret = $token->getDecryptedSecret();
+
+        $this->assertSame($initialdecryptedsecret, $updateddecryptedsecret);
+        $this->assertNotSame($initialencryptedsecret, $updatedencryptedsecret);
     }
 }

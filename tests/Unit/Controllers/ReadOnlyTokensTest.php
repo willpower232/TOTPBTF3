@@ -73,4 +73,46 @@ class ReadOnlyTokensTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    /**
+     * Ensure token cannot be added whilst app in read only mode
+     *
+     * @return void
+     */
+    public function testAddTokenFailure()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('tokens.store'));
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Ensure token cannot be edited whilst app in read only mode
+     *
+     * @return void
+     */
+    public function testEditTokenFailure()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('tokens.update', [$this->token->id_hash]));
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Ensure token cannot be deleted whilst app in read only mode
+     *
+     * @return void
+     */
+    public function testDeleteTokenFailure()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->delete(route('tokens.destroy', [$this->token->id_hash]));
+
+        $response->assertStatus(404);
+    }
 }

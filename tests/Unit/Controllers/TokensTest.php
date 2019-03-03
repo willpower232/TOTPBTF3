@@ -166,4 +166,25 @@ class TokensTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('tokens.form');
     }
+
+    public function testTokenDeletePage()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->get(route('tokens.delete', [$this->token->id_hash]));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('tokens.delete');
+    }
+
+    public function testTokenDelete()
+    {
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->delete(route('tokens.destroy', [$this->token->id_hash]));
+
+        $this->assertFalse(Token::where('id', $this->token->id)->exists());
+
+        $response->assertRedirect(route('tokens.code'));
+    }
 }
