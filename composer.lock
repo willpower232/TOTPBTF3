@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10cfee0fd5b7fde5149d7fa7d6e7bc81",
+    "content-hash": "36d9f6b428dd60cceb1b6194dc2484ea",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3216,21 +3216,21 @@
         },
         {
             "name": "synergitech/twigbridge",
-            "version": "v0.1.1",
+            "version": "v0.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SynergiTech/TwigBridge.git",
-                "reference": "edd27fa436b22a8b1137b57d8daac41ab0dee575"
+                "reference": "60c5a1b9c889d60469b00705e07762cf4f6a4628"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SynergiTech/TwigBridge/zipball/edd27fa436b22a8b1137b57d8daac41ab0dee575",
-                "reference": "edd27fa436b22a8b1137b57d8daac41ab0dee575",
+                "url": "https://api.github.com/repos/SynergiTech/TwigBridge/zipball/60c5a1b9c889d60469b00705e07762cf4f6a4628",
+                "reference": "60c5a1b9c889d60469b00705e07762cf4f6a4628",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.5.*|5.6.*|5.7.*",
-                "illuminate/view": "5.5.*|5.6.*|5.7.*",
+                "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.x",
+                "illuminate/view": "5.5.*|5.6.*|5.7.*|5.8.x",
                 "php": ">=7.1",
                 "twig/twig": ">=2.4.8"
             },
@@ -3280,7 +3280,7 @@
                 "laravel",
                 "twig"
             ],
-            "time": "2018-12-18T14:33:27+00:00"
+            "time": "2019-02-28T15:57:58+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
