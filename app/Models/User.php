@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Hash;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,17 @@ class User extends Authenticatable
         'password',
         'remember_token',
     );
+
+    /**
+     * Hash the password value when it is set
+     *
+     * WARNING: the existence of this method means that Auth::logoutOtherDevices will break your user record
+     * because you will end up hashing a hash
+     */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
 
     public function tokens()
     {

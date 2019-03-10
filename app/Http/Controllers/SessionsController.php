@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Encryption;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
@@ -121,7 +120,7 @@ class SessionsController extends Controller
         if (strlen(request('newpassword')) > 0) {
             $passwordchanged = true;
 
-            $user->password = Hash::make(request('newpassword'));
+            $user->password = request('newpassword');
         }
 
         $user->save();
@@ -133,8 +132,9 @@ class SessionsController extends Controller
                 $token->save();
             }
 
-            // just in case there were sessions from before you had this extra security enabled
-            Auth::logoutOtherDevices(request('newpassword'));
+            // don't need to log out others because we have already changed the hash
+            // also the user model has a mutator for password and this will break it
+            //Auth::logoutOtherDevices(request('newpassword'));
 
             session()->flush(); // remove encryption key
             auth()->logout();

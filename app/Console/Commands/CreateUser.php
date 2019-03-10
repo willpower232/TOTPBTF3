@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Validator;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class CreateUser extends Command
 {
@@ -43,8 +42,6 @@ class CreateUser extends Command
             }
             return 1;
         }
-
-        $user['password'] = Hash::make($user['password']);
 
         User::create($user);
 

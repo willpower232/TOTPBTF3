@@ -37,6 +37,8 @@ class Token extends Model
         });
     }
 
+    // IMPORTANT: don't create a mutator for secret because we need to re encrypt the secrets on password change
+
     public function user()
     {
         return $this->belongsTo(User::class);
