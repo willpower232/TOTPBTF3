@@ -157,11 +157,7 @@ class TokensController extends Controller
         }
 
         try {
-            $this->validateRequest(array(
-                'path' => 'required',
-                'title' => 'required',
-                'secret' => 'required',
-            ));
+            $this->validateRequest(Token::getValidationRules('create'));
         } catch (ValidationException $ex) {
             session()->put('message', 'Check your input and try again');
             throw $ex; //carry out a redirect from laravel now that we have set a message
@@ -225,10 +221,7 @@ class TokensController extends Controller
         }
 
         try {
-            $this->validateRequest(array(
-                'path' => 'required',
-                'title' => 'required',
-            ));
+            $this->validateRequest(Token::getValidationRules('update'));
         } catch (ValidationException $ex) {
             session()->put('message', 'Check your input and try again');
             throw $ex; //carry out a redirect from laravel now that we have set a message

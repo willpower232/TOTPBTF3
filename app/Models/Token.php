@@ -105,6 +105,33 @@ class Token extends Model
     }
 
     /**
+     * Return the validation rules for a given circumstance
+     *
+     * @param string $for the circumstances of validation
+     *
+     * @return array the compiled list of rules
+     */
+    public static function getValidationRules($for = '')
+    {
+        $rules = array();
+
+        if ($for == 'create' || $for == 'update') {
+           array_merge_by_reference($rules, array(
+                'path' => 'required',
+                'title' => 'required',
+            ));
+
+            if ($for == 'create') {
+                array_merge_by_reference($rules, array(
+                    'secret' => 'required',
+                ));
+            }
+        }
+
+        return $rules;
+    }
+
+    /**
      * Get the secret and accompanying information as a QR code
      * to export to another device.
      *

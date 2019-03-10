@@ -1,8 +1,9 @@
 <?php
 namespace App\Console\Commands;
 
-use App\Models\User;
 use Illuminate\Console\Command;
+use Validator;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class CreateUser extends Command
@@ -29,13 +30,23 @@ class CreateUser extends Command
 
         $email = $this->ask('Users email address?');
 
-        $password = Hash::make($this->secret('Password for user?'));
+        $password = $this->secret('Password for user?');
 
-        User::create(compact(array(
-            'name',
-            'email',
-            'password',
-        )));
+        $user = compact('name', 'email', 'password');
+
+        $validator = Validator::make($user, User::getValidationRules('create'));
+
+        if ($validator->fails()) {
+            $this->info('Unable to create user');
+            foreach ($validator->errors()->all() as $error) {
+                $this->error($error);
+            }
+            return 1;
+        }
+
+        $user['password'] = Hash::make($user['password']);
+
+        User::create($user);
 
         $this->info('Done.');
     }

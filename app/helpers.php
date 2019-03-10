@@ -35,3 +35,15 @@ if (! function_exists('see_db_queries')) {
         dd(\DB::getQueryLog());
     }
 }
+
+if (! function_exists('array_merge_by_reference')) {
+
+    /**
+     * Shortcut because I was about to write a lot of array merges
+     */
+    function array_merge_by_reference(&$initialarray, ...$arrays)
+    {
+        array_unshift($arrays, $initialarray);
+        $initialarray = call_user_func_array('array_merge', $arrays);
+    }
+}

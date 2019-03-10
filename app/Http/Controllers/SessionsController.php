@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 use App\Helpers\Encryption;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use \Illuminate\Validation\ValidationException;
+use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class SessionsController extends Controller
 {
@@ -32,10 +33,7 @@ class SessionsController extends Controller
     public function store()
     {
         try {
-            $this->validateRequest(array(
-                'email' => 'required|string|email',
-                'password' => 'required|string',
-            ));
+            $this->validateRequest(user::getValidationRules('login'));
         } catch (ValidationException $ex) {
             return redirect(route('session.create'))
                 ->withInput(request(array( // don't return the plaintext password to the view
@@ -90,12 +88,7 @@ class SessionsController extends Controller
         }
 
         try {
-            $this->validateRequest(array(
-                'currentpassword' => 'required|string',
-                'name' => 'required|string',
-                'email' => 'required|string|email',
-                'newpassword' => 'confirmed',
-            ));
+            $this->validateRequest(User::getValidationRules('update'));
         } catch (ValidationException $ex) {
             return redirect(route('session.edit'))
                 ->withInput(request(array( // don't return the plaintext passwords to the view
