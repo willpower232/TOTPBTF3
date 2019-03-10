@@ -159,8 +159,9 @@ class TokensController extends Controller
         try {
             $this->validateRequest(Token::getValidationRules('create'));
         } catch (ValidationException $ex) {
-            session()->put('message', 'Check your input and try again');
-            throw $ex; //carry out a redirect from laravel now that we have set a message
+            return redirect(route('tokens.create'))
+                ->withInput(request()->all())
+                ->with('message', 'Check your input and try again');
         }
 
         $secret = strtoupper(trim(str_replace(' ', '', request('secret'))));
