@@ -118,7 +118,7 @@ class Token extends Model
         $rules = array();
 
         if ($for == 'create' || $for == 'update') {
-           array_merge_by_reference($rules, array(
+            array_merge_by_reference($rules, array(
                 'path' => 'required',
                 'title' => 'required',
             ));
