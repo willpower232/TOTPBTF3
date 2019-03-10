@@ -28,14 +28,14 @@ class TokensTest extends TestCase
 
         parent::setUp();
 
-        $this->token = $this->makeFakeToken();
+        $this->token = factory(Token::class)->create();
 
         $this->testinguser = $this->token->user;
     }
 
     private function makeFakeToken()
     {
-        return factory(Token::class)->create();
+        return factory(Token::class)->make();
     }
 
     /**
@@ -135,6 +135,41 @@ class TokensTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('tokens.form');
+    }
+
+    public function testStoreTokenMissingInput()
+    {
+        $newfaketoken = $this->makeFakeToken();
+
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('tokens.store'), array(
+                'path' => '',
+                'title' => $newfaketoken->title,
+                'secret' => $newfaketoken->getDecryptedSecret(),
+            ));
+
+        $response->assertRedirect(route('tokens.create'));
+
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('tokens.store'), array(
+                'path' => $newfaketoken->path,
+                'title' => '',
+                'secret' => $newfaketoken->getDecryptedSecret(),
+            ));
+
+        $response->assertRedirect(route('tokens.create'));
+
+        $response = $this->actingAsTestingUser()
+            ->withEncryptionKey()
+            ->postWithCsrf(route('tokens.store'), array(
+                'path' => $newfaketoken->path,
+                'title' => $newfaketoken->title,
+                'secret' => '',
+            ));
+
+        $response->assertRedirect(route('tokens.create'));
     }
 
     /**
