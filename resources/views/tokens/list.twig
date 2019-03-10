@@ -7,7 +7,7 @@
 
 	<ul class="folderlist{% if folders | length < 3 %} bigger{% endif %}">
 		{% for folder in folders %}
-			{% set alt = folder.folder|slice(path|length + 1) %}
+			{% set alt = folder.folder|split('/')|last %}
 			<li>
 				<a href="{{ route('tokens.code', [folder.folder]) }}">
 					{% if folder.image %}
