@@ -170,9 +170,9 @@ class Token extends Model
 
         // the explode removes the XML definition so it can be inlined
         $svg = explode("\n", $writer->writeString(
-            'otpauth://totp/LABEL:' . $this->title .
+            'otpauth://totp/' . rawurlencode($this->title) .
             '?secret=' . $this->getDecryptedSecret() .
-            '&issuer=' . trim($this->path, '/')
+            '&issuer=' . rawurlencode(trim($this->path, '/'))
         ));
 
         return $svg[1];
