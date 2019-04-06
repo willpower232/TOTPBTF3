@@ -17,10 +17,12 @@ class SessionsTest extends TestCase
      */
     public function setUp() : void
     {
-        // alter env before running setup
-        putenv('READ_ONLY=false'); // avoid conflict
-
         parent::setUp();
+
+        // avoid conflict by confirming default
+        config(array(
+            'app.readonly' => false,
+        ));
     }
 
     /**

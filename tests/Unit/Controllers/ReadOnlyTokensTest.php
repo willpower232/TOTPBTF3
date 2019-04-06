@@ -21,11 +21,12 @@ class ReadOnlyTokensTest extends TestCase
      */
     public function setUp() : void
     {
-        // alter env before running setup
-        putenv('ENCRYPTION_SALT=' . self::$encryptionsalt);
-        putenv('READ_ONLY=true');
-
         parent::setUp();
+
+        config(array(
+            'app.encryptionsalt' => self::$encryptionsalt,
+            'app.readonly' => true,
+        ));
 
         $this->token = factory(Token::class)->create();
 

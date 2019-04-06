@@ -20,12 +20,13 @@ class TokensTest extends TestCase
      */
     public function setUp() : void
     {
-        // alter env before running setup
-        putenv('ENCRYPTION_SALT=' . self::$encryptionsalt);
-        putenv('READ_ONLY=false'); //avoid conflict
-        putenv('ALLOW_EXPORT=false');
-
         parent::setUp();
+
+        config(array(
+            'app.allowexport' => false,
+            'app.encryptionsalt' => self::$encryptionsalt,
+            'app.readonly' => false, // avoid conflict by confirming default
+        ));
 
         $this->token = $this->makeFakeToken();
 

@@ -15,10 +15,11 @@ class EncryptionTest extends TestCase
      */
     public function setUp() : void
     {
-        // alter env before running setup
-        putenv('ENCRYPTION_SALT=' . self::$encryptionsalt);
-
         parent::setUp();
+
+        config(array(
+            'app.encryptionsalt' => self::$encryptionsalt,
+        ));
 
         session()->put('encryptionkey', Encryption::makeKey('wish somebody would'));
     }

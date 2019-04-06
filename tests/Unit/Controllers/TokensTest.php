@@ -21,12 +21,13 @@ class TokensTest extends TestCase
      */
     public function setUp() : void
     {
-        // alter env before running setup
-        putenv('ENCRYPTION_SALT=' . self::$encryptionsalt);
-        putenv('READ_ONLY=false'); //avoid conflict
-        putenv('ALLOW_EXPORT=true');
-
         parent::setUp();
+
+        config(array(
+            'app.allowexport' => true,
+            'app.encryptionsalt' => self::$encryptionsalt,
+            'app.readonly' => false, // avoid conflict by confirming default
+        ));
 
         $this->token = factory(Token::class)->create();
 

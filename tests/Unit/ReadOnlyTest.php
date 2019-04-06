@@ -13,9 +13,11 @@ class ReadOnlyTest extends TestCase
      */
     public function setUp() : void
     {
-        putenv('READ_ONLY=true');
-
         parent::setUp();
+
+        config(array(
+            'app.readonly' => true,
+        ));
     }
 
     /**

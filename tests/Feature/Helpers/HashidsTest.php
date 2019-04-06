@@ -16,10 +16,11 @@ class HashidsTest extends TestCase
      */
     public function setUp() : void
     {
-        // alter env before running setup
-        putenv('HASHIDS_SALT=' . self::$hashidssalt);
-
         parent::setUp();
+
+        config(array(
+            'app.hashidssalt' => self::$hashidssalt,
+        ));
     }
 
     /**
