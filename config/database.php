@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'default' => (file_exists(database_path(env('DB_SQLITE_DATABASE', 'database.sqlite')))) ? 'sqlite' : 'mysql',
+    // use is_file instead of file_exists because file_exists will return true if the env is empty
+    'default' => (is_file(database_path(env('DB_SQLITE_DATABASE', 'database.sqlite')))) ? 'sqlite' : 'mysql',
 
     /*
     |--------------------------------------------------------------------------
