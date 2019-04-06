@@ -6,7 +6,7 @@
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "fideloper/proxy": "^4.0",
         "hashids/hashids": "^3.0",
-        "laravel/framework": "5.7.*",
+        "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "robthree/twofactorauth": "^1.6",
         "synergitech/twigbridge": "^0.1.1"
