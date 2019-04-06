@@ -11,7 +11,7 @@ class ReadOnlyTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp() : void
     {
         putenv('READ_ONLY=true');
 

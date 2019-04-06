@@ -13,7 +13,7 @@ class SessionsTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp() : void
     {
         // alter env before running setup
         putenv('READ_ONLY=false'); // avoid conflict

@@ -13,7 +13,7 @@ class EncryptionTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp() : void
     {
         // alter env before running setup
         putenv('ENCRYPTION_SALT=' . self::$encryptionsalt);
