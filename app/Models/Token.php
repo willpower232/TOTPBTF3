@@ -78,15 +78,27 @@ class Token extends Model
     }
 
     /**
+     * Encrypt a secret with the sessions encryption key, decoupled for faker
+     *
+     * @param string $newsecret
+     *
+     * @return string the encrypted value
+     */
+    public static function encryptSecret(string $newsecret) : string
+    {
+        $user_key = Key::loadFromAsciiSafeString(session('encryptionkey'));
+
+        return Crypto::encrypt($newsecret, $user_key);
+    }
+
+    /**
      * Set the secret but encrypt it first
      *
      * @return void
      */
     public function setSecret(string $newsecret) : void
     {
-        $user_key = Key::loadFromAsciiSafeString(session('encryptionkey'));
-
-        $this->secret = Crypto::encrypt($newsecret, $user_key);
+        $this->secret = self::encryptSecret($newsecret);
     }
 
     /**

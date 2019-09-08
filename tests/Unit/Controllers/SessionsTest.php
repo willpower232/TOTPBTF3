@@ -4,7 +4,6 @@ namespace Tests\Unit\Controllers;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Token;
-use App\Helpers\Encryption;
 
 class SessionsTest extends TestCase
 {
@@ -268,15 +267,14 @@ class SessionsTest extends TestCase
     /**
      * Verify that a users tokens are re-encrypted with the new details
      */
-    public function testUserUpdatedTokens()
+    public function testUserUpdatedSecret()
     {
-        // store initial encryption key to help encryption?
-        session()->put('encryptionkey', $this->encryptionkey);
         $token = factory(Token::class)->create();
 
-        $this->testinguser = $token->user;
-
-        $initialencryptedsecret = $token->secret;
+        $this->setTestingUser($token->user);
+        session()->put('encryptionkey', $this->encryptionkey);
+        $initialprotectedkey = $token->user->protected_key_encoded;
+        $initialencryptionkey = $this->encryptionkey;
         $initialdecryptedsecret = $token->getDecryptedSecret();
 
         $newpassword = "something that isn't secret";
@@ -293,14 +291,17 @@ class SessionsTest extends TestCase
             ));
 
         // store new encryptionkey in session to successfully decrypt
-        session()->put('encryptionkey', Encryption::makeKey($newpassword));
+        // session()->put('encryptionkey', Encryption::makeKey($newpassword));
 
         $token->refresh();
-
-        $updatedencryptedsecret = $token->secret;
+        $this->setTestingUser($token->user, $newpassword);
+        session()->put('encryptionkey', $this->encryptionkey);
+        $updatedprotectedkey = $token->user->protected_key_encoded;
+        $updatedencryptionkey = $this->encryptionkey;
         $updateddecryptedsecret = $token->getDecryptedSecret();
 
+        $this->assertNotSame($initialprotectedkey, $updatedprotectedkey);
+        $this->assertSame($initialencryptionkey, $updatedencryptionkey);
         $this->assertSame($initialdecryptedsecret, $updateddecryptedsecret);
-        $this->assertNotSame($initialencryptedsecret, $updatedencryptedsecret);
     }
 }

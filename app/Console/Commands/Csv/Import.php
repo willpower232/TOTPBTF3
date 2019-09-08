@@ -53,10 +53,7 @@ class Import extends Command
             ->with('tokens')
             ->first();
 
-        $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($user->protected_key_encoded);
-        $user_key = $protected_key->unlockKey($password);
-
-        session()->put('encryptionkey', $user_key->saveToAsciiSafeString());
+        $user->putEncryptionKeyInSession($password);
 
         // read the entire file into an array
         $csv = array_map('str_getcsv', file($this->argument('source') ?? 'output.csv'));

@@ -5,7 +5,6 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Token;
-use App\Helpers\Encryption;
 
 class UserTest extends TestCase
 {
@@ -34,6 +33,7 @@ class UserTest extends TestCase
     {
         $testtoken = new Token();
         $testtoken->title = 'hereiam';
+        $testtoken->secret = 'unnecessary';
 
         $this->user->tokens()->save($testtoken);
 

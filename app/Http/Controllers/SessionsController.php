@@ -50,10 +50,7 @@ class SessionsController extends Controller
         }
 
         // expensive decryption occurs here, better than all the time
-        $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString(auth()->guard()->user()->protected_key_encoded);
-        $user_key = $protected_key->unlockKey(request('password'));
-
-        session()->put('encryptionkey', $user_key->saveToAsciiSafeString());
+        auth()->user()->putEncryptionKeyInSession(request('password'));
 
         return redirect(route('tokens.code'));
     }

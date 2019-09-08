@@ -23,14 +23,9 @@ class TokenTest extends TestCase
     {
         parent::setUp();
 
-        config(array(
-            'app.encryptionsalt' => self::$encryptionsalt,
-        ));
-
-        session()->put('encryptionkey', Encryption::makeKey('wish somebody would'));
-
         // don't save unless we really want to
         $this->token = factory(Token::class)->make();
+        $this->token->user->putEncryptionKeyInSession('secret');
     }
 
     /**
@@ -41,7 +36,7 @@ class TokenTest extends TestCase
     public function testSecretDecryption()
     {
         $knownsecret = (new TwoFactorAuth(config('app.name')))->createSecret();
-        $this->token->secret = Encryption::encrypt($knownsecret);
+        $this->token->setSecret($knownsecret);
         $this->assertSame($knownsecret, $this->token->getDecryptedSecret());
     }
 

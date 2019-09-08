@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Hash;
+use Defuse\Crypto\KeyProtectedByPassword;
 
 class User extends Authenticatable
 {
@@ -35,6 +36,33 @@ class User extends Authenticatable
     public function tokens()
     {
         return $this->hasMany(Token::class);
+    }
+
+    /**
+     * generate an encryption key for the user
+     *
+     * @param string $password the users plaintext password
+     *
+     * @return string the unlocked user key
+     */
+    public function getEncryptionKey(string $password) : string
+    {
+        $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($this->protected_key_encoded);
+        $user_key = $protected_key->unlockKey($password);
+
+        return $user_key->saveToAsciiSafeString();
+    }
+
+    /**
+     * store the encryption key in the session
+     *
+     * @param string $password whatever was input
+     *
+     * @return void
+     */
+    public function putEncryptionKeyInSession(string $password) : void
+    {
+        session()->put('encryptionkey', $this->getEncryptionKey($password));
     }
 
     /**

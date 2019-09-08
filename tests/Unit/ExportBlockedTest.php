@@ -4,7 +4,6 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Token;
-use App\Helpers\Encryption;
 
 class TokensTest extends TestCase
 {
@@ -30,7 +29,7 @@ class TokensTest extends TestCase
 
         $this->token = $this->makeFakeToken();
 
-        $this->testinguser = $this->token->user;
+        $this->setTestingUser($this->token->user);
     }
 
     private function makeFakeToken()

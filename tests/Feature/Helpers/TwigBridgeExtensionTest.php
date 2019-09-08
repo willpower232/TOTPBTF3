@@ -3,7 +3,6 @@ namespace Tests\Feature\Helpers;
 
 use Tests\TestCase;
 use App\Models\Token;
-use App\Helpers\Encryption;
 
 class TwigBridgeExtensionTest extends TestCase
 {

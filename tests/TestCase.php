@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use App\Helpers\Encryption;
 use App\Models\User;
 
 abstract class TestCase extends BaseTestCase
@@ -18,11 +17,15 @@ abstract class TestCase extends BaseTestCase
      *
      * @return void
      */
-    public function setUp() : void
-    {
-        parent::setUp();
+    // public function setUp()
+    // {
+    //     parent::setUp();
+    // }
 
-        $this->encryptionkey = Encryption::makeKey('wish somebody would');
+    public function setTestingUser(User $user, string $password = 'secret')
+    {
+        $this->testinguser = $user;
+        $this->encryptionkey = $user->getEncryptionKey($password);
     }
 
     /**
@@ -33,7 +36,7 @@ abstract class TestCase extends BaseTestCase
     public function getTestingUser()
     {
         if (! is_object($this->testinguser)) {
-            $this->testinguser = factory(User::class)->create();
+            $this->setTestingUser(factory(User::class)->create());
         }
 
         return $this->testinguser;
@@ -46,7 +49,7 @@ abstract class TestCase extends BaseTestCase
      */
     public function refreshTestingUser()
     {
-        $this->testinguser = User::where('id', $this->getTestingUser()->id)->first();
+        $this->testinguser->refresh();
     }
 
     /**
@@ -66,6 +69,10 @@ abstract class TestCase extends BaseTestCase
      */
     public function withEncryptionKey()
     {
+        if ($this->encryptionkey === null) {
+            throw new \Exception('no encryption key');
+        }
+
         return $this->session(array(
             'encryptionkey' => $this->encryptionkey,
         ));
