@@ -4,7 +4,7 @@ namespace App\Console\Commands\Csv;
 use Illuminate\Console\Command;
 use Validator;
 use App\Models\User;
-use App\Helpers\Encryption;
+use Defuse\Crypto\KeyProtectedByPassword;
 
 class Export extends Command
 {
@@ -47,11 +47,14 @@ class Export extends Command
             return 1;
         }
 
-        session()->put('encryptionkey', Encryption::makeKey($user['password']));
-
-        $user = User::where('email', $user['email'])
+        $user = User::where('email', $email)
             ->with('tokens')
             ->first();
+
+        $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($user->protected_key_encoded);
+        $user_key = $protected_key->unlockKey($password);
+
+        session()->put('encryptionkey', $user_key->saveToAsciiSafeString());
 
         $cache = '';
 
@@ -65,7 +68,7 @@ class Export extends Command
         foreach ($user->tokens as $token) {
             $secret = $token->getDecryptedSecret();
 
-            if (($line = $this->makeCSVLine(array( $token->path, $token->title, $secret))) === false) {
+            if (($line = $this->makeCSVLine(array($token->path, $token->title, $secret))) === false) {
                 $this->info('Problem building export');
                 return 1;
             }

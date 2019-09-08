@@ -5,7 +5,7 @@ use Illuminate\Console\Command;
 use Validator;
 use App\Models\User;
 use App\Models\Token;
-use App\Helpers\Encryption;
+use Defuse\Crypto\KeyProtectedByPassword;
 use DB;
 
 class Import extends Command
@@ -49,11 +49,14 @@ class Import extends Command
             return 1;
         }
 
-        session()->put('encryptionkey', Encryption::makeKey($user['password']));
-
-        $user = User::where('email', $user['email'])
+        $user = User::where('email', $email)
             ->with('tokens')
             ->first();
+
+        $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($user->protected_key_encoded);
+        $user_key = $protected_key->unlockKey($password);
+
+        session()->put('encryptionkey', $user_key->saveToAsciiSafeString());
 
         // read the entire file into an array
         $csv = array_map('str_getcsv', file($this->argument('source') ?? 'output.csv'));
@@ -73,8 +76,9 @@ class Import extends Command
                 'user_id' => $user->id,
                 'path' => $newToken['path'],
                 'title' => $newToken['title'],
-                'secret' => Encryption::encrypt($newToken['secret']),
             ));
+
+            $token->setSecret($newToken['secret']);
 
             try {
                 $test = $token->getTOTPCode();

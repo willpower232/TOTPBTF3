@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Helpers\Encryption;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use Defuse\Crypto\KeyProtectedByPassword;
 
 class SessionsController extends Controller
 {
@@ -32,7 +32,7 @@ class SessionsController extends Controller
     public function store()
     {
         try {
-            $this->validateRequest(user::getValidationRules('login'));
+            $this->validateRequest(User::getValidationRules('login'));
         } catch (ValidationException $ex) {
             return redirect(route('session.create'))
                 ->withInput(request(array( // don't return the plaintext password to the view
@@ -49,7 +49,11 @@ class SessionsController extends Controller
                 ->with('message', 'Unable to match credentials');
         }
 
-        session()->put('encryptionkey', Encryption::makeKey(request('password')));
+        // expensive decryption occurs here, better than all the time
+        $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString(auth()->guard()->user()->protected_key_encoded);
+        $user_key = $protected_key->unlockKey(request('password'));
+
+        session()->put('encryptionkey', $user_key->saveToAsciiSafeString());
 
         return redirect(route('tokens.code'));
     }
@@ -121,17 +125,18 @@ class SessionsController extends Controller
             $passwordchanged = true;
 
             $user->password = request('newpassword');
+
+            $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString(auth()->guard()->user()->protected_key_encoded);
+
+            // changing the key password can throw exceptions so shouldn't save the user yet
+            $protected_key = $protected_key->changePassword(request('currentpassword'), request('newpassword'));
+
+            $user->protected_key_encoded = $protected_key->saveToAsciiSafeString();
         }
 
         $user->save();
 
         if ($passwordchanged) {
-            $newencryptionkey = Encryption::makeKey(request('newpassword'));
-            foreach ($user->tokens as $token) {
-                $token->secret = Encryption::encrypt(Encryption::decrypt($token->secret), $newencryptionkey);
-                $token->save();
-            }
-
             // don't need to log out others because we have already changed the hash
             // also the user model has a mutator for password and this will break it
             //Auth::logoutOtherDevices(request('newpassword'));

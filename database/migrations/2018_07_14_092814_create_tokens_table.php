@@ -18,7 +18,7 @@ class CreateTokensTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('path')->nullable();
             $table->string('title')->nullable();
-            $table->string('secret')->nullable();
+            $table->text('secret');
             $table->timestamps();
 
             $table->index('path');

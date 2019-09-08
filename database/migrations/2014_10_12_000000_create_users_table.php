@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->text('protected_key_encoded');
             $table->boolean('light_mode')->default(false);
             $table->rememberToken();
             $table->timestamps();

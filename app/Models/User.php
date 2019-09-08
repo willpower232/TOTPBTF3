@@ -13,6 +13,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'protected_key_encoded',
     );
 
     protected $hidden = array(

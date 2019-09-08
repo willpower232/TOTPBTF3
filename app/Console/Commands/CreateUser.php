@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Validator;
 use App\Models\User;
+use Defuse\Crypto\KeyProtectedByPassword;
 
 class CreateUser extends Command
 {
@@ -42,6 +43,10 @@ class CreateUser extends Command
             }
             return 1;
         }
+
+        $protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($password);
+
+        $user['protected_key_encoded'] = $protected_key->saveToAsciiSafeString();
 
         User::create($user);
 

@@ -3,9 +3,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Helpers\Encryption;
 use App\Helpers\Hashids;
 use RobThree\Auth\TwoFactorAuth;
+
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
 
 use BaconQrCode\Writer;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -76,14 +78,31 @@ class Token extends Model
     }
 
     /**
+     * Set the secret but encrypt it first
+     *
+     * @return void
+     */
+    public function setSecret(string $newsecret) : void
+    {
+        $user_key = Key::loadFromAsciiSafeString(session('encryptionkey'));
+
+        $this->secret = Crypto::encrypt($newsecret, $user_key);
+    }
+
+    /**
      * A shortcut function to return the secret from the database
      * decrypted with the users session encryptionkey.
+     *
+     * @throws Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException
      *
      * @return string the decrypted secret
      */
     public function getDecryptedSecret()
     {
-        return Encryption::decrypt($this->secret);
+        $user_key = Key::loadFromAsciiSafeString(session('encryptionkey'));
+
+        // decrypt can return an exception but we want to let that get into the UI or something
+        return Crypto::decrypt($this->secret, $user_key);
     }
 
     /**

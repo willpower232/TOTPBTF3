@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Token;
-use App\Helpers\Encryption;
 use \Illuminate\Validation\ValidationException;
 
 class TokensController extends Controller
@@ -179,8 +178,10 @@ class TokensController extends Controller
             'user_id' => auth()->guard()->user()->id,
             'path' => request('path'),
             'title' => request('title'),
-            'secret' => Encryption::encrypt($secret),
         ));
+
+        // encrypt it
+        $token->setSecret($secret);
 
         try {
             $test = $token->getTOTPCode();
