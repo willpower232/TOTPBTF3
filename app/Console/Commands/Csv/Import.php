@@ -59,7 +59,7 @@ class Import extends Command
         $csv = array_map('str_getcsv', file($this->argument('source') ?? 'output.csv'));
 
         // the first row of the CSV is the keys for the array
-        array_walk($csv, function(&$row) use ($csv) {
+        array_walk($csv, function (&$row) use ($csv) {
             $row = array_combine($csv[0], $row);
         });
 
