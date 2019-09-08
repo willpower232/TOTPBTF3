@@ -73,7 +73,7 @@ jobs:
       - run:
           name: Set Up MySQL Database
           command: |
-            sudo apt install -y mysql-client;
+            sudo apt update && sudo apt install -y mysql-client;
             mysql  -h 127.0.0.1 -u root -e "CREATE DATABASE totp_test;";
             php artisan --env=testing migrate;
       - run:
@@ -97,7 +97,7 @@ jobs:
       - run:
           name: Set Up SQLite Database
           command: |
-            sudo apt install -y libsqlite3-dev;
+            sudo apt update && sudo apt install -y libsqlite3-dev;
             touch database/testing.sqlite;
             php artisan --env=testing migrate;
       - run:
