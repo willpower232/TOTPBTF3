@@ -105,7 +105,7 @@ class Token extends Model
      * A shortcut function to return the secret from the database
      * decrypted with the users session encryptionkey.
      *
-     * @throws Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException
+     * @throws \Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException
      *
      * @return string the decrypted secret
      */

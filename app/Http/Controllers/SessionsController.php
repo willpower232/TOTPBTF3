@@ -50,7 +50,7 @@ class SessionsController extends Controller
         }
 
         // expensive decryption occurs here, better than all the time
-        auth()->user()->putEncryptionKeyInSession(request('password'));
+        auth()->guard()->user()->putEncryptionKeyInSession(request('password'));
 
         return redirect(route('tokens.code'));
     }
@@ -123,7 +123,9 @@ class SessionsController extends Controller
 
             $user->password = request('newpassword');
 
-            $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString(auth()->guard()->user()->protected_key_encoded);
+            $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString(
+                auth()->guard()->user()->protected_key_encoded
+            );
 
             // changing the key password can throw exceptions so shouldn't save the user yet
             $protected_key = $protected_key->changePassword(request('currentpassword'), request('newpassword'));
