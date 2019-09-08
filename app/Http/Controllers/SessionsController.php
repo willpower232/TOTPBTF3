@@ -41,7 +41,7 @@ class SessionsController extends Controller
                 ->with('message', 'Please complete all fields');
         }
 
-        if (! auth()->attempt(request(array('email', 'password')))) {
+        if (! auth()->guard()->attempt(request(array('email', 'password')))) {
             return redirect(route('session.create'))
                 ->withInput(request(array( // don't return the plaintext password to the view
                     'email',
@@ -58,7 +58,7 @@ class SessionsController extends Controller
     public function destroy()
     {
         session()->flush(); // remove encryption key
-        auth()->logout();
+        auth()->guard()->logout();
 
         return redirect(route('session.create'));
     }
@@ -66,7 +66,7 @@ class SessionsController extends Controller
     // GET /profile
     public function show()
     {
-        return view('sessions/show')->with('user', auth()->user());
+        return view('sessions/show')->with('user', auth()->guard()->user());
     }
 
     // GET /profile/edit
@@ -76,7 +76,7 @@ class SessionsController extends Controller
             abort(404);
         }
 
-        return view('sessions/form')->with('user', auth()->user());
+        return view('sessions/form')->with('user', auth()->guard()->user());
     }
 
     // POST /profile
@@ -97,8 +97,8 @@ class SessionsController extends Controller
                 ->with('message', 'Please check your input');
         }
 
-        if (! auth()->validate(array(
-            'email' => auth()->user()->email,
+        if (! auth()->guard()->validate(array(
+            'email' => auth()->guard()->user()->email,
             'password' => request('currentpassword'),
         ))) {
             return redirect(route('session.edit'))
@@ -111,7 +111,7 @@ class SessionsController extends Controller
                 ));
         }
 
-        $user = auth()->user();
+        $user = auth()->guard()->user();
 
         $user->name = request('name');
         $user->email = request('email');
@@ -137,7 +137,7 @@ class SessionsController extends Controller
             //Auth::logoutOtherDevices(request('newpassword'));
 
             session()->flush(); // remove encryption key
-            auth()->logout();
+            auth()->guard()->logout();
 
             return redirect(route('session.create'));
         }

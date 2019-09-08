@@ -24,7 +24,7 @@ Route::get('/export{path?}', 'TokensController@export')->where('path', '(.*)')->
 Route::get('/import', 'TokensController@create')->name('tokens.create');
 
 Route::bind('token', function($tokenidhash) {
-	return Token::where('user_id', auth()->user()->id)
+	return Token::where('user_id', auth()->guard()->user()->id)
 		->findOrFail(Hashids::decode($tokenidhash));
 });
 

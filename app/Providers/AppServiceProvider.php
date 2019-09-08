@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
                 $with['title'] = config('app.name');
             }
 
-            $with['light_mode'] = ($user = auth()->user()) ? $user->light_mode : false;
+            $with['light_mode'] = ($user = auth()->guard()->user()) ? $user->light_mode : false;
             $with['read_only'] = config('app.readonly');
             $with['allow_export'] = config('app.allowexport');
 

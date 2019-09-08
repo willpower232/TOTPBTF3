@@ -257,7 +257,7 @@ class SessionsTest extends TestCase
 
         $response->assertRedirect(route('session.create'));
 
-        $success = auth()->validate(array(
+        $success = auth()->guard()->validate(array(
             'email' => $this->getTestingUser()->email,
             'password' => $newpassword,
         ));

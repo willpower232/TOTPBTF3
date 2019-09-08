@@ -57,7 +57,7 @@ class TokensController extends Controller
 
         $folders = $folders
             ->distinct()
-            ->where('user_id', auth()->user()->id)
+            ->where('user_id', auth()->guard()->user()->id)
             ->whereRaw('path LIKE ' . $concat, array($path))
             ->orderBy('folder', 'ASC')
             ->get()->toArray();
@@ -78,7 +78,7 @@ class TokensController extends Controller
         // if there is only one folder, make sure it matches the path
         // so this doesn't break it if theres only one token in the app
         if (count($folders) == 1 && $folders[0]['folder'] == $path) {
-            return Token::where('user_id', auth()->user()->id)
+            return Token::where('user_id', auth()->guard()->user()->id)
                 ->where('path', $path)
                 ->first();
         }
@@ -176,7 +176,7 @@ class TokensController extends Controller
         }
 
         $token = new Token(array(
-            'user_id' => auth()->user()->id,
+            'user_id' => auth()->guard()->user()->id,
             'path' => request('path'),
             'title' => request('title'),
             'secret' => Encryption::encrypt($secret),

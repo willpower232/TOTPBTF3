@@ -12,7 +12,7 @@ class SessionsController extends Controller
 
     public function setLightMode()
     {
-        $user = auth()->user();
+        $user = auth()->guard()->user();
 
         $user->light_mode = filter_var(request('light_mode'), FILTER_VALIDATE_BOOLEAN);
         $user->save();

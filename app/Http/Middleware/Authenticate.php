@@ -20,8 +20,8 @@ class Authenticate extends Middleware
     public function handle($request, Closure $next, ...$guards)
     {
         // ensure that the session has an encryption key during auth check in controller
-        if (auth()->check() && strlen(session('encryptionkey')) < 1) {
-            auth()->logout();
+        if (auth()->guard()->check() && strlen(session('encryptionkey')) < 1) {
+            auth()->guard()->logout();
             return redirect()->to(route('session.create'))->with(
                 'message',
                 'Your session has expired because your encryption key is missing'

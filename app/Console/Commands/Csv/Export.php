@@ -41,7 +41,7 @@ class Export extends Command
             return 1;
         }
 
-        if (! auth()->validate($user)) {
+        if (! auth()->guard()->validate($user)) {
             $this->info('Unable to login');
             $this->error('Unable to match details');
             return 1;
