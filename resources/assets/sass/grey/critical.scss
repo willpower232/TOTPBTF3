@@ -1,0 +1,49 @@
+@import "../critical";
+@import "variables";
+
+body,body * {
+	color:$text;
+}
+
+html {
+	background:$bigbackground;
+
+	&.inverted {
+		// double invert the images to restore them
+		&,& img {
+			filter:hue-rotate(180deg) invert(100%);
+		}
+	}
+}
+
+body {
+	background:$mainbackground;
+
+	&:before {
+		background:$redback;color:white;
+	}
+
+	&.scrollup {
+		footer {
+			&:after {
+				background:linear-gradient(transparent, $header);
+			}
+		}
+	}
+}
+
+header,footer {
+	background:$header;line-height:2rem;
+}
+
+header {
+	display:flex;justify-content:space-around;padding:1rem;
+
+	& + main {
+		min-height:calc(100vh - 4rem - 2rem);padding:1rem;
+	}
+
+	a {
+		text-decoration:none;
+	}
+}

@@ -1,0 +1,97 @@
+@import "../app";
+@import "variables";
+
+.breadcrumbs {
+
+	&.overflowed {
+		&:after {
+			background:linear-gradient(to right, $mainbackground 0%, transparent 100%);
+		}
+	}
+}
+
+.folderlist {
+	a {
+		background:$header;
+	}
+}
+
+input:not([type='checkbox']) {
+	border:1px solid $border;
+
+	&.is-invalid {
+		border-color:$redtext;
+	}
+}
+
+.toggle {
+	background:$text;
+
+	.helper {
+		background:$text;box-shadow:0 0 10px $bigbackground;
+	}
+
+	input:checked + .helper {
+		background:$greenback;
+	}
+
+	input[disabled] + .helper {
+		background:black;
+	}
+}
+
+.invalid-feedback strong {
+	color:$redtext;
+}
+
+button,.button {
+	background:$header;border:1px solid $border;
+
+	&.button-primary {
+		background:$bigbackground;
+	}
+
+	&.button-secondary {
+		background:$blueback;
+	}
+
+	&.button-bad {
+		background:$redback;
+	}
+
+	&.button-good {
+		background:$greenback;
+	}
+}
+
+.a-timer {
+	--progress: 0;
+
+	height:3rem;margin:4rem auto;opacity:0;position:relative;transition:opacity 0.4s;width:calc(0.6667 * 3rem);
+
+	&:before,&:after {
+		content:'';left:5%;position:absolute;right:5%;z-index:1;
+	}
+
+	&:before {
+		background:$text;bottom:50%;height:calc((100 - var(--progress)) * 0.5%);
+	}
+
+	&:after {
+		background:$bigbackground;bottom:0;height:calc(var(--progress) * 0.5%);
+	}
+
+	.hourglass svg {
+		height:100%;position:absolute;width:100%;z-index:2;
+	}
+}
+
+.js-copy {
+	&.success {
+		background-color:$greenback;
+	}
+
+	&.failure {
+		background-color:$redback;
+	}
+}

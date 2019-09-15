@@ -1,5 +1,3 @@
-@import "variables";
-
 .breadcrumbs {
 	// relative positioning helps calculate responsiveness
 	display:flex;position:relative;
@@ -8,7 +6,7 @@
 		justify-content:flex-end;overflow:hidden;
 
 		&:after {
-			background:linear-gradient(to right, $mainbackground 0%, transparent 100%);bottom:0;content:'';left:0;position:absolute;top:0;width:5%;
+			bottom:0;content:'';left:0;position:absolute;top:0;width:5%;
 		}
 	}
 
@@ -33,7 +31,7 @@
 	}
 
 	a {
-		align-items:center;background:$header;display:flex;height:60px;justify-content:center;padding:5px;position:relative;text-align:center;text-decoration:none;
+		align-items:center;display:flex;height:60px;justify-content:center;padding:5px;position:relative;text-align:center;text-decoration:none;
 	}
 
 	img {
@@ -50,10 +48,10 @@ label {
 }
 
 input:not([type='checkbox']) {
-	background:none;border:1px solid $border;box-sizing:border-box;height:3rem;padding:0 1rem;width:100%;
+	background:none;box-sizing:border-box;height:3rem;padding:0 1rem;width:100%;
 
 	&.is-invalid {
-		border-color:$redtext;
+		//
 	}
 }
 
@@ -77,27 +75,27 @@ input:not([type='checkbox']) {
 }
 
 .toggle {
-	background:$text;border-radius:10px;cursor:pointer;display:block;height:10px;position:relative;width:40px;
+	border-radius:10px;cursor:pointer;display:block;height:10px;position:relative;width:40px;
 
 	input {
 		display:none;
 	}
 
 	.helper {
-		background:$text;border-radius:20px;box-shadow:0 0 10px $bigbackground;height:20px;left:-5px;margin:0;position:absolute;top:-5px;transition:all 0.5s;width:20px;
+		border-radius:20px;height:20px;left:-5px;margin:0;position:absolute;top:-5px;transition:all 0.5s;width:20px;
 	}
 
 	input:checked + .helper {
-		background:$greenback;left:calc(100% - 12px);
+		left:calc(100% - 12px);
 	}
 
 	input[disabled] + .helper {
-		background:black;
+		//
 	}
 }
 
 .invalid-feedback strong {
-	color:$redtext;
+	//
 }
 
 ul {
@@ -109,7 +107,23 @@ ul {
 }
 
 button,.button {
-	background:$header;border:1px solid $border;box-sizing:border-box;cursor:pointer;height:3rem;margin-top:2rem;text-align:center;width:100%;
+	box-sizing:border-box;cursor:pointer;height:3rem;margin-top:2rem;text-align:center;width:100%;
+
+	&.button-primary {
+		//
+	}
+
+	&.button-secondary {
+		//
+	}
+
+	&.button-bad {
+		//
+	}
+
+	&.button-good {
+		//
+	}
 }
 
 a.button {
@@ -158,25 +172,7 @@ dt {
 }
 
 .a-timer {
-	--progress: 0;
-
-	height:3rem;margin:4rem auto;opacity:0;position:relative;transition:opacity 0.4s;width:calc(0.6667 * 3rem);
-
-	&:before,&:after {
-		content:'';left:5%;position:absolute;right:5%;z-index:1;
-	}
-
-	&:before {
-		background:$text;bottom:50%;height:calc((100 - var(--progress)) * 0.5%);
-	}
-
-	&:after {
-		background:$bigbackground;bottom:0;height:calc(var(--progress) * 0.5%);
-	}
-
-	.hourglass svg {
-		height:100%;position:absolute;width:100%;z-index:2;
-	}
+	//
 }
 
 .js-copy {
@@ -187,11 +183,11 @@ dt {
 	}
 
 	&.success {
-		background-color:$greenback;
+		//
 	}
 
 	&.failure {
-		background-color:$redback;
+		//
 	}
 }
 
@@ -201,14 +197,4 @@ dt {
 	svg {
 		display:block;max-width:100%;margin:0 auto;
 	}
-}
-
-.blueback {
-	background:$blueback;
-}
-.greenback {
-	background:$greenback;
-}
-.redback {
-	background:$redback;
 }

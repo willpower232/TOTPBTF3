@@ -1,5 +1,9 @@
 let mix = require('laravel-mix');
 
+// read theme from .env
+require('dotenv').config();
+var theme = process.env.MIX_THEME || 'grey';
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -24,15 +28,27 @@ mix.scripts('resources/assets/js/sw.js', 'public_html/sw.js');
 mix.setPublicPath('./public_html/');
 
 // standard scss compile
-mix.sass('resources/assets/sass/critical.scss', 'css').options({
+mix.sass('resources/assets/sass/' + theme + '/critical.scss', 'css').options({
 	autoprefixer: false
 });
-mix.sass('resources/assets/sass/app.scss', 'css').options({
+mix.sass('resources/assets/sass/' + theme + '/app.scss', 'css').options({
 	autoprefixer: false
 });
 
 // auto cache bust
 mix.version();
+
+// allow themes to have an optional image directory
+let fs = require('fs');
+fs.stat('resources/assets/img/' + theme, function(err) {
+	if (err === null) {
+		mix.copyDirectory('resources/assets/img/' + theme, 'public_html/img');
+	} else {
+		// clean up theme changes
+		const del = require('del');
+		del('public_html/img');
+	}
+});
 
 // sourcemaps only happen if minified i.e. prod
 // mix.sourceMaps();
