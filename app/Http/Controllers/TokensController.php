@@ -25,7 +25,7 @@ class TokensController extends Controller
         $path = rtrim($path, '/');
 
         foreach (array('png', 'svg') as $ext) {
-            $image = 'img' . strtolower($path) . '.' . $ext;
+            $image = 'tokenicons' . strtolower($path) . '.' . $ext;
             if (file_exists(public_path($image))) {
                 return $image;
             }

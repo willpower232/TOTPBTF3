@@ -68,7 +68,7 @@ I came up with too many negatives whilst planning out how to handle importing fr
 
 ## Images
 
-You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP token for a Github account belonging to Contoso, you could upload `public/img/contoso.png` and `public/img/contoso/github.png` and they would appear automatically in the list.
+You can also replace the text on the folder names with SVG or PNG images (SVG preferred). For example, if you have a TOTP token for a Github account belonging to Contoso, you could upload `public/tokenicons/contoso.png` and `public/tokenicons/contoso/github.png` and they would appear automatically in the list.
 
 Finding the right icons can be tricky but I've found most icons I've needed for this can be found at [edent/SuperTinyIcons](https://github.com/edent/SuperTinyIcons) and they come in small SVG files for optimum performance.
 
