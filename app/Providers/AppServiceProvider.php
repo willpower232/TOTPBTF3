@@ -52,10 +52,6 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with($with);
         });
-
-        view()->composer('partials/header', function ($view) {
-            $view->with('is_home', (request()->segment(1) == 'codes' && count(request()->segments()) == 1));
-        });
     }
 
     /**

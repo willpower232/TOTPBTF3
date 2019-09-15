@@ -26,14 +26,10 @@
 }
 
 .folderlist {
-	display:flex;flex-wrap:wrap;list-style:none;margin-left:-0.5%;padding:0;
+	list-style:none;margin-left:-0.5%;padding:0;
 
 	li {
-		margin:0.5%;width:49%;
-	}
-
-	&.bigger li {
-		width:99%;
+		margin:0.5%;width:99%;
 	}
 
 	a {
@@ -108,23 +104,12 @@ ul {
 	padding-left:1em;
 }
 
+.buttons {
+	justify-self:end;margin-top:auto;
+}
+
 button,.button {
 	background:$header;border:1px solid $border;box-sizing:border-box;cursor:pointer;height:3rem;margin-top:2rem;text-align:center;width:100%;
-
-	&.floating,&.center {
-		width:3rem;
-	}
-
-	&.floating {
-		margin-left:calc(99% - 5rem);margin-top:0;position:fixed;top:calc(100vh - 2px - 6rem);
-		@media (min-width:600px) {
-			margin-left:calc(568px - 3rem);
-		}
-	}
-
-	&.center {
-		bottom:1rem;left:calc(50% - 1.5rem);position:absolute;
-	}
 }
 
 a.button {
@@ -159,9 +144,13 @@ dt {
 	text-align:center;
 }
 
+.code-and-timer {
+	margin-top:2rem;position:relative;
+}
+
 .a-code {
 	// leave spacing and indenting as ems
-	font-size:16vw;letter-spacing:0.3em;margin-top:2rem;text-indent:0.3em;
+	font-size:16vw;letter-spacing:0.3em;text-indent:0.3em;
 
 	@media (min-width:500px) {
 		font-size:5rem;
@@ -171,7 +160,8 @@ dt {
 .a-timer {
 	--progress: 0;
 
-	bottom:1rem;height:3rem;left:1rem;opacity:0;padding-right:calc(0.6667 * 3rem);position:absolute;transition:opacity 0.4s;width:0;
+	height:3rem;margin:4rem auto;opacity:0;position:relative;transition:opacity 0.4s;width:calc(0.6667 * 3rem);
+
 	&:before,&:after {
 		content:'';left:5%;position:absolute;right:5%;z-index:1;
 	}
@@ -184,8 +174,8 @@ dt {
 		background:$bigbackground;bottom:0;height:calc(var(--progress) * 0.5%);
 	}
 
-	.hourglass {
-		background:url('/hollow_hourglass.svg');height:100%;position:absolute;width:100%;z-index:2;
+	.hourglass svg {
+		height:100%;position:absolute;width:100%;z-index:2;
 	}
 }
 

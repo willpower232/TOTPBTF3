@@ -1,28 +1,34 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	<h1>Profile</h1>
+	{% include 'partials/header.twig' %}
 
-	<dl>
-		<dt>Full Name</dt>
-		<dd>{{ user.name }}</dd>
+	<main>
+		<h1>Profile</h1>
 
-		<dt>Email</dt>
-		<dd>{{ user.email }}</dd>
+		<dl>
+			<dt>Full Name</dt>
+			<dd>{{ user.name }}</dd>
 
-		<dt>Light Mode</dt>
-		<dd>
-			<label class="toggle">
-				<input type="checkbox" name="light_mode" {% if user.light_mode %}checked {% endif %} disabled />
-				<span class="helper"></span>
-			</label>
-		</dd>
-	</dl>
+			<dt>Email</dt>
+			<dd>{{ user.email }}</dd>
 
-	{% if not read_only %}
-		<a class="button blueback" href="{{ route('session.edit') }}">Edit</a>
-	{% endif %}
+			<dt>Light Mode</dt>
+			<dd>
+				<label class="toggle">
+					<input type="checkbox" name="light_mode" {% if user.light_mode %}checked {% endif %} disabled />
+					<span class="helper"></span>
+				</label>
+			</dd>
+		</dl>
 
-	<a class="button redback" href="{{ route('session.destroy') }}">Logout</a>
+		<div class="buttons">
+			{% if not read_only %}
+				<a class="button button-secondary" href="{{ route('session.edit') }}">Edit</a>
+			{% endif %}
+
+			<a class="button button-bad" href="{{ route('session.destroy') }}">Logout</a>
+		</div>
+	</main>
 
 {% endblock %}

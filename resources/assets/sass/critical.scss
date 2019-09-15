@@ -22,7 +22,7 @@ html {
 }
 
 body {
-	background:$mainbackground;margin:0 auto;overscroll-behavior:none;
+	background:$mainbackground;margin:0 auto;min-height:100vh;overscroll-behavior:none;
 
 	&,&:before {
 		max-width:600px;width:99%;
@@ -31,17 +31,34 @@ body {
 	&:before {
 		background:$redback;color:white;display:block;line-height:3em;position:fixed;text-align:center;top:0;
 	}
+
+	&.scrollup {
+		.buttons,footer {
+			position:sticky;
+		}
+		.buttons {
+			// z-index to appear on top of gradient
+			bottom:3rem;z-index:100;
+		}
+		footer {
+			bottom:0;
+
+			&:after {
+				background:linear-gradient(transparent, $header);content:'';height:8rem;left:0;position:absolute;right:0;top:-8rem;
+			}
+		}
+	}
 }
 
 header,footer {
-	border:solid $border;line-height:2rem;
+	background:$header;line-height:2rem;
 }
 
 header {
-	background:$header;border-width:0 0 4px;display:flex;justify-content:space-around;padding:1rem;
+	display:flex;justify-content:space-around;padding:1rem;
 
 	& + main {
-		min-height:calc(100vh - 4rem - 4px - 2rem - 2px);padding:1rem 1rem 5rem;
+		min-height:calc(100vh - 4rem - 2rem);
 	}
 
 	a {
@@ -50,7 +67,15 @@ header {
 }
 
 main {
-	box-sizing:border-box;min-height:100vh;position:relative;
+	box-sizing:border-box;min-height:100vh;padding:1rem;position:relative;
+
+	&, > form {
+		display:flex;flex-direction:column;
+	}
+
+	> form {
+		flex-grow:1;
+	}
 
 	* + * {
 		margin-top:1rem;
@@ -64,7 +89,7 @@ h1 {
 }
 
 footer {
-	border-width:2px 0 0;display:flex;justify-content:space-around;
+	display:flex;justify-content:space-around;
 
 	a {
 		text-decoration:none;

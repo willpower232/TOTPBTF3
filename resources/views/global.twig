@@ -48,13 +48,7 @@
 
 	{% block wholepage %}
 
-		{% include 'partials/header.twig' %}
-
-		<main>
-			{{ breadcrumbs|raw }}
-
-			{% block main %}{% endblock %}
-		</main>
+		{% block main %}{% endblock %}
 
 		{% include 'partials/footer.twig' %}
 

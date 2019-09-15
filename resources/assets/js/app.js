@@ -3,6 +3,25 @@
 		return (context || d).querySelector(selector) || null;
 	};
 
+	// add the scrollup class if the page can scroll
+	if (d.documentElement.scrollHeight > d.documentElement.clientHeight) {
+		$('body').classList.add('scrollup');
+	}
+
+	// https://stackoverflow.com/a/45719399
+	w.onscroll = function() {
+		// "false" if direction is down and "true" if up
+		var isup = (this.oldScroll > this.scrollY);
+
+		if (isup) {
+			$('body').classList.add('scrollup');
+		} else {
+			$('body').classList.remove('scrollup');
+		}
+
+		this.oldScroll = this.scrollY;
+	};
+
 	if (w.refreshat !== undefined) {
 		var timer = $('.a-timer'),
 			loop = setInterval(function() {

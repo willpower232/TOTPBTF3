@@ -1,28 +1,36 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	<h1>Token</h1>
+	{% include 'partials/header.twig' %}
 
-	<dl>
-		<dt>Path</dt>
-		<dd>{{ token.path }}</dd>
+	<main>
+		{{ breadcrumbs|raw }}
 
-		<dt>Title</dt>
-		<dd>{{ token.title }}</dd>
-	</dl>
+		<h1>Token</h1>
 
-	{% if not read_only %}
-		<a class="button blueback" href="{{ route('tokens.edit', [token.id_hash]) }}">Edit</a>
-	{% endif %}
+		<dl>
+			<dt>Path</dt>
+			<dd>{{ token.path }}</dd>
 
-	<a class="button greenback" href="{{ route('tokens.code', [token.path]) }}">Code</a>
+			<dt>Title</dt>
+			<dd>{{ token.title }}</dd>
+		</dl>
 
-	{% if allow_export %}
-		<a class="button" href="{{ route('tokens.export', [token.path]) }}">Export</a>
-	{% endif %}
+		<div class="buttons">
+			{% if not read_only %}
+				<a class="button" href="{{ route('tokens.edit', [token.id_hash]) }}">Edit</a>
+			{% endif %}
 
-	{% if not read_only %}
-		<a class="button redback" href="{{ route('tokens.delete', [token.id_hash]) }}" onclick="return confirm('Are you sure you want to delete this token?')">Delete</a>
-	{% endif %}
+			<a class="button button-secondary" href="{{ route('tokens.code', [token.path]) }}">Code</a>
+
+			{% if allow_export %}
+				<a class="button button-secondary" href="{{ route('tokens.export', [token.path]) }}">Export</a>
+			{% endif %}
+
+			{% if not read_only %}
+				<a class="button button-bad" href="{{ route('tokens.delete', [token.id_hash]) }}" onclick="return confirm('Are you sure you want to delete this token?')">Delete</a>
+			{% endif %}
+		</div>
+	</main>
 
 {% endblock %}

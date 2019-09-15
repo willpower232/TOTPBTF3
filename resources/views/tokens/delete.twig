@@ -1,26 +1,32 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	<hgroup class="a-code-header">
-		{% if image %}
-			<img class="a-code-img" src="/{{ image }}" />
-		{% endif %}
+	{% include 'partials/header.twig' %}
 
-		<h1>{{ token.title }}</h1>
-	</hgroup>
+	<main>
+		{{ breadcrumbs|raw }}
 
-	<p>Are you absolutely sure you wish to delete this token?</p>
-	<p>You will not be able to get it back and may lose access to the system it is for.</p>
+		<hgroup class="a-code-header">
+			{% if image %}
+				<img class="a-code-img" src="/{{ image }}" />
+			{% endif %}
 
-	<form method="post" action="{{ route('tokens.delete', [token.id_hash]) }}">
-		{{ csrf_field() }}
-		{{ method_field('delete') }}
+			<h1>{{ token.title }}</h1>
+		</hgroup>
 
-		<button type="submit" class="redback">Yes, delete this token</button>
+		<p>Are you absolutely sure you wish to delete this token?</p>
+		<p>You will not be able to get it back and may lose access to the system it is for.</p>
 
-		<a class="button greenback" href="{{ route('tokens.show', [token.id_hash]) }}">No, do not delete this token</a>
-	</form>
+		<div class="buttons">
+			<form method="post" action="{{ route('tokens.delete', [token.id_hash]) }}">
+				{{ csrf_field() }}
+				{{ method_field('delete') }}
 
-	<a class="button floating" href="{{ route('tokens.show', [token.id_hash]) }}">&#128065;</a>
+				<button type="submit" class="button-bad">Yes, delete this token</button>
+
+				<a class="button button-good" href="{{ route('tokens.show', [token.id_hash]) }}">No, do not delete this token</a>
+			</form>
+		</div>
+	</main>
 
 {% endblock %}

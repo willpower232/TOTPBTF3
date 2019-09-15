@@ -117,6 +117,7 @@ return [
             // 'TwigBridge\Extension\Laravel\Legacy\Facades',
 
             'App\Helpers\TwigBridgeExtension\GetCriticalCSS',
+            'App\Helpers\TwigBridgeExtension\GetTimerFromTheme',
         ],
 
         /*
@@ -212,7 +213,7 @@ return [
         |
         */
         'filters' => [
-            'get' => 'data_get',    
+            'get' => 'data_get',
         ],
-    ],  
+    ],
 ];

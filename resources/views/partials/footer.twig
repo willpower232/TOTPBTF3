@@ -1,7 +1,9 @@
-<footer>
-	{% if auth_check() %}
+{% if auth_check() %}
+	<footer>
+		<a href="javascript:history.back()">Back</a>
+
+		<a href="{{ route('tokens.code') }}">Home</a>
+
 		<a href="{{ route('session.show') }}">Profile</a>
-	{% else %}
-		&nbsp;
-	{% endif %}
-</footer>
+	</footer>
+{% endif %}

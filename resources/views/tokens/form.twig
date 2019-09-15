@@ -1,56 +1,64 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	<h1>{{ (token) ? 'Edit Token' : 'Import New Token' }}</h1>
+	{% include 'partials/header.twig' %}
 
-	<form method="POST" action="{{ (token) ? route('tokens.update', [token.id_hash]) : route('tokens.store') }}">
-		{{ csrf_field() }}
+	<main>
+		{{ breadcrumbs|raw }}
 
-		<div class="fieldwrapper">
-			<input id="f_path" type="text" class="{{ errors.has('path') ? ' is-invalid' }}" name="path" value="{{ old('path', (token) ? token.path) }}" required autocomplete="false" autofocus placeholder=" " />
+		<h1>{{ (token) ? 'Edit Token' : 'Import New Token' }}</h1>
 
-			<label for="f_path">Path</label>
+		<form method="POST" action="{{ (token) ? route('tokens.update', [token.id_hash]) : route('tokens.store') }}">
+			{{ csrf_field() }}
 
-			{% if errors.has('path') %}
-				<span class="invalid-feedback">
-					<strong>{{ errors.first('path') }}</strong>
-				</span>
+			<div class="fieldwrapper">
+				<input id="f_path" type="text" class="{{ errors.has('path') ? ' is-invalid' }}" name="path" value="{{ old('path', (token) ? token.path) }}" required autocomplete="false" autofocus placeholder=" " />
+
+				<label for="f_path">Path</label>
+
+				{% if errors.has('path') %}
+					<span class="invalid-feedback">
+						<strong>{{ errors.first('path') }}</strong>
+					</span>
+				{% endif %}
+			</div>
+
+			<div class="fieldwrapper">
+				<input id="f_title" type="text" class="{{ errors.has('title') ? ' is-invalid' }}" name="title" value="{{ old('title', (token) ? token.title) }}" required autocomplete="false" placeholder=" " />
+
+				<label for="f_title">Title</label>
+
+				{% if errors.has('title') %}
+					<span class="invalid-feedback">
+						<strong>{{ errors.first('title') }}</strong>
+					</span>
+				{% endif %}
+			</div>
+
+			{% if not token %}
+				<div class="fieldwrapper">
+					<input id="f_secret" type="text" class="{{ errors.has('secret') ? ' is-invalid' }}" name="secret" value="{{ old('secret') }}" required autocomplete="false" placeholder=" " />
+
+					<label for="f_secret">Secret</label>
+
+					{% if errors.has('secret') %}
+						<span class="invalid-feedback">
+							<strong>{{ errors.first('secret') }}</strong>
+						</span>
+					{% endif %}
+
+					<p>You can obtain a secret in a couple of ways. All spaces will be removed.</p>
+					<ul>
+						<li>Asking your provider for the code "to enter manually"</li>
+						<li>Copying and pasting the "otpauth://" URL from a barcode reader into this form. The secret will be extracted and other values discarded.</li>
+					</ul>
+				</div>
 			{% endif %}
-		</div>
 
-		<div class="fieldwrapper">
-			<input id="f_title" type="text" class="{{ errors.has('title') ? ' is-invalid' }}" name="title" value="{{ old('title', (token) ? token.title) }}" required autocomplete="false" placeholder=" " />
-
-			<label for="f_title">Title</label>
-
-			{% if errors.has('title') %}
-				<span class="invalid-feedback">
-					<strong>{{ errors.first('title') }}</strong>
-				</span>
-			{% endif %}
-		</div>
-
-{% if not token %}
-		<div class="fieldwrapper">
-			<input id="f_secret" type="text" class="{{ errors.has('secret') ? ' is-invalid' }}" name="secret" value="{{ old('secret') }}" required autocomplete="false" placeholder=" " />
-
-			<label for="f_secret">Secret</label>
-
-			{% if errors.has('secret') %}
-				<span class="invalid-feedback">
-					<strong>{{ errors.first('secret') }}</strong>
-				</span>
-			{% endif %}
-
-			<p>You can obtain a secret in a couple of ways. All spaces will be removed.</p>
-			<ul>
-				<li>Asking your provider for the code "to enter manually"</li>
-				<li>Copying and pasting the "otpauth://" URL from a barcode reader into this form. The secret will be extracted and other values discarded.</li>
-			</ul>
-		</div>
-{% endif %}
-
-		<button class="greenback" type="submit">Save</button>
-	</form>
+			<div class="buttons">
+				<button class="button-primary" type="submit">Save</button>
+			</div>
+		</form>
+	</main>
 
 {% endblock %}

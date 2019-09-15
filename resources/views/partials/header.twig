@@ -1,11 +1,3 @@
 <header>
-	{% if not is_home %}
-		<a href="javascript:history.back()">&#8617;</a>
-	{% endif %}
-
 	<span>TOTPBTF3</span>
-
-	{% if not is_home %}
-		<a href="{{ route('tokens.code') }}">&#127968;</a>
-	{% endif %}
 </header>

@@ -1,27 +1,35 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	{% if folders|length == 0 %}
-		<p class="text-center">no tokens to see here</p>
-	{% endif %}
+	{% include 'partials/header.twig' %}
 
-	<ul class="folderlist{% if folders | length < 3 %} bigger{% endif %}">
-		{% for folder in folders %}
-			{% set alt = folder.folder|split('/')|last %}
-			<li>
-				<a href="{{ route('tokens.code', [folder.folder]) }}">
-					{% if folder.image %}
-						<img {% if config('app.lazyloading') %}data-{% endif %}src="/{{ folder.image }}" alt="{{ alt }}" />
-					{% else %}
-						<span class="replaced-image">{{ alt }}</span>
-					{% endif %}
-				</a>
-			</li>
-		{% endfor %}
-	</ul>
+	<main>
+		{{ breadcrumbs|raw }}
 
-	{% if not read_only %}
-		<a class="button floating blueback" href="{{ route('tokens.create') }}">&#43;</a>
-	{% endif %}
+		{% if folders|length == 0 %}
+			<p class="text-center">no tokens to see here</p>
+		{% endif %}
+
+		<ul class="folderlist">
+			{% for folder in folders %}
+				{% set alt = folder.folder|split('/')|last %}
+				<li>
+					<a href="{{ route('tokens.code', [folder.folder]) }}">
+						{% if folder.image %}
+							<img {% if config('app.lazyloading') %}data-{% endif %}src="/{{ folder.image }}" alt="{{ alt }}" />
+						{% else %}
+							<span class="replaced-image">{{ alt }}</span>
+						{% endif %}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+
+		{% if not read_only %}
+			<div class="buttons">
+				<a class="button button-secondary" href="{{ route('tokens.create') }}">Add New Token</a>
+			</div>
+		{% endif %}
+	</main>
 
 {% endblock %}

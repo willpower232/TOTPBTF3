@@ -1,20 +1,29 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	<hgroup class="a-code-header">
-		{% if image %}
-			<img class="a-code-img" src="/{{ image }}" />
-		{% endif %}
+	{% include 'partials/header.twig' %}
 
-		<h1>{{ token.title }}</h1>
-	</hgroup>
+	<main>
+		{{ breadcrumbs|raw }}
 
-	<p class="text-center a-code">{{ token.getTOTPCode() }}</p>
+		<hgroup class="a-code-header">
+			{% if image %}
+				<img class="a-code-img" src="/{{ image }}" />
+			{% endif %}
 
-	<button class="center js-copy" data-copies=".a-code">&#128203;</button>
+			<h1>{{ token.title }}</h1>
+		</hgroup>
 
-	<div class="a-timer"><div class="hourglass"></div></div>
+		<div class="code-and-timer">
+			<p class="text-center a-code">{{ token.getTOTPCode() }}</p>
+			<div class="a-timer"><div class="hourglass">{{ getTimerFromTheme() }}</div></div>
+		</div>
 
-	<a class="button floating" href="{{ route('tokens.show', [token.id_hash]) }}">&#128065;</a>
+		<div class="buttons">
+			<button class="button-primary js-copy" data-copies=".a-code">Copy Code</button>
+
+			<a class="button button-secondary" href="{{ route('tokens.show', [token.id_hash]) }}">View Token</a>
+		</div>
+	</main>
 
 {% endblock %}

@@ -1,12 +1,20 @@
 {% extends 'global.twig' %}
 {% block main %}
 
-	<h1>{{ token.title }}</h1>
+	{% include 'partials/header.twig' %}
 
-	<div class="export">
-		{{ token.getQRCode()|raw }}
-	</div>
+	<main>
+		{{ breadcrumbs|raw }}
 
-	<a class="button floating" href="{{ route('tokens.show', [token.id_hash]) }}">&#128065;</a>
+		<h1>{{ token.title }}</h1>
+
+		<div class="export">
+			{{ token.getQRCode()|raw }}
+		</div>
+
+		<div class="buttons">
+			<a class="button button-primary" href="{{ route('tokens.show', [token.id_hash]) }}">View Token</a>
+		</div>
+	</main>
 
 {% endblock %}
