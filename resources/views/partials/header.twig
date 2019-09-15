@@ -1,3 +1,7 @@
 <header>
-	<span>TOTPBTF3</span>
+	{% if image %}
+		<img src="/{{ image }}" />
+	{% else %}
+		<span>TOTPBTF3</span>
+	{% endif %}
 </header>

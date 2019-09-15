@@ -27,6 +27,14 @@ mix.scripts('resources/assets/js/sw.js', 'public_html/sw.js');
 // set the root here for sass, scripts don't follow it
 mix.setPublicPath('./public_html/');
 
+// stop mix from messing with the images because we're doing that ourselves now
+mix.options({
+	processCssUrls: false,
+	imgLoaderOptions: {
+		enabled: false,
+	}
+});
+
 // standard scss compile
 mix.sass('resources/assets/sass/' + theme + '/critical.scss', 'css').options({
 	autoprefixer: false

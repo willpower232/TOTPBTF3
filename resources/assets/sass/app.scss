@@ -1,3 +1,8 @@
+header img {
+	// don't set a max width, just match the line-height of the header
+	max-height:2rem;
+}
+
 .breadcrumbs {
 	// relative positioning helps calculate responsiveness
 	display:flex;position:relative;
@@ -31,7 +36,7 @@
 	}
 
 	a {
-		align-items:center;display:flex;height:60px;justify-content:center;padding:5px;position:relative;text-align:center;text-decoration:none;
+		align-items:center;display:flex;height:60px;justify-content:center;padding:5px;position:relative;text-decoration:none;
 	}
 
 	img {

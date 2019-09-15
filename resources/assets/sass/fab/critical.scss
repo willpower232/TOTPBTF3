@@ -1,0 +1,89 @@
+@import "../critical";
+@import "variables";
+
+body,body * {
+	color:$text;
+}
+
+.inverted {
+	body,body * {
+		color:$bigbackground;
+	}
+}
+
+html {
+	background:$bigbackground url(/img/backgroundF.png) no-repeat left center;background-size:contain;
+
+	&.inverted {
+		background-color:$bigbackground_light;
+	}
+}
+
+body {
+	&,&:before {
+		max-width:450px;
+	}
+
+	&:before {
+		background:$redback;color:white;
+	}
+
+	&.scrollup {
+		.buttons {
+			bottom:5rem;
+		}
+
+		footer {
+			background:$header;
+
+			&:after {
+				background:linear-gradient(transparent, $header);
+			}
+		}
+	}
+}
+
+.inverted .scrollup footer {
+	background:$bigbackground_light;
+
+	&:after {
+		background:linear-gradient(transparent, $bigbackground_light);
+	}
+}
+
+header,footer {
+	//
+}
+
+header {
+	span {
+		display:block;text-indent:-999em;width:100%;
+		background:url(/img/logosmall.svg) no-repeat center center;background-size:contain;
+	}
+
+	display:flex;justify-content:space-around;padding:1rem;
+
+	& + main {
+		min-height:calc(100vh - 4rem - 4rem);padding:1rem;
+	}
+}
+
+footer {
+	justify-content:space-between;line-height:4rem;padding:0.5rem 1rem;
+
+	a {
+		background:$border no-repeat center center;background-size:40%;border-radius:1.5rem;line-height:3rem;text-indent:-999em;width:3rem;
+	}
+
+	.footer-back {
+		background-image:url(/img/backarrow.svg);
+	}
+
+	.footer-home {
+		background-color:$fabpink;background-image:url(/img/home.svg);
+	}
+
+	.footer-profile {
+		background-image:url(/img/profile.svg);
+	}
+}

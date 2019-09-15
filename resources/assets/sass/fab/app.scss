@@ -1,0 +1,141 @@
+@import "../app";
+@import "variables";
+
+h1.login-title {
+	background:url(/img/logomain_dark.svg) no-repeat center center;line-height:6em;margin:4em 0 2em;text-indent:-999em;
+}
+
+.inverted h1.login-title {
+	background-image:url(/img/logomain_light.svg);
+}
+
+.breadcrumbs {
+	justify-content:center;
+
+	&.overflowed {
+		&:after {
+			background:linear-gradient(to right, $mainbackground 0%, transparent 100%);
+		}
+	}
+
+	a:first-child:before {
+		display:none;
+	}
+}
+
+.folderlist {
+	li + li {
+		margin-top:1em;
+	}
+
+	a {
+		background:$border url(/img/arrow.svg) no-repeat calc(100% - 2rem) center;background-size:2rem;border-radius:1.5rem;height:3rem;justify-content:left;padding-left:2rem;
+	}
+
+	img {
+		block-size:inherit;max-width:calc(100% - 6rem);object-fit:contain;
+	}
+}
+
+
+.inverted .replaced-image {
+	color:$text;
+}
+
+input:not([type='checkbox']) {
+	border:3px solid $border;border-radius:1.5rem;padding:0 2rem;
+
+	&.is-invalid {
+		border-color:$fabpink;
+	}
+}
+
+.fieldwrapper {
+	input + label {
+		left: 2rem;
+	}
+
+	input:placeholder-shown + label {
+		left:calc(2rem + 3px);
+	}
+}
+
+.toggle {
+	background:$text;
+
+	.helper {
+		background:$text;box-shadow:0 0 10px $bigbackground;
+	}
+
+	input:checked + .helper {
+		background:$greenback;
+	}
+
+	input[disabled] + .helper {
+		background:black;
+	}
+}
+
+.inverted .toggle .helper {
+	box-shadow:0 0 10px $bigbackground_light;
+}
+
+.invalid-feedback strong {
+	color:$redtext;
+}
+
+button,.button {
+	background:$bigbackground;border:1px solid $border;border-radius:1.5rem;color:white!important;
+
+	.fieldwrapper + & {
+		margin-top:3rem;
+	}
+
+	&.button-primary {
+		background:$fabpink;
+	}
+
+	&.button-secondary {
+		background:$border;
+	}
+
+	&.button-bad {
+		background:$redback;
+	}
+
+	&.button-good {
+		background:$greenback;
+	}
+}
+
+.a-timer {
+	--progress: 0;
+
+	height:3rem;margin:4rem auto;opacity:0;position:relative;transition:opacity 0.4s;width:calc(0.6667 * 3rem);
+
+	&:before,&:after {
+		content:'';left:5%;position:absolute;right:5%;z-index:1;
+	}
+
+	&:before {
+		background:$text;bottom:50%;height:calc((100 - var(--progress)) * 0.5%);
+	}
+
+	&:after {
+		background:$bigbackground;bottom:0;height:calc(var(--progress) * 0.5%);
+	}
+
+	.hourglass svg {
+		height:100%;position:absolute;width:100%;z-index:2;
+	}
+}
+
+.js-copy {
+	&.success {
+		background-color:$greenback;
+	}
+
+	&.failure {
+		background-color:$redback;
+	}
+}

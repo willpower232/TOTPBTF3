@@ -6,13 +6,11 @@
 	<main>
 		{{ breadcrumbs|raw }}
 
-		<hgroup class="a-code-header">
-			{% if image %}
-				<img class="a-code-img" src="/{{ image }}" />
-			{% endif %}
-
-			<h1>{{ token.title }}</h1>
-		</hgroup>
+		{% if not image %}
+			<hgroup class="a-code-header">
+				<h1>{{ token.title }}</h1>
+			</hgroup>
+		{% endif %}
 
 		<div class="code-and-timer">
 			<p class="text-center a-code">{{ token.getTOTPCode() }}</p>
