@@ -169,7 +169,7 @@ dt {
 
 .a-code {
 	// leave spacing and indenting as ems
-	font-size:16vw;letter-spacing:0.3em;text-indent:0.3em;
+	font-family:monospace,monospace;font-size:16vw;letter-spacing:0.2em;text-indent:0.15em;
 
 	@media (min-width:500px) {
 		font-size:5rem;

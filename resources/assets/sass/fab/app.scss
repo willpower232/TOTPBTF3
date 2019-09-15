@@ -108,25 +108,42 @@ button,.button {
 	}
 }
 
+.code-and-timer {
+	// calculate the approximate width of the whole thing
+	--width:418px;
+	@media (max-width:450px) {
+		--width:90vw;
+	}
+
+	height:var(--width);
+}
+
+.a-code {
+	line-height:var(--width);
+}
+
 .a-timer {
 	--progress: 0;
 
-	height:3rem;margin:4rem auto;opacity:0;position:relative;transition:opacity 0.4s;width:calc(0.6667 * 3rem);
+	height:100%;left:0;margin:0;opacity:0;position:absolute;top:0;transition:opacity 0.4s;width:100%;z-index:-1;
 
-	&:before,&:after {
-		content:'';left:5%;position:absolute;right:5%;z-index:1;
+	// reference https://codepen.io/zebateira/pen/VvqJwm
+
+	svg {
+		height:100%;position:absolute;right:0;top:0;width:100%;
+		// rotateY creates a clockwise effect
+		// rotateZ moves starting point to top of circle
+		transform:rotateY(-180deg) rotateZ(-90deg);
 	}
 
-	&:before {
-		background:$text;bottom:50%;height:calc((100 - var(--progress)) * 0.5%);
-	}
-
-	&:after {
-		background:$bigbackground;bottom:0;height:calc(var(--progress) * 0.5%);
-	}
-
-	.hourglass svg {
-		height:100%;position:absolute;width:100%;z-index:2;
+	circle {
+		// C = π * d
+		// - diameter doesn't scale, use value from SVG
+		// - apparently this needs to be calc'ed rather than fixed
+		--circumference:calc(3.141592 * 180px);
+		stroke-dasharray:var(--circumference);
+		stroke-dashoffset:calc((var(--progress) / 100) * var(--circumference));
+		fill:none;stroke:$fabpink;stroke-linecap:round;stroke-width:5px;transition:stroke-dashoffset 0.4s;
 	}
 }
 

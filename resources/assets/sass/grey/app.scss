@@ -81,7 +81,7 @@ button,.button {
 		background:$bigbackground;bottom:0;height:calc(var(--progress) * 0.5%);
 	}
 
-	.hourglass svg {
+	.timer svg {
 		height:100%;position:absolute;width:100%;z-index:2;
 	}
 }
