@@ -2,12 +2,22 @@ version: 2
 
 
 defaults: &defaults
-  docker:
-    - image: circleci/php:7.1-cli
-    - image: circleci/mysql:5.7
   working_directory: ~/app
 
 references:
+  php: &php
+    image: circleci/php:7.4-cli
+    name: php
+    environment:
+      DB_HOST: mysql
+
+  mysql: &mysql
+    image: circleci/mysql:5.7
+    name: mysql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-large-prefix=true --innodb-file-format=Barracuda
+    environment:
+      MYSQL_DATABASE: totp_test
+
   save_workspace: &save_workspace
     persist_to_workspace:
       root: ~/app
@@ -33,6 +43,8 @@ references:
 jobs:
   setup:
     <<: *defaults
+    docker:
+      - *php
     parallelism: 1
     steps:
       - checkout
@@ -48,6 +60,8 @@ jobs:
 
   lint:
     <<: *defaults
+    docker:
+      - *php
     parallelism: 1
     steps:
       - *load_workspace
@@ -66,16 +80,14 @@ jobs:
 
   test_mysql:
     <<: *defaults
+    docker:
+      - *php
+      - *mysql
     parallelism: 1
     steps:
       - *load_workspace
       - *install_exts
-      - run:
-          name: Set Up MySQL Database
-          command: |
-            sudo apt update && sudo apt install -y mysql-client;
-            mysql  -h 127.0.0.1 -u root -e "CREATE DATABASE totp_test;";
-            php artisan --env=testing migrate;
+      - run: dockerize -wait tcp://mysql:3306 -timeout 1m
       - run:
           name: PHPUnit
           command: vendor/bin/phpunit
@@ -90,6 +102,8 @@ jobs:
 
   test_sqlite:
     <<: *defaults
+    docker:
+      - *php
     parallelism: 1
     steps:
       - *load_workspace
