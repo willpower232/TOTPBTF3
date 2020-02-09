@@ -143,7 +143,7 @@ class TokensTest extends TestCase
 
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('tokens.store'), array(
+            ->post(route('tokens.store'), array(
                 'path' => '',
                 'title' => $newfaketoken->title,
                 'secret' => $newfaketoken->getDecryptedSecret(),
@@ -153,7 +153,7 @@ class TokensTest extends TestCase
 
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('tokens.store'), array(
+            ->post(route('tokens.store'), array(
                 'path' => $newfaketoken->path,
                 'title' => '',
                 'secret' => $newfaketoken->getDecryptedSecret(),
@@ -163,7 +163,7 @@ class TokensTest extends TestCase
 
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('tokens.store'), array(
+            ->post(route('tokens.store'), array(
                 'path' => $newfaketoken->path,
                 'title' => $newfaketoken->title,
                 'secret' => '',

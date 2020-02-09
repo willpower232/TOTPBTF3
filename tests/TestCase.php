@@ -77,16 +77,4 @@ abstract class TestCase extends BaseTestCase
             'encryptionkey' => $this->encryptionkey,
         ));
     }
-
-    /**
-     * Shortcut function for including the expected CSRF value in a POST
-     *
-     * @return $this
-     */
-    public function postWithCsrf($url, $values = array())
-    {
-        $values['_token'] = csrf_token();
-
-        return parent::post($url, $values);
-    }
 }

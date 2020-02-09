@@ -69,7 +69,7 @@ class SessionsTest extends TestCase
      */
     public function testSuccessfulLogin()
     {
-        $response = $this->postWithCsrf(route('session.store'), array(
+        $response = $this->post(route('session.store'), array(
             'email' => $this->getTestingUser()->email,
             'password' => 'secret',
         ));
@@ -86,7 +86,7 @@ class SessionsTest extends TestCase
      */
     public function testFailedLogin()
     {
-        $response = $this->postWithCsrf(route('session.store'), array(
+        $response = $this->post(route('session.store'), array(
             'email' => $this->getTestingUser()->email,
             'password' => 'not secret', // an empty string would trigger the validator
         ));
@@ -101,7 +101,7 @@ class SessionsTest extends TestCase
      */
     public function testMissingInputLogin()
     {
-        $response = $this->postWithCsrf(route('session.store'), array(
+        $response = $this->post(route('session.store'), array(
             // omitting expected fields
         ));
 
@@ -161,7 +161,7 @@ class SessionsTest extends TestCase
     {
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('session.update'), array(
+            ->post(route('session.update'), array(
                 // omitting expected fields
             ));
 
@@ -177,7 +177,7 @@ class SessionsTest extends TestCase
     {
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('session.update'), array(
+            ->post(route('session.update'), array(
                 'currentpassword' => 'not secret', // an empty string would trigger the validator
                 'name' => $this->getTestingUser()->name,
                 'email' => $this->getTestingUser()->email,
@@ -197,7 +197,7 @@ class SessionsTest extends TestCase
 
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('session.update'), array(
+            ->post(route('session.update'), array(
                 'currentpassword' => 'secret',
                 'newpassword' => $newpassword,
                 'newpassword_confirmation' => $newpassword . ' problem',
@@ -221,7 +221,7 @@ class SessionsTest extends TestCase
 
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('session.update'), array(
+            ->post(route('session.update'), array(
                 'currentpassword' => 'secret',
                 'name' => $newname,
                 'email' => $newemail,
@@ -246,7 +246,7 @@ class SessionsTest extends TestCase
 
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('session.update'), array(
+            ->post(route('session.update'), array(
                 'currentpassword' => 'secret',
                 'name' => $this->getTestingUser()->name,
                 'email' => $this->getTestingUser()->email,
@@ -282,7 +282,7 @@ class SessionsTest extends TestCase
         // update user password, re encrypting token secret with new password
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('session.update'), array(
+            ->post(route('session.update'), array(
                 'currentpassword' => 'secret',
                 'name' => $this->getTestingUser()->name,
                 'email' => $this->getTestingUser()->email,

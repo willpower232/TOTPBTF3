@@ -54,7 +54,7 @@ class ReadOnlyTest extends TestCase
     {
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('session.update'));
+            ->post(route('session.update'));
 
         $response->assertStatus(404);
     }

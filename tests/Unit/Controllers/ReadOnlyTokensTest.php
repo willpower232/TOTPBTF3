@@ -83,7 +83,7 @@ class ReadOnlyTokensTest extends TestCase
     {
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('tokens.store'));
+            ->post(route('tokens.store'));
 
         $response->assertStatus(404);
     }
@@ -97,7 +97,7 @@ class ReadOnlyTokensTest extends TestCase
     {
         $response = $this->actingAsTestingUser()
             ->withEncryptionKey()
-            ->postWithCsrf(route('tokens.update', [$this->token->id_hash]));
+            ->post(route('tokens.update', [$this->token->id_hash]));
 
         $response->assertStatus(404);
     }
