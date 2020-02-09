@@ -1,4 +1,7 @@
 {
+    "name": "willpower232/totpbtf3",
+    "description": "TOTP-But-Thank-Frick-For-Folders is a web-based TOTP manager, mainly an excuse to put codes in a folder structure",
+    "license": "MIT",
     "type": "project",
     "require": {
         "php": "^7.1.3",

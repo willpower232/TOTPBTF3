@@ -51,6 +51,7 @@ jobs:
       - restore_cache:
           key: composer-deps-{{ checksum "composer.json" }}
       - *install_exts
+      - run: composer validate
       - run: composer install --no-interaction --no-ansi --prefer-dist
       - save_cache:
           key: composer-deps-{{ checksum "composer.json" }}
