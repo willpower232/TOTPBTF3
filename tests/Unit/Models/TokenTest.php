@@ -11,7 +11,6 @@ class TokenTest extends TestCase
 {
     use RefreshDatabase;
 
-    private static $encryptionsalt = 'lsngmym1nd';
     private $token;
 
     /**

@@ -10,7 +10,6 @@ class TokensTest extends TestCase
 {
     use RefreshDatabase;
 
-    private static $encryptionsalt = 'lsngmym1nd';
     private $token;
 
     /**
@@ -24,7 +23,6 @@ class TokensTest extends TestCase
 
         config(array(
             'app.allowexport' => true,
-            'app.encryptionsalt' => self::$encryptionsalt,
             'app.readonly' => false, // avoid conflict by confirming default
         ));
 

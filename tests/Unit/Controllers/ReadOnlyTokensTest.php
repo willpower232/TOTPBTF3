@@ -10,7 +10,6 @@ class ReadOnlyTokensTest extends TestCase
 {
     use RefreshDatabase;
 
-    private static $encryptionsalt = 'lsngmym1nd';
     private $token;
 
     /**
@@ -23,7 +22,6 @@ class ReadOnlyTokensTest extends TestCase
         parent::setUp();
 
         config(array(
-            'app.encryptionsalt' => self::$encryptionsalt,
             'app.readonly' => true,
         ));
 

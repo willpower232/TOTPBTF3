@@ -10,8 +10,6 @@ return [
 
     'readonly' => env('READ_ONLY', false),
 
-    'encryptionsalt' => env('ENCRYPTION_SALT', ''),
-
     'hashidssalt' => env('HASHIDS_SALT', ''),
 
     /*
