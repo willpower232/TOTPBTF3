@@ -40,17 +40,17 @@ I've used the `fetch()` api as the browsers this ends up being used with should 
 
 [ivanakimov/hashids.php](https://github.com/ivanakimov/hashids.php) is used to mask the database id of tokens for the administrative functions to prevent enumeration. You can also specify a salt for it if you wish which is recommended but not required.
 
+The secrets are encrypted by using [defuse/php-encryption](https://github.com/defuse/php-encryption) with [KeyProtectedByPassword](https://github.com/defuse/php-encryption/blob/master/docs/classes/KeyProtectedByPassword.md) so each user has a separate key locked by their user password but the encrypted secrets do not need updating when the user password changes.
+
 ## How to use
 
-I would recommend that you copy this repository into your own private repository to allow you to add icons and manage an SQLite backup database (see below). You can also choose to commit your `.env` with the necessary salts and secrets.
+I would recommend that you copy this repository into your own private repository to allow you to add icons and manage an SQLite backup database (see below). You can also choose to commit your `.env` with the necessary secrets.
 
 As mentioned above, I have already committed the compiled assets as I haven't quite gotten my head around node enough to do this as part of my build process. This means the only extra installation requirement on you is to run `composer install --no-dev` or alternatively, if you're cloning directly to your server, you can run `php artisan updatefromgit` to complete the installation for you.
 
 After migrating with `php artisan migrate`, run `php artisan user:create` to create your user(s).
 
-Don't forget to set an `ENCRYPTION_SALT` in `.env` and never change it as it would ruin your ability to decrypt your tokens.
-
-Obviously the security of your code and database is down to you but as the encryption key is based on the users password, it should be pretty safe most of the time.
+Obviously the security of your code and database is down to you but as the encryption key is locked with the users password, it should be pretty safe most of the time.
 
 ### A note on redundancy
 
@@ -87,3 +87,11 @@ For iOS (as of iOS 11.3 and above), you should be able to open your hosted versi
 There is some desktop capability for PWAs so it may also be possible for you to easily access your codes on a desktop computer (obviously you can also access the website) but this isn't a good idea for your personal security.
 
 I have included lots of comments in the source of the service worker to allow debugging if it doesn't work right. If I have made any errors or am missing potential improvements in using the service worker, please let me know.
+
+## Version Tags
+
+### 1
+This is the basic setup I was using for a number of years, not perfect but worked daily for me.
+
+### 2 (currently untagged but whatever is the latest commit)
+I closed off version 1 with the ability to export and import tokens which means I could update the encryption methodology to something much more reliable and secure.
