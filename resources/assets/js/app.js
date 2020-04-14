@@ -24,34 +24,77 @@
 
 	if (w.refreshat !== undefined) {
 		var timer = $('.a-timer'),
+			loop,
+			progress;
+
+		var updateProgress = function () {
+			// must use these Math.floor's and `> 100` (not `>=`) to avoid double refresh
+			// double refresh occurs because page loads before the final second of this code has fully passed
+			progress = ((30 - (w.refreshat - (Date.now() / 1000))) / 30) * 100;
+		};
+
+		var shouldReload = function () {
+			return (progress > 100);
+		};
+
+		var doReload = function () {
+			if (n.onLine) {
+				w.location.reload();
+			} else {
+				var code;
+				if ((code = $('.a-code'))) {
+					code.innerText = 'offline please wait';
+					code.style.letterSpacing = ".1em";
+				}
+
+				w.addEventListener('online', function() {
+					w.location.reload();
+				});
+			}
+		};
+
+		var startLoop = function () {
 			loop = setInterval(function() {
-				// must use these Math.floor's and `> 100` (not `>=`) to avoid double refresh
-				// double refresh occurs because page loads before the final second of this code has fully passed
-				var progress = ((30 - (w.refreshat - (Date.now() / 1000))) / 30) * 100;
-				if (progress > 100) {
+				updateProgress();
+				if (shouldReload()) {
 					timer.style.opacity = 0;
 
 					// now is the time, stop ticking
-					clearInterval(loop);
+					stopLoop();
 
-					if (n.onLine) {
-						w.location.reload();
-					} else {
-						var code;
-						if ((code = $('.a-code'))) {
-							code.innerText = 'offline please wait';
-							code.style.letterSpacing = ".1em";
-						}
-
-						w.addEventListener('online', function() {
-							w.location.reload();
-						});
-					}
+					doReload();
 				} else if (timer) {
 					timer.style.setProperty('--progress', progress);
 					timer.style.opacity = 1;
 				}
 			}, 20);
+		};
+
+		var stopLoop = function () {
+			clearInterval(loop);
+		};
+
+		startLoop();
+
+		if (typeof d.addEventListener !== "undefined" && d.hidden !== undefined) {
+			d.addEventListener('visibilitychange', function () {
+				if (d.hidden) {
+					// avoid page refresh whilst hidden
+					stopLoop();
+				} else {
+					// page visible
+					updateProgress();
+
+					if (shouldReload()) {
+						// need fresh token so reload
+						doReload();
+					} else {
+						// continue as before
+						startLoop();
+					}
+				}
+			});
+		}
 	}
 
 	var toggle;
