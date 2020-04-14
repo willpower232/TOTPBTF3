@@ -12,7 +12,7 @@ body,body * {
 }
 
 html {
-	background:$bigbackground url(/img/backgroundF.png) no-repeat left center;background-size:contain;
+	background:$bigbackground url(/img/backgroundF.png) no-repeat fixed left center;background-size:contain;
 
 	&.inverted {
 		background-color:$bigbackground_light;
