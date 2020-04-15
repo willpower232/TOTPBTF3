@@ -123,9 +123,7 @@ button,.button {
 }
 
 .a-timer {
-	--progress: 0;
-
-	height:100%;left:0;margin:0;opacity:0;position:absolute;top:0;transition:opacity 0.4s;width:100%;z-index:-1;
+	height:100%;left:0;margin:0;position:absolute;top:0;width:100%;z-index:-1;
 
 	// reference https://codepen.io/zebateira/pen/VvqJwm
 
@@ -143,8 +141,22 @@ button,.button {
 		--circumference:calc(3.141592 * 180px);
 		stroke-dasharray:var(--circumference);
 		stroke-dashoffset:calc((var(--progress) / 100) * var(--circumference));
-		fill:none;stroke:$fabpink;stroke-linecap:round;stroke-width:5px;transition:stroke-dashoffset 0.4s;
-	}
+		fill:none;stroke:$fabpink;stroke-linecap:round;stroke-width:5px;
+    }
+
+    &.show {
+        circle {
+            transition:stroke-dashoffset 0.4s;
+        }
+    }
+
+    &.done {
+        opacity:1;
+
+        circle {
+            stroke:$border;
+        }
+    }
 }
 
 .js-copy {

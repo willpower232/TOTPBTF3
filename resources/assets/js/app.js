@@ -24,17 +24,20 @@
 
 	if (w.refreshat !== undefined) {
 		var timer = $('.a-timer'),
-			loop,
+            loop,
 			progress;
 
 		var updateProgress = function () {
 			// must use these Math.floor's and `> 100` (not `>=`) to avoid double refresh
 			// double refresh occurs because page loads before the final second of this code has fully passed
-			progress = ((30 - (w.refreshat - (Date.now() / 1000))) / 30) * 100;
+            progress = ((30 - (w.refreshat - (Date.now() / 1000))) / 30) * 100;
+            if (progress > 100) {
+                progress = 100;
+            }
 		};
 
 		var shouldReload = function () {
-			return (progress > 100);
+			return (progress == 100);
 		};
 
 		var doReload = function () {
@@ -53,21 +56,35 @@
 			}
 		};
 
+        // tick the timer
+        // - delay the reveal for one tick to avoid transition issues
+        var shouldShow = null;
+        setInterval(function () {
+            updateProgress();
+            if (timer) {
+                timer.style.setProperty('--progress', progress);
+
+                if (shouldReload()) {
+                    timer.classList.remove('show');
+                    timer.classList.add('done');
+                } else if (shouldShow === null) {
+                    shouldShow = true;
+                } else if (shouldShow === true) {
+                    timer.classList.add('show');
+                }
+            }
+        }, 20);
+
 		var startLoop = function () {
 			loop = setInterval(function() {
-				updateProgress();
 				if (shouldReload()) {
-					timer.style.opacity = 0;
-
-					// now is the time, stop ticking
+					// now is the time, stop trying to reload
 					stopLoop();
 
-					doReload();
-				} else if (timer) {
-					timer.style.setProperty('--progress', progress);
-					timer.style.opacity = 1;
+                    // guarantee the token has changed after the reload by delaying
+					setTimeout(doReload, 1200);
 				}
-			}, 20);
+			}, 700);
 		};
 
 		var stopLoop = function () {

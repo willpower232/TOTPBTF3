@@ -110,6 +110,7 @@ class TokensController extends Controller
         }
 
         return view('tokens/code')->with(array(
+            'imageTitle' => $result->title,
             'image' => $this->getImageForFolderOrToken($result->path),
             'refreshat' => ceil(time() / 30) * 30, // nearest 30 seconds in the future
             'token' => $result,

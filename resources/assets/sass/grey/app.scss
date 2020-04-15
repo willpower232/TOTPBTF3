@@ -69,9 +69,7 @@ button,.button {
 }
 
 .a-timer {
-	--progress: 0;
-
-	height:3rem;margin:4rem auto;opacity:0;position:relative;transition:opacity 0.4s;width:calc(0.6667 * 3rem);
+	height:3rem;margin:4rem auto;position:relative;width:calc(0.6667 * 3rem);
 
 	&:before,&:after {
 		content:'';left:5%;position:absolute;right:5%;z-index:1;

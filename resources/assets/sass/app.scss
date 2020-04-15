@@ -111,7 +111,7 @@ ul {
 	justify-self:end;margin-top:auto;
 }
 
-form .buttons {
+form .buttons,.folderlist + .buttons {
     margin-top:2rem;
 }
 
@@ -181,7 +181,13 @@ dt {
 }
 
 .a-timer {
-	//
+    --progress: 0;
+
+    opacity:0;transition:opacity 0.4s;
+
+    &.show {
+        opacity:1;
+    }
 }
 
 .js-copy {

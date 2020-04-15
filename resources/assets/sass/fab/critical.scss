@@ -56,10 +56,14 @@ header,footer {
 }
 
 header {
-	span {
+	span:not(.titlereplacement) {
 		display:block;text-indent:-999em;width:100%;
 		background:url(/img/logosmall.svg) no-repeat center center;background-size:contain;
 	}
+
+    span.titlereplacement {
+        color:$fabpink;
+    }
 
 	display:flex;justify-content:space-around;padding:1rem;
 
