@@ -82,6 +82,8 @@ class Token extends Model
      *
      * @param string $newsecret
      *
+     * @throws \Defuse\Crypto\Exception\BadFormatException
+     *
      * @return string the encrypted value
      */
     public static function encryptSecret(string $newsecret) : string

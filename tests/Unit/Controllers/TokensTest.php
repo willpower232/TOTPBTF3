@@ -33,7 +33,10 @@ class TokensTest extends TestCase
 
     private function makeFakeToken()
     {
-        return factory(Token::class)->make();
+        // ensure users encryption key used in token
+        return factory(Token::class)->make(array(
+            'user_id' => $this->getTestingUser(),
+        ));
     }
 
     /**

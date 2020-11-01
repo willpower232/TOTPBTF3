@@ -6,17 +6,17 @@ use App\Models\User;
 use RobThree\Auth\TwoFactorAuth;
 
 $factory->define(Token::class, function (Faker $faker) {
-    $user = User::inRandomOrder()->first();
-
-    if (! is_object($user)) {
-        $user = factory(User::class)->create();
-        $user->putEncryptionKeyInSession('secret'); // password from the factory
-    }
-
     return [
-        'user_id' => $user->id,
+        'user_id' => factory(User::class),
         'path' => $faker->company,
         'title' => $faker->company,
-        'secret' => Token::encryptSecret((new TwoFactorAuth(config('app.name')))->createSecret()),
+        'secret' => (new TwoFactorAuth(config('app.name')))->createSecret(),
     ];
+});
+
+$factory->afterMaking(Token::class, function (Token $token, Faker $faker) {
+    // after the token has been made, it will have a user
+    // and an encryptionkey in the session to allow the secret to be encrypted
+    $token->secret = Token::encryptSecret($token->secret);
+    $token->save(); //lol?
 });
