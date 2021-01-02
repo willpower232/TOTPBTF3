@@ -91,7 +91,7 @@ jobs:
       - run: dockerize -wait tcp://mysql:3306 -timeout 1m
       - run:
           name: PHPUnit
-          command: vendor/bin/phpunit
+          command: XDEBUG_MODE=coverage vendor/bin/phpunit
       - store_test_results:
           path: build/logs
       - store_artifacts:
@@ -117,7 +117,7 @@ jobs:
             php artisan --env=testing migrate;
       - run:
           name: PHPUnit
-          command: vendor/bin/phpunit
+          command: XDEBUG_MODE=coverage vendor/bin/phpunit
       - store_test_results:
           path: build/logs
       - store_artifacts:

@@ -29,7 +29,7 @@ before_script:
   - composer install --no-interaction --no-ansi --prefer-dist
 
 script:
-  - vendor/bin/phpunit
+  - XDEBUG_MODE=coverage vendor/bin/phpunit
 
 cache:
   directories:
