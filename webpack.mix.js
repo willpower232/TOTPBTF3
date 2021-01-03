@@ -58,6 +58,8 @@ fs.stat('resources/assets/img/' + theme, function(err) {
 	}
 });
 
+mix.copyDirectory('resources/assets/webapp/' + theme + '/', 'public_html/');
+
 // sourcemaps only happen if minified i.e. prod
 // mix.sourceMaps();
 
