@@ -28,7 +28,7 @@ The best way of using this app is to host your own copy on a server you control 
 
 ## Dependencies
 
-This has only been tested on PHP 7.1 so far and relies on your system having access to the `openssl_*` functions as well as the database server of your choice, thanks to Laravel.
+This has been updated to PHP 7.4 and relies on your system having access to the `openssl_*` functions as well as the database server of your choice, thanks to Laravel.
 
 I've included [nunomaduro/larastan](https://github.com/nunomaduro/larastan) for some code analysis. Unit tests coming one day soon.
 
@@ -93,5 +93,10 @@ I have included lots of comments in the source of the service worker to allow de
 ### 1
 This is the basic setup I was using for a number of years, not perfect but worked daily for me.
 
-### 2 (currently untagged but whatever is the latest commit)
+### 2
 I closed off version 1 with the ability to export and import tokens which means I could update the encryption methodology to something much more reliable and secure.
+
+### 3 (currently untagged but whatever is the latest commit)
+Version 2 concluded with long overdue composer and npm updates. Version 3 introduces a few minor changes to the appearance and the ability to have different themes.
+
+I commissioned [Soka Studio](https://sokastudio.co.uk/project/fab-app) to provide the FAB theme which is now my theme of choice.
