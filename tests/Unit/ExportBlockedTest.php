@@ -5,7 +5,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Token;
 
-class TokensTest extends TestCase
+class ExportBlockedTest extends TestCase
 {
     use RefreshDatabase;
 

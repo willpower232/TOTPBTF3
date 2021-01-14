@@ -81,7 +81,7 @@ class Export extends Command
     /**
      * Converts an array to a line of CSV-formatted data and returns
      *
-     * @param array $fields list of fields
+     * @param array<string> $fields list of fields
      *
      * @return bool|string CSV-formatted string or false on failure
      */

@@ -39,7 +39,7 @@ class TokensController extends Controller
      *
      * @param string $path the folder of a token, expected to be formatted by the function from the Token model
      *
-     * @return array|Token an array of folders or a single instance of Token, whichever is appropriate
+     * @return array<array<string>>|Token an array of folders or a single instance of Token, whichever is appropriate
      */
     private function getFoldersOrTokensFromPath($path = '/')
     {
@@ -93,7 +93,7 @@ class TokensController extends Controller
 
     // GET /codes
     // display folders or 6-digit code
-    public function getCode($path = '/')
+    public function getCode(string $path = '/')
     {
         $result = $this->getFoldersOrTokensFromPath($path);
 
@@ -119,7 +119,7 @@ class TokensController extends Controller
 
     // GET /export
     // redirect to codes folders or show qr code
-    public function export($path = '/')
+    public function export(string $path = '/')
     {
         if (config('app.allowexport') !== true) {
             abort(404);

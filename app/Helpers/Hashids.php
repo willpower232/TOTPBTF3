@@ -11,9 +11,9 @@ class Hashids
      *
      * @param string $input a previously encoded value
      *
-     * @return string|array the decoded value or values
+     * @return string|array<string> the decoded value or values
      */
-    public static function decode($input)
+    public static function decode(string $input)
     {
         $decoded = self::getHasher()->decode($input);
 

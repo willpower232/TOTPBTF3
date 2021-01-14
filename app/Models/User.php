@@ -6,10 +6,14 @@ use Illuminate\Notifications\Notifiable;
 use Hash;
 use Defuse\Crypto\KeyProtectedByPassword;
 
+/**
+ *  * @property \Illuminate\Database\Eloquent\Collection $tokens
+ */
 class User extends Authenticatable
 {
     use Notifiable;
 
+    /** @var array<string> */
     protected $fillable = array(
         'name',
         'email',
@@ -17,6 +21,7 @@ class User extends Authenticatable
         'protected_key_encoded',
     );
 
+    /** @var array<string> */
     protected $hidden = array(
         'password',
         'remember_token',
@@ -28,12 +33,12 @@ class User extends Authenticatable
      * WARNING: the existence of this method means that Auth::logoutOtherDevices will break your user record
      * because you will end up hashing a hash
      */
-    public function setPasswordAttribute($value)
+    public function setPasswordAttribute(string $value) : void
     {
         $this->attributes['password'] = Hash::make($value);
     }
 
-    public function tokens()
+    public function tokens() : \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Token::class);
     }
@@ -70,9 +75,9 @@ class User extends Authenticatable
      *
      * @param string $for the circumstances of validation
      *
-     * @return array the compiled list of rules
+     * @return array<string, string> the compiled list of rules
      */
-    public static function getValidationRules($for = '')
+    public static function getValidationRules(string $for = '')
     {
         $rules = array();
 

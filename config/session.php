@@ -124,7 +124,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        str_slug(env('APP_NAME', 'TOTPBTF3'), '_').'_session'
+        'totpbtf3_session'
     ),
 
     /*

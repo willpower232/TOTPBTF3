@@ -1,7 +1,7 @@
 <?php
 
 if (! function_exists('usingsqlite')) {
-    function usingsqlite()
+    function usingsqlite() : bool
     {
         return (\DB::getDriverName() === 'sqlite');
     }
@@ -21,7 +21,7 @@ if (! function_exists('see_db_queries')) {
      * // it dd's so can't really test it right?
      * @codeCoverageIgnore
      */
-    function see_db_queries(callable $callable)
+    function see_db_queries(callable $callable) : void
     {
         \DB::enableQueryLog();
         $callable();
@@ -40,6 +40,11 @@ if (! function_exists('array_merge_by_reference')) {
 
     /**
      * Shortcut because I was about to write a lot of array merges
+     *
+     * @param array<mixed> $initialarray
+     * @param array<array> $arrays
+     *
+     * @return void
      */
     function array_merge_by_reference(&$initialarray, ...$arrays)
     {

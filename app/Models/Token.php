@@ -19,10 +19,12 @@ use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 
 class Token extends Model
 {
+    /** @var array<string> */
     protected $appends = array(
         'id_hash',
     );
 
+    /** @var array<string> */
     protected $fillable = array(
         'user_id',
         'path',
@@ -41,7 +43,7 @@ class Token extends Model
 
     // IMPORTANT: don't create a mutator for secret because we need to re encrypt the secrets on password change
 
-    public function user()
+    public function user() : \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -49,11 +51,11 @@ class Token extends Model
     /**
      * Guarantee that an input begins and ends with a /.
      *
-     * @param string $input a path-like string
+     * @param string|null $input a path-like string
      *
      * @return string a guaranteed correctly-formatted path-like string
      */
-    public static function formatPath($input)
+    public static function formatPath(?string $input) : string
     {
         // make sure we're using the correct slash
         $input = str_replace('\\', '/', $input);
@@ -144,9 +146,9 @@ class Token extends Model
      *
      * @param string $for the circumstances of validation
      *
-     * @return array the compiled list of rules
+     * @return array<string, string> the compiled list of rules
      */
-    public static function getValidationRules($for = '')
+    public static function getValidationRules(string $for = '')
     {
         $rules = array();
 
