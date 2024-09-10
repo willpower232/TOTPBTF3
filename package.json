@@ -27,6 +27,6 @@
         "sass-loader": "^8.0"
     },
     "dependencies": {
-        "del": "^6.0.0"
+        "del": "^7.0.0"
     }
 }
