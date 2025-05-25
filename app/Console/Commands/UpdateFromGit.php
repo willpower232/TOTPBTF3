@@ -4,51 +4,48 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use function Laravel\Prompts\confirm;
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+
 class UpdateFromGit extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'updatefromgit';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Pulls from git and does the appropriate updates and cleanup';
 
     /**
-     * Execute the console command. Too disruptive to test.
-     *
      * @codeCoverageIgnore
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         /* Step 1 - update code to latest from git */
 
-        // todo: detect any changes and warn
+        exec(command: 'git diff --quiet && git diff --cached --quiet', result_code: $exitCode);
+
+        if ($exitCode !== 0 && ! confirm('git diff is not empty, okay to reset?')) {
+            error('Aborting');
+            return Command::FAILURE;
+        }
 
         exec('git reset --hard && git pull');
 
-        $this->info('Reset to latest git');
+        info('Reset to latest git');
 
         /* Step 2 - align with latest composer file */
 
         exec('composer install --no-dev');
 
-        $this->info('Composer up to date');
+        info('Composer up to date');
 
         /* Step 3 - post update tidyup */
 
         exec('composer dump-autoload'); // to pick up the helpers file if not already
 
-        $this->call('config:cache'); // clear any existing cache and re-cache
+        $this->call('config:cache'); // re-cache the config to include the latest commit sha
 
-        $this->info('Tidyup complete');
+        info('Tidyup complete');
+
+        return Command::SUCCESS;
     }
 }

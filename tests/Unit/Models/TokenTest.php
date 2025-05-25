@@ -1,53 +1,37 @@
 <?php
+
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Token;
-use App\Helpers\Encryption;
 use RobThree\Auth\TwoFactorAuth;
+use Tests\DatabaseTestCase;
 
-class TokenTest extends TestCase
+class TokenTest extends DatabaseTestCase
 {
-    use RefreshDatabase;
-
-    private $token;
-
-    /**
-     * Prepare for testing tokens using encryption helper with known inputs
-     *
-     * @return void
-     */
-    public function setUp() : void
-    {
-        parent::setUp();
-
-        // don't save unless we really want to
-        $this->token = factory(Token::class)->make();
-        $this->token->user->putEncryptionKeyInSession('secret');
-    }
-
     /**
      * Test that the model can return a decrypted secret
-     *
-     * @return void
      */
-    public function testSecretDecryption()
+    public function testSecretDecryption(): void
     {
-        $knownsecret = (new TwoFactorAuth(config('app.name')))->createSecret();
-        $this->token->setSecret($knownsecret);
-        $this->assertSame($knownsecret, $this->token->getDecryptedSecret());
+        $token = Token::factory()
+            ->for($this->getTestingUser()) // make sure encryption secret matches
+            ->make();
+
+        $knownsecret = app(TwoFactorAuth::class)->createSecret();
+        $token->setSecret($knownsecret);
+        $this->assertSame($knownsecret, $token->getDecryptedSecret());
     }
 
     /**
      * Test that the model can return a hashed id or null if no id present
-     *
-     * @return void
      */
-    public function testHashedId()
+    public function testHashedId(): void
     {
-        $this->token->save(); // need an id
-        $this->assertNotNull($this->token->id_hash);
+        $token = Token::factory()
+            ->for($this->getTestingUser()) // make sure encryption secret matches
+            ->create();
+
+        $this->assertNotNull($token->id_hash);
 
         $unsavedtoken = new Token();
         $this->assertNull($unsavedtoken->id_hash);
@@ -55,70 +39,64 @@ class TokenTest extends TestCase
 
     /**
      * Test that the model can return a valid TOTP code
-     *
-     * @return void
      */
-    public function testTOTPCode()
+    public function testTOTPCode(): void
     {
-        $this->assertRegExp('/^([0-9]{6})$/', $this->token->getTOTPCode());
+        $token = Token::factory()
+            ->for($this->getTestingUser()) // make sure encryption secret matches
+            ->make();
+
+        $this->assertMatchesRegularExpression('/^([0-9]{6})$/', $token->getTOTPCode());
     }
 
     /**
      * Test that the model can return an SVG QR code without failing
-     *
-     * @return void
      */
-    public function testQRCode()
+    public function testQRCode(): void
     {
-        $this->assertEquals(0, strpos($this->token->getQRCode(), '<svg'));
+        $token = Token::factory()
+            ->for($this->getTestingUser()) // make sure encryption secret matches
+            ->make();
+
+        $this->assertTrue(str_starts_with($token->getQRCode(), '<svg'));
     }
 
     /**
      * Verify that an empty path is formatted to a single slash.
-     *
-     * @return void
      */
-    public function testEmptyPath()
+    public function testEmptyPath(): void
     {
         $this->assertSame('/', Token::formatPath(''));
     }
 
     /**
      * Verify that a single slash is added to the start of a string if necessary.
-     *
-     * @return void
      */
-    public function testLeadingPath()
+    public function testLeadingPath(): void
     {
         $this->assertSame('/Contoso/GitHub/', Token::formatPath('Contoso/GitHub/'));
     }
 
     /**
      * Verify that a single slash is added to the end of a string if necessary.
-     *
-     * @return void;
      */
-    public function testTrailingPath()
+    public function testTrailingPath(): void
     {
         $this->assertSame('/Contoso/GitHub/', Token::formatPath('/Contoso/GitHub'));
     }
 
     /**
      * Verify that back slashes are switched to forward slashes
-     *
-     * @return void
      */
-    public function testWrongSlashesInPath()
+    public function testWrongSlashesInPath(): void
     {
         $this->assertSame('/Contoso/GitHub/', Token::formatPath('\\Contoso\\GitHub\\'));
     }
 
     /**
      * Verify that multiple slashes are reduced down to one
-     *
-     * @return void
      */
-    public function testMultipleSlashesInPath()
+    public function testMultipleSlashesInPath(): void
     {
         $this->assertSame('/Contoso/GitHub/', Token::formatPath('///Contoso//GitHub/'));
     }

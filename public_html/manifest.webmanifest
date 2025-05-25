@@ -1,0 +1,15 @@
+{
+	"name": "TOTPBTF3",
+	"short_name": "TOTPBTF3",
+	"description": "TOTP But Thank Frick For Folders",
+	"icons": [
+        { "src": "/favicon-192.png", "type": "image/png", "sizes": "192x192" },
+        { "src": "/favicon-409-padded.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" },
+        { "src": "/favicon-512.png", "type": "image/png", "sizes": "512x512" }
+	],
+	"start_url": "/",
+	"display": "standalone",
+	"scope": "/",
+	"background_color": "#2e2246",
+	"theme_color": "#2e2246"
+}

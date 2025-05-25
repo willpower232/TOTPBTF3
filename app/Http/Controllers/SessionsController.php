@@ -1,134 +1,97 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use Defuse\Crypto\KeyProtectedByPassword;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
-class SessionsController extends Controller
+class SessionsController implements HasMiddleware
 {
-    public function __construct()
+    use ValidatesRequests;
+
+    public static function middleware(): array
     {
-        $guestmethods = array(
-            'create',
-            'store',
-        );
-
-        $this->middleware('guest')
-            ->only($guestmethods);
-
-        $this->middleware('auth')
-            ->except($guestmethods);
-    }
-
-    // GET /login
-    public function create()
-    {
-        return view('sessions/create');
-    }
-
-    // POST /login
-    public function store()
-    {
-        try {
-            $this->validateRequest(User::getValidationRules('login'));
-        } catch (ValidationException $ex) {
-            return redirect(route('session.create'))
-                ->withInput(request(array( // don't return the plaintext password to the view
-                    'email',
-                )))
-                ->with('message', 'Please complete all fields');
-        }
-
-        if (! auth()->guard()->attempt(request(array('email', 'password')))) {
-            return redirect(route('session.create'))
-                ->withInput(request(array( // don't return the plaintext password to the view
-                    'email',
-                )))
-                ->with('message', 'Unable to match credentials');
-        }
-
-        // expensive decryption occurs here, better than all the time
-        auth()->guard()->user()->putEncryptionKeyInSession(request('password'));
-
-        return redirect(route('tokens.code'));
-    }
-
-    // GET /logout
-    public function destroy()
-    {
-        session()->flush(); // remove encryption key
-        auth()->guard()->logout();
-
-        return redirect(route('session.create'));
+        return [
+            'auth',
+        ];
     }
 
     // GET /profile
-    public function show()
+    public function show(): View
     {
-        return view('sessions/show')->with('user', auth()->guard()->user());
+        return view('sessions/show')->with('user', user());
     }
 
     // GET /profile/edit
-    public function edit()
+    public function edit(): View
     {
-        if (config('app.readonly')) {
-            abort(404);
+        if (config()->boolean('app.readonly')) {
+            abort(RedirectResponse::HTTP_NOT_FOUND);
         }
 
-        return view('sessions/form')->with('user', auth()->guard()->user());
+        return view('sessions/form')->with('user', user());
     }
 
     // POST /profile
-    public function update()
+    public function update(): RedirectResponse
     {
-        if (config('app.readonly')) {
-            abort(404);
+        if (config()->boolean('app.readonly')) {
+            abort(RedirectResponse::HTTP_NOT_FOUND);
         }
 
         try {
-            $this->validateRequest(User::getValidationRules('update'));
-        } catch (ValidationException $ex) {
+            $this->validate(request(), User::getValidationRules('update'));
+        } catch (ValidationException) {
             return redirect(route('session.edit'))
-                ->withInput(request(array( // don't return the plaintext passwords to the view
+                ->withInput(request()->only([ // don't return the plaintext passwords to the view
                     'name',
                     'email',
-                )))
+                ]))
                 ->with('message', 'Please check your input');
         }
 
-        if (! auth()->guard()->validate(array(
-            'email' => auth()->guard()->user()->email,
-            'password' => request('currentpassword'),
-        ))) {
+        if (
+            ! auth()->guard()->validate([
+                'email' => user()->email,
+                'password' => request()->string('currentpassword'),
+            ])
+        ) {
             return redirect(route('session.edit'))
-                ->withInput(request(array( // don't return the plaintext passwords to the view
+                ->withInput(request()->only([ // don't return the plaintext passwords to the view
                     'name',
                     'email',
-                )))
-                ->withErrors(array(
+                ]))
+                ->withErrors([
                     'currentpassword' => 'You did not enter your current password correctly',
-                ));
+                ]);
         }
 
-        $user = auth()->guard()->user();
+        $user = user();
 
-        $user->name = request('name');
-        $user->email = request('email');
+        $user->name = request()->string('name');
+        $user->email = request()->string('email');
 
         $passwordchanged = false;
-        if (strlen(request('newpassword')) > 0) {
+        if (strlen(request()->string('newpassword')) > 0) {
             $passwordchanged = true;
 
-            $user->password = request('newpassword');
+            $user->password = request()->string('newpassword');
 
             $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString(
-                auth()->guard()->user()->protected_key_encoded
+                user()->protected_key_encoded
             );
 
             // changing the key password can throw exceptions so shouldn't save the user yet
-            $protected_key = $protected_key->changePassword(request('currentpassword'), request('newpassword'));
+            $protected_key = $protected_key->changePassword(
+                request()->string('currentpassword'),
+                request()->string('newpassword')
+            );
 
             $user->protected_key_encoded = $protected_key->saveToAsciiSafeString();
         }
@@ -136,14 +99,12 @@ class SessionsController extends Controller
         $user->save();
 
         if ($passwordchanged) {
-            // don't need to log out others because we have already changed the hash
-            // also the user model has a mutator for password and this will break it
-            //Auth::logoutOtherDevices(request('newpassword'));
+            Auth::logoutOtherDevices(request()->string('newpassword'));
 
             session()->flush(); // remove encryption key
             auth()->guard()->logout();
 
-            return redirect(route('session.create'));
+            return redirect(route('login'));
         }
 
         return redirect(route('session.show'));

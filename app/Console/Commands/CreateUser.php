@@ -1,28 +1,22 @@
 <?php
+
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Validator;
 use App\Models\User;
 use Defuse\Crypto\KeyProtectedByPassword;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Validator;
 
 class CreateUser extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'user:create';
 
     /**
      * Prompt user for details to create user.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
-        if (config('app.readonly')) {
+        if (config()->boolean('app.readonly')) {
             throw new \RuntimeException('This system is in read only mode and cannot be altered.');
         }
 
@@ -41,7 +35,7 @@ class CreateUser extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
-            return 1;
+            return self::FAILURE;
         }
 
         $protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($password);
@@ -51,5 +45,7 @@ class CreateUser extends Command
         User::create($user);
 
         $this->info('Done.');
+
+        return self::SUCCESS;
     }
 }

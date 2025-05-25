@@ -1,52 +1,34 @@
 <?php
 
-if (! function_exists('usingsqlite')) {
-    function usingsqlite() : bool
-    {
-        return (\DB::getDriverName() === 'sqlite');
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
+function user(): User
+{
+    // @codeCoverageIgnoreStart
+    if (auth()->user() === null) {
+        throw new Illuminate\Auth\Access\AuthorizationException();
     }
+    // @codeCoverageIgnoreEnd
+
+    return auth()->user();
 }
 
-if (! function_exists('see_db_queries')) {
-    /**
-     * Shortcut to expose queries used by one or more commands
-     *
-     * Usage:
-     *
-     * see_db_queries(function() use ($object, $query) {
-     *     $object->save();
-     *     $test = $query->get();
-     * });
-     *
-     * // it dd's so can't really test it right?
-     * @codeCoverageIgnore
-     */
-    function see_db_queries(callable $callable) : void
+if (! function_exists('usingsqlite')) {
+    function usingsqlite(): bool
     {
-        \DB::enableQueryLog();
-        $callable();
-
-        // if you're using chrome, it can't render dd output in the inspector so you want this
-        // if (request()->expectsJson()) {
-        //     var_dump(\DB::getQueryLog());
-        //     die();
-        // }
-
-        dd(\DB::getQueryLog());
+        return (DB::getDriverName() === 'sqlite');
     }
 }
 
 if (! function_exists('array_merge_by_reference')) {
-
     /**
      * Shortcut because I was about to write a lot of array merges
      *
      * @param array<mixed> $initialarray
-     * @param array<array> $arrays
-     *
-     * @return void
+     * @param array<array<mixed>> $arrays
      */
-    function array_merge_by_reference(&$initialarray, ...$arrays)
+    function array_merge_by_reference(&$initialarray, ...$arrays): void
     {
         array_unshift($arrays, $initialarray);
         $initialarray = call_user_func_array('array_merge', $arrays);

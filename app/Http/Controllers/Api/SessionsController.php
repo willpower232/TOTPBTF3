@@ -1,24 +1,28 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class SessionsController extends Controller
+class SessionsController implements HasMiddleware
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('auth');
+        return [
+            'auth',
+        ];
     }
 
-    public function setLightMode()
+    public function setLightMode(): JsonResponse
     {
-        $user = auth()->guard()->user();
+        $user = user();
 
-        $user->light_mode = filter_var(request('light_mode'), FILTER_VALIDATE_BOOLEAN);
+        $user->light_mode = request()->boolean('light_mode');
         $user->save();
 
-        return response()->json(array(
+        return response()->json([
             'current_state' => $user->light_mode,
-        ), 200);
+        ], JsonResponse::HTTP_OK);
     }
 }

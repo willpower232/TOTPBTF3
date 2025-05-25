@@ -96,7 +96,16 @@ This is the basic setup I was using for a number of years, not perfect but worke
 ### 2
 I closed off version 1 with the ability to export and import tokens which means I could update the encryption methodology to something much more reliable and secure.
 
-### 3 (currently untagged but whatever is the latest commit)
+### 3
 Version 2 concluded with long overdue composer and npm updates. Version 3 introduces a few minor changes to the appearance and the ability to have different themes.
 
 I commissioned [Soka Studio](https://sokastudio.co.uk/project/fab-app) to provide the FAB theme which is now my theme of choice.
+
+### 4 (currently untagged but whatever is the latest commit)
+Its been a while, I've been using this every day since my early commits so its pretty stable and mostly not a problem but realistically, the dependencies were pretty old.
+
+I replaced the whole thing with almost the latest Laravel and all the dependencies. The javascript in particular requires an awful lot less bits now which is nice. There is even a native web component so the code refreshes without a full page reload which I hope works nicely in production.
+
+I removed almost all the service worker stuff and twig and a few other things. Mostly because they weren't adding much value these days.
+
+I should go through and update the rest of this readme but hey, we've come so far its nice to see what was going through my mind seven years ago.

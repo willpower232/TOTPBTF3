@@ -1,29 +1,21 @@
 <?php
+
 namespace App\Console\Commands\Csv;
 
-use Illuminate\Console\Command;
-use Validator;
 use App\Models\User;
-use Defuse\Crypto\KeyProtectedByPassword;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Validator;
 
 class Export extends Command
 {
-    /**
-     * @inheritdoc
-     */
     protected $signature = 'csv:export {destination? : the file to output to}';
 
-    /**
-     * @inheritdoc
-     */
     protected $description = 'Export user tokens as CSV';
 
     /**
      * Authorise user and export token secrets
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         $email = $this->ask('Users email address?');
 
@@ -38,61 +30,83 @@ class Export extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
-            return 1;
+            return self::FAILURE;
         }
 
         if (! auth()->guard()->validate($user)) {
             $this->info('Unable to login');
             $this->error('Unable to match details');
-            return 1;
+            return self::FAILURE;
         }
 
         $user = User::where('email', $email)
             ->with('tokens')
-            ->first();
+            ->firstOrFail();
 
         $user->putEncryptionKeyInSession($password);
 
         $cache = '';
 
-        if (($line = $this->makeCSVLine(array('path', 'title', 'secret'))) === false) {
+        // @codeCoverageIgnoreStart
+        if (($line = $this->makeCSVLine(['path', 'title', 'secret'])) === false) {
             $this->info('Unable to build export');
-            return 1;
+            return self::FAILURE;
         }
+        // @codeCoverageIgnoreEnd
 
         $cache .= $line . PHP_EOL;
 
         foreach ($user->tokens as $token) {
             $secret = $token->getDecryptedSecret();
 
-            if (($line = $this->makeCSVLine(array($token->path, $token->title, $secret))) === false) {
+            // @codeCoverageIgnoreStart
+            if (($line = $this->makeCSVLine([$token->path, $token->title, $secret])) === false) {
                 $this->info('Problem building export');
-                return 1;
+                return self::FAILURE;
             }
+            // @codeCoverageIgnoreEnd
 
             $cache .= $line . PHP_EOL;
         }
 
-        file_put_contents($this->argument('destination') ?? 'output.csv', $cache);
+        $filename = $this->argument('destination') ?? 'output.csv';
+
+        $this->info("Writing to {$filename}");
+
+        file_put_contents($filename, $cache);
 
         $this->info('Done.');
+
+        return self::SUCCESS;
     }
 
     /**
      * Converts an array to a line of CSV-formatted data and returns
      *
-     * @param array<string> $fields list of fields
+     * @param array<?string> $fields list of fields
      *
      * @return bool|string CSV-formatted string or false on failure
+     *
+     * @codeCoverageIgnore
      */
-    private function makeCSVLine(array $fields)
+    private function makeCSVLine(array $fields): bool|string
     {
         $f = fopen('php://memory', 'r+');
+
+        if ($f === false) {
+            return false;
+        }
+
         if (fputcsv($f, $fields) === false) {
             return false;
         }
         rewind($f);
         $csv_line = stream_get_contents($f);
+
+        if ($csv_line === false) {
+            return false;
+        }
+
         return rtrim($csv_line);
     }
 }

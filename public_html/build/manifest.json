@@ -1,0 +1,66 @@
+{
+  "resources/img/fab/arrow.svg": {
+    "file": "assets/arrow-BqcE7QIX.svg",
+    "src": "resources/img/fab/arrow.svg"
+  },
+  "resources/img/fab/backarrow.svg": {
+    "file": "assets/backarrow-BCCoIQSn.svg",
+    "src": "resources/img/fab/backarrow.svg"
+  },
+  "resources/img/fab/backgroundF.png": {
+    "file": "assets/backgroundF-BOEaEuG8.png",
+    "src": "resources/img/fab/backgroundF.png"
+  },
+  "resources/img/fab/background_F_dark.png": {
+    "file": "assets/backgroundF-BOEaEuG8.png",
+    "src": "resources/img/fab/backgroundF.png"
+  },
+  "resources/img/fab/home.svg": {
+    "file": "assets/home-OAGLhBUf.svg",
+    "src": "resources/img/fab/home.svg"
+  },
+  "resources/img/fab/logomain_dark.svg": {
+    "file": "assets/logomain_dark-rGgbgKHn.svg",
+    "src": "resources/img/fab/logomain_dark.svg"
+  },
+  "resources/img/fab/logomain_light.svg": {
+    "file": "assets/logomain_light-DspRANy-.svg",
+    "src": "resources/img/fab/logomain_light.svg"
+  },
+  "resources/img/fab/logosmall.svg": {
+    "file": "assets/logosmall-BGdl_yq6.svg",
+    "src": "resources/img/fab/logosmall.svg"
+  },
+  "resources/img/fab/logosmall_dark.svg": {
+    "file": "assets/logosmall-BGdl_yq6.svg",
+    "src": "resources/img/fab/logosmall.svg"
+  },
+  "resources/img/fab/profile.svg": {
+    "file": "assets/profile-DLLHufld.svg",
+    "src": "resources/img/fab/profile.svg"
+  },
+  "resources/img/fab/profileicon_dark.svg": {
+    "file": "assets/profileicon_dark-CCRaOtyc.svg",
+    "src": "resources/img/fab/profileicon_dark.svg"
+  },
+  "resources/img/fab/timer.svg": {
+    "file": "assets/timer-DB8JOVCX.svg",
+    "src": "resources/img/fab/timer.svg"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C9dwyrnN.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/sass/fab/app.scss": {
+    "file": "assets/app-8QZ2-SiG.css",
+    "src": "resources/sass/fab/app.scss",
+    "isEntry": true
+  },
+  "resources/sass/fab/critical.scss": {
+    "file": "assets/critical-DylUrJiL.css",
+    "src": "resources/sass/fab/critical.scss",
+    "isEntry": true
+  }
+}

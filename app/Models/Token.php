@@ -1,41 +1,39 @@
 <?php
-namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Helpers\Hashids;
-use RobThree\Auth\TwoFactorAuth;
+namespace App\Models;
 
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
-
-use BaconQrCode\Writer;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Renderer\RendererStyle\Fill;
-use BaconQrCode\Renderer\Color\Rgb;
-use BaconQrCode\Renderer\RendererStyle\EyeFill;
-use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use Hashids\Hashids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use RobThree\Auth\TwoFactorAuth;
 
 class Token extends Model
 {
-    /** @var array<string> */
-    protected $appends = array(
-        'id_hash',
-    );
+    /** @use HasFactory<\Database\Factories\TokenFactory> */
+    use HasFactory;
 
-    /** @var array<string> */
-    protected $fillable = array(
+    /**
+     * @var list<string>
+     */
+    protected $appends = [
+        'id_hash',
+    ];
+
+    /**
+     * @var list<string>
+     */
+    protected $fillable = [
         'user_id',
         'path',
         'title',
         'secret',
-    );
+    ];
 
-    public static function boot()
+    public static function booted()
     {
-        parent::boot();
-
         self::saving(function ($token) {
             $token->path = self::formatPath($token->path);
         });
@@ -43,20 +41,27 @@ class Token extends Model
 
     // IMPORTANT: don't create a mutator for secret because we need to re encrypt the secrets on password change
 
-    public function user() : \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
+        /**
      * Guarantee that an input begins and ends with a /.
      *
      * @param string|null $input a path-like string
      *
      * @return string a guaranteed correctly-formatted path-like string
      */
-    public static function formatPath(?string $input) : string
+    public static function formatPath(?string $input): string
     {
+        if ($input === null) {
+            $input = '';
+        }
+
         // make sure we're using the correct slash
         $input = str_replace('\\', '/', $input);
 
@@ -88,7 +93,7 @@ class Token extends Model
      *
      * @return string the encrypted value
      */
-    public static function encryptSecret(string $newsecret) : string
+    public static function encryptSecret(string $newsecret): string
     {
         $user_key = Key::loadFromAsciiSafeString(session('encryptionkey'));
 
@@ -97,10 +102,8 @@ class Token extends Model
 
     /**
      * Set the secret but encrypt it first
-     *
-     * @return void
      */
-    public function setSecret(string $newsecret) : void
+    public function setSecret(string $newsecret): void
     {
         $this->secret = self::encryptSecret($newsecret);
     }
@@ -113,7 +116,7 @@ class Token extends Model
      *
      * @return string the decrypted secret
      */
-    public function getDecryptedSecret()
+    public function getDecryptedSecret(): string
     {
         $user_key = Key::loadFromAsciiSafeString(session('encryptionkey'));
 
@@ -126,9 +129,9 @@ class Token extends Model
      *
      * @return string|null if the current object has an id, it will be returned hashed
      */
-    public function getIdHashAttribute()
+    public function getIdHashAttribute(): string|null
     {
-        return ($this->id != '') ? Hashids::encode($this->id) : null;
+        return ($this->exists() && $this->id !== null) ? app(Hashids::class)->encode($this->id) : null;
     }
 
     /**
@@ -136,9 +139,9 @@ class Token extends Model
      *
      * @return string the 6-digit code
      */
-    public function getTOTPCode()
+    public function getTOTPCode(): string
     {
-        return (new TwoFactorAuth(config('app.name')))->getCode($this->getDecryptedSecret());
+        return app(TwoFactorAuth::class)->getCode($this->getDecryptedSecret());
     }
 
     /**
@@ -148,20 +151,20 @@ class Token extends Model
      *
      * @return array<string, string> the compiled list of rules
      */
-    public static function getValidationRules(string $for = '')
+    public static function getValidationRules(string $for = ''): array
     {
-        $rules = array();
+        $rules = [];
 
         if ($for == 'create' || $for == 'update') {
-            array_merge_by_reference($rules, array(
+            array_merge_by_reference($rules, [
                 'path' => 'required',
                 'title' => 'required',
-            ));
+            ]);
 
             if ($for == 'create') {
-                array_merge_by_reference($rules, array(
+                array_merge_by_reference($rules, [
                     'secret' => 'required',
-                ));
+                ]);
             }
         }
 
@@ -174,42 +177,33 @@ class Token extends Model
      *
      * @return string the SVG of a QR code, coloured to match the default theme
      */
-    public function getQRCode()
+    public function getQRCode(): string
     {
-        // anonymous function to simplify hexadecimal colour input
-        $hexToRGB = function ($input) {
-            return array_map('hexdec', str_split(trim($input, '#'), 2));
-        };
+        // @codeCoverageIgnoreStart
+        if ($this->title === null && $this->path === null) {
+            throw new \RuntimeException('this token has no identifiers somehow');
+        }
+        // @codeCoverageIgnoreEnd
 
-        // from the scss
-        $text = '#d0d0d0';
-        $mainbackground = '#333333';
+        $dataUri = app()
+            ->makeWith(
+                TwoFactorAuth::class,
+                [
+                    'issuer' => trim($this->path ?? '', '/'),
+                ]
+            )
+            ->getQRCodeImageAsDataUri(
+                $this->title ?? '',
+                $this->getDecryptedSecret(),
+                400
+            );
 
-        // can omit all the params for RendererStyle if you want black and white
-        $writer = new Writer(new ImageRenderer(
-            new RendererStyle(
-                400, // size
-                1,   // border
-                null,
-                null,
-                Fill::withForegroundColor(
-                    new Rgb(...$hexToRGB($text)),           // background
-                    new Rgb(...$hexToRGB($mainbackground)), // foreground
-                    new EyeFill(null, null),
-                    new EyeFill(null, null),
-                    new EyeFill(null, null)
-                )
-            ),
-            new SvgImageBackEnd
-        ));
+        // rm data uri string
+        $base64 = substr($dataUri, 26);
 
-        // the explode removes the XML definition so it can be inlined
-        $svg = explode("\n", $writer->writeString(
-            'otpauth://totp/' . rawurlencode($this->title) .
-            '?secret=' . $this->getDecryptedSecret() .
-            '&issuer=' . rawurlencode(trim($this->path, '/'))
-        ));
+        // fetch real svg xml
+        $svg = base64_decode($base64);
 
-        return $svg[1];
+        return $svg;
     }
 }

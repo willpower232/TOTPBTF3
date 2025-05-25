@@ -1,31 +1,23 @@
 <?php
+
 namespace App\Console\Commands\Csv;
 
-use Illuminate\Console\Command;
-use Validator;
-use App\Models\User;
 use App\Models\Token;
-use Defuse\Crypto\KeyProtectedByPassword;
-use DB;
+use App\Models\User;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class Import extends Command
 {
-    /**
-     * @inheritdoc
-     */
-    protected $signature = 'csv:import {source? : the file to output to}';
+    protected $signature = 'csv:import {source? : the file to read from}';
 
-    /**
-     * @inheritdoc
-     */
     protected $description = 'Import user tokens as CSV';
 
     /**
      * Authorise user and import token secrets
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         $email = $this->ask('Users email address?');
 
@@ -40,56 +32,64 @@ class Import extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
-            return 1;
+            return self::FAILURE;
         }
 
         if (! auth()->guard()->validate($user)) {
             $this->info('Unable to login');
             $this->error('Unable to match details');
-            return 1;
+            return self::FAILURE;
         }
 
         $user = User::where('email', $email)
             ->with('tokens')
-            ->first();
+            ->firstOrFail();
 
         $user->putEncryptionKeyInSession($password);
 
         // read the entire file into an array
-        $csv = array_map('str_getcsv', file($this->argument('source') ?? 'output.csv'));
+        $file = file($this->argument('source') ?? 'output.csv');
 
-        // the first row of the CSV is the keys for the array
-        array_walk($csv, function (&$row) use ($csv) {
-            $row = array_combine($csv[0], $row);
-        });
+        // @codeCoverageIgnoreStart
+        if ($file === false) {
+            throw new \RuntimeException('nothing to import');
+        }
+        // @codeCoverageIgnoreEnd
+
+        $csv = array_map('str_getcsv', $file);
 
         // now remove the column headers
-        array_shift($csv);
+        /** @var array<string> $headers */
+        $headers = array_shift($csv);
 
-        DB::beginTransaction();
+        // the first row of the CSV is the keys for the array
+        array_walk($csv, function (&$row) use ($headers) {
+            $row = array_combine($headers, $row);
+        });
 
-        foreach ($csv as $newToken) {
-            $token = new Token(array(
-                'user_id' => $user->id,
-                'path' => $newToken['path'],
-                'title' => $newToken['title'],
-            ));
+        DB::transaction(function () use ($csv, $user) {
+            /** @var array<array<string,string>> $csv */
+            foreach ($csv as $newToken) {
+                $token = new Token([
+                    'user_id' => $user->id,
+                    'path' => $newToken['path'],
+                    'title' => $newToken['title'],
+                ]);
 
-            $token->setSecret($newToken['secret']);
+                $token->setSecret($newToken['secret']);
 
-            try {
-                $test = $token->getTOTPCode();
-            } catch (\Exception $e) {
-                DB::rollBack();
+                try {
+                    $test = $token->getTOTPCode();
+                } catch (\Exception $e) {
+                    throw new \RuntimeException('Problem with secret for ' . $newToken['path'], $e->getCode(), $e);
+                }
 
-                throw new \RuntimeException('Problem with secret for ' . $newToken['path']);
+                $token->save();
             }
-
-            $token->save();
-        }
-
-        DB::commit();
+        });
 
         $this->info('Done.');
+
+        return self::SUCCESS;
     }
 }

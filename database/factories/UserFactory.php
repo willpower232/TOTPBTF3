@@ -1,19 +1,41 @@
 <?php
 
-use Faker\Generator as Faker;
-use Defuse\Crypto\KeyProtectedByPassword;
+namespace Database\Factories;
+
 use App\Models\User;
+use Defuse\Crypto\KeyProtectedByPassword;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
-$factory->define(User::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => 'secret',
-        'protected_key_encoded' => (KeyProtectedByPassword::createRandomPasswordProtectedKey('secret'))->saveToAsciiSafeString(),
-        'light_mode' => false,
-    ];
-});
+/**
+ * @extends Factory<User>
+ */
+class UserFactory extends Factory
+{
+    /**
+     * The current password being used by the factory.
+     */
+    protected static ?string $password;
 
-$factory->afterMaking(User::class, function (User $user, Faker $faker) {
-    $user->putEncryptionKeyInSession('secret'); // password from the factory
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => static::$password ??= Hash::make('password'),
+            'protected_key_encoded' => (KeyProtectedByPassword::createRandomPasswordProtectedKey('password'))->saveToAsciiSafeString(),
+        ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (User $user) {
+            $user->putEncryptionKeyInSession('password'); // password from the factory
+        });
+    }
+}

@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Token;
+use Diglactic\Breadcrumbs\Breadcrumbs;
+use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 if (! function_exists('breadcrumbsFromAPath')) {
-    function breadcrumbsFromAPath($trail, $path = "/")
+    function breadcrumbsFromAPath(BreadcrumbTrail $trail, $path = "/")
     {
         $trail->push('Codes', route('tokens.code'));
 
@@ -19,7 +21,7 @@ if (! function_exists('breadcrumbsFromAPath')) {
 }
 
 if (! function_exists('breadcrumbsFromTokenPath')) {
-    function breadcrumbsFromTokenPath($trail, Token $token)
+    function breadcrumbsFromTokenPath(BreadcrumbTrail $trail, Token $token)
     {
         breadcrumbsFromAPath($trail, $token->path);
     }
@@ -28,7 +30,7 @@ if (! function_exists('breadcrumbsFromTokenPath')) {
 Breadcrumbs::for('tokens.code', 'breadcrumbsFromAPath');
 Breadcrumbs::for('tokens.export', 'breadcrumbsFromAPath');
 
-Breadcrumbs::for('tokens.create', function ($trail) {
+Breadcrumbs::for('tokens.create', function (BreadcrumbTrail $trail) {
     breadcrumbsFromAPath($trail);
 
     $trail->push('Import', route('tokens.create'));
@@ -37,13 +39,3 @@ Breadcrumbs::for('tokens.create', function ($trail) {
 Breadcrumbs::for('tokens.show', 'breadcrumbsFromTokenPath');
 Breadcrumbs::for('tokens.edit', 'breadcrumbsFromTokenPath');
 Breadcrumbs::for('tokens.delete', 'breadcrumbsFromTokenPath');
-
-// Breadcrumbs::for('session.show', function ($trail) {
-
-// });
-// Breadcrumbs::for('session.edit', function ($trail) {
-
-// });
-// Breadcrumbs::for('session.create', function ($trail) {
-
-// });

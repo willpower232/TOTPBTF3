@@ -1,44 +1,60 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Hash;
 use Defuse\Crypto\KeyProtectedByPassword;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-/**
- *  * @property \Illuminate\Database\Eloquent\Collection $tokens
- */
 class User extends Authenticatable
 {
-    use Notifiable;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory;
 
-    /** @var array<string> */
-    protected $fillable = array(
+    protected $attributes = [
+        'light_mode' => false,
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
         'name',
         'email',
         'password',
         'protected_key_encoded',
-    );
-
-    /** @var array<string> */
-    protected $hidden = array(
-        'password',
-        'remember_token',
-    );
+    ];
 
     /**
-     * Hash the password value when it is set
+     * The attributes that should be hidden for serialization.
      *
-     * WARNING: the existence of this method means that Auth::logoutOtherDevices will break your user record
-     * because you will end up hashing a hash
+     * @var list<string>
      */
-    public function setPasswordAttribute(string $value) : void
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        $this->attributes['password'] = Hash::make($value);
+        return [
+            'light_mode' => 'boolean',
+            'password' => 'hashed',
+        ];
     }
 
-    public function tokens() : \Illuminate\Database\Eloquent\Relations\HasMany
+    /**
+     * @return HasMany<Token, $this>
+     */
+    public function tokens(): HasMany
     {
         return $this->hasMany(Token::class);
     }
@@ -50,7 +66,7 @@ class User extends Authenticatable
      *
      * @return string the unlocked user key
      */
-    public function getEncryptionKey(string $password) : string
+    public function getEncryptionKey(string $password): string
     {
         $protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($this->protected_key_encoded);
         $user_key = $protected_key->unlockKey($password);
@@ -62,10 +78,8 @@ class User extends Authenticatable
      * store the encryption key in the session
      *
      * @param string $password whatever was input
-     *
-     * @return void
      */
-    public function putEncryptionKeyInSession(string $password) : void
+    public function putEncryptionKeyInSession(string $password): void
     {
         session()->put('encryptionkey', $this->getEncryptionKey($password));
     }
@@ -77,38 +91,38 @@ class User extends Authenticatable
      *
      * @return array<string, string> the compiled list of rules
      */
-    public static function getValidationRules(string $for = '')
+    public static function getValidationRules(string $for = ''): array
     {
-        $rules = array();
+        $rules = [];
 
         if ($for == 'login' || $for == 'create' || $for == 'update') {
-            array_merge_by_reference($rules, array(
+            array_merge_by_reference($rules, [
                 'email' => 'required|string|email',
-            ));
+            ]);
 
             if ($for == 'login') {
-                array_merge_by_reference($rules, array(
+                array_merge_by_reference($rules, [
                     'password' => 'required|string',
-                ));
+                ]);
             }
 
             if ($for == 'create' || $for == 'update') {
-                array_merge_by_reference($rules, array(
+                array_merge_by_reference($rules, [
                     'name' => 'required|string',
-                ));
+                ]);
             }
 
             if ($for == 'create') {
-                array_merge_by_reference($rules, array(
+                array_merge_by_reference($rules, [
                     'password' => 'required|string',
-                ));
+                ]);
             }
 
             if ($for == 'update') {
-                array_merge_by_reference($rules, array(
+                array_merge_by_reference($rules, [
                     'currentpassword' => 'required|string',
                     'newpassword' => 'confirmed',
-                ));
+                ]);
             }
         }
 

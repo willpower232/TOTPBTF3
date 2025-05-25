@@ -1,0 +1,93 @@
+@use "../critical";
+@use "variables";
+
+body,body * {
+	color:variables.$text;
+}
+
+.inverted {
+	body,body * {
+		color:variables.$bigbackground;
+	}
+}
+
+html {
+	background:variables.$bigbackground url(../../img/fab/backgroundF.png) no-repeat fixed left center;background-size:contain;
+
+	&.inverted {
+		background-color:variables.$bigbackground_light;
+	}
+}
+
+body {
+	&,&:before {
+		max-width:450px;
+	}
+
+	&:before {
+		background:variables.$redback;color:white;
+	}
+
+	&.scrollup {
+		.buttons {
+			bottom:5rem;
+		}
+
+		footer {
+			background:variables.$header;
+
+			&:after {
+				background:linear-gradient(transparent, variables.$header);
+			}
+		}
+	}
+}
+
+.inverted .scrollup footer {
+	background:variables.$bigbackground_light;
+
+	&:after {
+		background:linear-gradient(transparent, variables.$bigbackground_light);
+	}
+}
+
+header,footer {
+	//
+}
+
+header {
+	span:not(.titlereplacement) {
+		display:block;text-indent:-999em;width:100%;
+		background:url(../../img/fab/logosmall.svg) no-repeat center center;background-size:contain;
+	}
+
+    span.titlereplacement {
+        color:variables.$fabpink;
+    }
+
+	display:flex;justify-content:space-around;padding:1rem;
+
+	& + main {
+		min-height:calc(100vh - 4rem - 4rem);padding:1rem;
+	}
+}
+
+footer {
+	justify-content:space-between;line-height:4rem;padding:0.5rem 1rem;
+
+	a {
+		background:variables.$border no-repeat center center;background-size:40%;border-radius:1.5rem;line-height:3rem;text-indent:-999em;width:3rem;
+	}
+
+	.footer-back {
+		background-image:url(../../img/fab/backarrow.svg);
+	}
+
+	.footer-home {
+		background-color:variables.$fabpink;background-image:url(../../img/fab/home.svg);
+	}
+
+	.footer-profile {
+		background-image:url(../../img/fab/profile.svg);
+	}
+}

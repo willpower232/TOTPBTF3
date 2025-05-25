@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 36 16.2">
+<linearGradient id="fabgradient" gradientUnits="userSpaceOnUse" x1="0" y1="8.0969" x2="36" y2="8.0969">
+<stop offset="0.2014" style="stop-color:#E83B7E"/>
+<stop offset="0.8238" style="stop-color:#E61656"/>
+</linearGradient>
+<path style="fill:url(#fabgradient);" d="M35.6,7.2l-6.8-6.8c-0.5-0.5-1.3-0.5-1.8,0c-0.5,0.5-0.5,1.3,0,1.8l4.6,4.6H1.3C0.6,6.8,0,7.4,0,8.1 c0,0.7,0.6,1.3,1.3,1.3h30.4L27,14c-0.5,0.5-0.5,1.3,0,1.8c0.2,0.2,0.6,0.4,0.9,0.4c0.3,0,0.7-0.1,0.9-0.4L35.6,9 C35.9,8.8,36,8.4,36,8.1C36,7.8,35.9,7.4,35.6,7.2z"/>
+</svg>

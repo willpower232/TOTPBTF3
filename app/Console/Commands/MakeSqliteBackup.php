@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -7,11 +8,6 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class MakeSqliteBackup extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'makesqlitebackup';
 
     /**
@@ -20,23 +16,21 @@ class MakeSqliteBackup extends Command
      * This requires the mysqldump command from the mysql-client package and the sqlite3 package.
      *
      * @codeCoverageIgnore
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
-        $databasefile = config('database.connections.sqlite.database');
+        $databasefile = config()->string('database.connections.sqlite.database');
 
         // replacing the file would upset users if they weren't using change management
         // so create a new file first
-        $newdatabasefile = substr_replace($databasefile, '_new.sqlite', '-7');
+        $newdatabasefile = substr_replace($databasefile, '_new.sqlite', -7);
 
         $process = Process::fromShellCommandline(sprintf(
             'sh mysql2sqlite.sh -h %s -u %s -p%s %s | sqlite3 %s',
-            config('database.connections.mysql.host'),
-            config('database.connections.mysql.username'),
-            config('database.connections.mysql.password'),
-            config('database.connections.mysql.database'),
+            config()->string('database.connections.mysql.host'),
+            config()->string('database.connections.mysql.username'),
+            config()->string('database.connections.mysql.password'),
+            config()->string('database.connections.mysql.database'),
             $newdatabasefile
         ));
 
@@ -69,7 +63,7 @@ class MakeSqliteBackup extends Command
 
         rename($newdatabasefile, $databasefile);
         $this->info('Database download and conversion successful');
-        return 0;
+        return self::SUCCESS;
 
         // I still have no idea why this says memory
         // echo $process->getOutput();

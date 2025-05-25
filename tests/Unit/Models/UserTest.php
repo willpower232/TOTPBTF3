@@ -1,45 +1,30 @@
 <?php
+
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
 use App\Models\Token;
+use App\Models\User;
+use Tests\DatabaseTestCase;
 
-class UserTest extends TestCase
+class UserTest extends DatabaseTestCase
 {
-    use RefreshDatabase;
-
-    private $user;
-
-    /**
-     * Prepare for testing user by creating one
-     *
-     * @return void
-     */
-    public function setUp() : void
-    {
-        parent::setUp();
-
-        $this->user = factory(User::class)->create();
-    }
-
     /**
      * Test that a user has a function tokens relationship
-     *
-     * @return void
      */
-    public function testTokensRelationship()
+    public function testTokensRelationship(): void
     {
-        $testtoken = new Token();
-        $testtoken->title = 'hereiam';
-        $testtoken->secret = 'unnecessary';
+        $user = User::factory()->create();
 
-        $this->user->tokens()->save($testtoken);
+        $testToken = new Token();
+        $testToken->title = 'hereiam';
+        $testToken->secret = 'unnecessary';
 
-        $this->assertNotEmpty($this->user->tokens);
+        $user->tokens()->save($testToken);
 
-        $foundtoken = $this->user->tokens()->first();
-        $this->assertSame($testtoken->title, $foundtoken->title);
+        $foundToken = $user->tokens()->first();
+
+        $this->assertNotNull($foundToken);
+
+        $this->assertSame($testToken->title, $foundToken->title);
     }
 }
