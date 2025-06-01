@@ -30,4 +30,10 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
     </php>
+    <extensions>
+        <bootstrap class="RobinIngelbrecht\PHPUnitCoverageTools\PhpUnitExtension">
+            <parameter name="exitOnLowCoverage" value="1"/>
+            <parameter name="cleanUpCloverXml" value="0"/>
+        </bootstrap>
+    </extensions>
 </phpunit>

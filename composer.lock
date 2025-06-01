@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c8b952401f8a86de64d1b74a26d51db",
+    "content-hash": "616a638f823412dce70de407deb43d22",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8262,6 +8262,61 @@
                 }
             ],
             "time": "2024-12-21T05:51:08+00:00"
+        },
+        {
+            "name": "robiningelbrecht/phpunit-coverage-tools",
+            "version": "v1.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robiningelbrecht/phpunit-coverage-tools.git",
+                "reference": "7777bdbe67dd9c01dc2ed798adc9a48efc76b0ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robiningelbrecht/phpunit-coverage-tools/zipball/7777bdbe67dd9c01dc2ed798adc9a48efc76b0ec",
+                "reference": "7777bdbe67dd9c01dc2ed798adc9a48efc76b0ec",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-xmlreader": "*",
+                "php": "^8.1",
+                "phpunit/phpunit": "^10.3||^11.0||^12.0",
+                "symfony/console": "^5.4||^6.2||^7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.9",
+                "phpstan/phpstan": "^1.10",
+                "spatie/phpunit-snapshot-assertions": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RobinIngelbrecht\\PHPUnitCoverageTools\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robin Ingelbrecht",
+                    "email": "ingelbrecht_robin@hotmail.com"
+                }
+            ],
+            "description": "PHPUnit coverage tools",
+            "keywords": [
+                "code coverage",
+                "php",
+                "phpunit",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/robiningelbrecht/phpunit-coverage-tools/issues",
+                "source": "https://github.com/robiningelbrecht/phpunit-coverage-tools/tree/v1.9.1"
+            },
+            "time": "2025-05-28T06:28:42+00:00"
         },
         {
             "name": "sebastian/cli-parser",
