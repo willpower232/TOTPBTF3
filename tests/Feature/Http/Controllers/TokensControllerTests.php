@@ -109,7 +109,9 @@ abstract class TokensControllerTests extends DatabaseTestCase
             ->get(route('tokens.code', $token->path))
             ->assertOk()
             ->assertViewIs('tokens.code')
-            ->assertViewHas('image', fn ($value) => $value === false);
+            ->assertViewHas('image', fn ($value) => $value === false)
+            ->assertSeeHtml('<span class="titlereplacement">' . $token->title . '</span>')
+            ->assertDontSeeHtml('<img src="/tokenicons/' . trim($token->path, '/') . '.png" />');
 
         $this->actingAsTestingUser()
             ->get(route('tokens.code', $token->path))
@@ -118,7 +120,9 @@ abstract class TokensControllerTests extends DatabaseTestCase
             ->assertViewHas(
                 'image',
                 fn ($value) => $value === 'tokenicons/' . trim($token->path, '/') . '.png'
-            );
+            )
+            ->assertDontSeeHtml('<span class="titlereplacement">' . $token->title . '</span>')
+            ->assertSeeHtml('<img src="/tokenicons/' . trim($token->path, '/') . '.png" />');
 
         $this->actingAsTestingUser()
             ->getJson(route('tokens.code', $token->path))
