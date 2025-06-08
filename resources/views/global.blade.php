@@ -44,6 +44,10 @@
 @endif
 
 <body>
+    @env('local')
+        <span class="using-database">{{ usingsqlite() ? 'sqlite' : 'mysql' }}</span>
+    @endenv
+
 	@section('wholepage')
 		@yield('main')
 
