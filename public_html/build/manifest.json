@@ -48,18 +48,18 @@
     "src": "resources/img/fab/timer.svg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-C9dwyrnN.js",
+    "file": "assets/app-C0Udgyia.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
   },
   "resources/sass/fab/app.scss": {
-    "file": "assets/app-CDvbvP4f.css",
+    "file": "assets/app-DZ6X33Wy.css",
     "src": "resources/sass/fab/app.scss",
     "isEntry": true
   },
   "resources/sass/fab/critical.scss": {
-    "file": "assets/critical-DylUrJiL.css",
+    "file": "assets/critical-DDwnvLpC.css",
     "src": "resources/sass/fab/critical.scss",
     "isEntry": true
   }
