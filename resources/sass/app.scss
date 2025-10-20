@@ -216,4 +216,8 @@ code-and-timer {
 
 .using-database {
     padding:5px 25px;position:fixed;right:-40px;text-align:center;top:40px;transform:rotate(45deg);width:150px;
+
+    @media (max-width: 360px) {
+        right:-60px;top:25px;
+    }
 }

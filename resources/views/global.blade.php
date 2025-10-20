@@ -46,6 +46,8 @@
 <body>
     @env('local')
         <span class="using-database">{{ usingsqlite() ? 'sqlite' : 'mysql' }}</span>
+    @elseif(config('app.readonly'))
+        <span class="using-database">read only</span>
     @endenv
 
 	@section('wholepage')
