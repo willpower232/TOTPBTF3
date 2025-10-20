@@ -4,6 +4,6 @@
 	@elseif (isset($imageTitle))
 		<span class="titlereplacement">{{ $imageTitle }}</span>
 	@else
-		<span>TOTPBTF3</span>
+		<span>{{ config('app.name') }}</span>
 	@endif
 </header>
