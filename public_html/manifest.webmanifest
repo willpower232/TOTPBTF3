@@ -1,6 +1,4 @@
 {
-	"name": "TOTPBTF3",
-	"short_name": "TOTPBTF3",
 	"description": "TOTP But Thank Frick For Folders",
 	"icons": [
         { "src": "/favicon-192.png", "type": "image/png", "sizes": "192x192" },
