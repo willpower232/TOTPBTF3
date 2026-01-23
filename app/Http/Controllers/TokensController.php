@@ -212,12 +212,6 @@ class TokensController implements HasMiddleware
 
         $secret = str_replace(' ', '', request()->string('secret'));
 
-        // @codeCoverageIgnoreStart
-        if (! is_string($secret)) {
-            throw new \RuntimeException('how did you do this?');
-        }
-        // @codeCoverageIgnoreEnd
-
         $secret = strtoupper(trim($secret));
 
         // if the secret starts with the expected TOTP URL scheme and has a query string,

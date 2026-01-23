@@ -131,7 +131,7 @@ class Token extends Model
      */
     public function getIdHashAttribute(): string|null
     {
-        return ($this->exists() && $this->id !== null) ? app(Hashids::class)->encode($this->id) : null;
+        return ($this->id) ? app(Hashids::class)->encode($this->id) : null;
     }
 
     /**
