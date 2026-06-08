@@ -9,7 +9,7 @@
         "defuse/php-encryption": "^2.4",
         "diglactic/laravel-breadcrumbs": "^10.0",
         "hashids/hashids": "^5.0",
-        "laravel/framework": "^12.48",
+        "laravel/framework": "^12.61",
         "laravel/tinker": "^2.10",
         "laravel/ui": "^4.6",
         "robthree/twofactorauth": "^3.0",
