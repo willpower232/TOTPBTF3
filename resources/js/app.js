@@ -1,7 +1,3 @@
-import.meta.glob([
-    '../img/fab/**',
-]);
-
 class CodeAndTimer extends HTMLElement {
     #code;
     #timer;

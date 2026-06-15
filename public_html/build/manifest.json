@@ -48,19 +48,39 @@
     "src": "resources/img/fab/timer.svg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-C0Udgyia.js",
+    "file": "assets/app-ZyZ5boEX.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
   },
   "resources/sass/fab/app.scss": {
-    "file": "assets/app-Dq_Vifrp.css",
+    "file": "assets/app-CcIhfLcZ.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
     "src": "resources/sass/fab/app.scss",
-    "isEntry": true
+    "isEntry": true,
+    "assets": [
+      "assets/logomain_dark-rGgbgKHn.svg",
+      "assets/logomain_light-DspRANy-.svg",
+      "assets/arrow-BqcE7QIX.svg"
+    ]
   },
   "resources/sass/fab/critical.scss": {
-    "file": "assets/critical-DDwnvLpC.css",
+    "file": "assets/critical-I6JAp1JM.css",
+    "name": "critical",
+    "names": [
+      "critical.css"
+    ],
     "src": "resources/sass/fab/critical.scss",
-    "isEntry": true
+    "isEntry": true,
+    "assets": [
+      "assets/backgroundF-BOEaEuG8.png",
+      "assets/logosmall-BGdl_yq6.svg",
+      "assets/backarrow-BCCoIQSn.svg",
+      "assets/home-OAGLhBUf.svg",
+      "assets/profile-DLLHufld.svg"
+    ]
   }
 }

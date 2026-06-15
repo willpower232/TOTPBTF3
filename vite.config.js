@@ -10,6 +10,9 @@ export default defineConfig({
                 'resources/js/app.js',
             ],
             refresh: true,
+            assets: [
+                'resources/img/fab/**',
+            ],
             publicDirectory: 'public_html',
         }),
     ],
